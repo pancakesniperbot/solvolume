@@ -1,12 +1,12 @@
 [build]
-command = "cd client && npm install --legacy-peer-deps && npm run build"
+command = "cd client && npm install && npm run build"
 publish = "client/dist"
 
 [build.environment]
 NODE_VERSION = "20"
 
 [site]
-bucket = "./client/dist"
+bucket = "client/dist"
 
 [pages]
 pages_build_output_dir = "client/dist"
@@ -14,4 +14,12 @@ pages_build_output_dir = "client/dist"
 [[redirects]]
 from = "/*"
 to = "/index.html"
-status = 200 
+status = 200
+
+[env.production]
+workers_dev = true
+route = "solvolume-94b.pages.dev/*"
+zone_id = "your-zone-id"
+
+[env.production.vars]
+VITE_WS_URL = "wss://small-meadow-d788.comojaw412.workers.dev/ws" 
