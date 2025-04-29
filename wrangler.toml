@@ -1,0 +1,17 @@
+[build]
+command = "cd client && npm install --legacy-peer-deps && npm run build"
+publish = "client/dist"
+
+[build.environment]
+NODE_VERSION = "20"
+
+[site]
+bucket = "./client/dist"
+
+[pages]
+pages_build_output_dir = "client/dist"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200 
