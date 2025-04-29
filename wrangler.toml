@@ -1,12 +1,12 @@
 [build]
-command = "npm run build"
-publish = "dist"
+command = "cd client && npm install && npm run build"
+publish = "client/dist"
 
 [build.upload]
 format = "service-worker"
 
 [site]
-bucket = "dist"
+bucket = "client/dist"
 
 [build.environment]
 NODE_VERSION = "20"

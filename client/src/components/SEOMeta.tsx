@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet';
 
 interface SEOMetaProps {
   title?: string;
@@ -22,7 +22,7 @@ interface SEOMetaProps {
  * This component implements best practices for SEO and structured data
  * according to W3C standards and YMYL guidelines
  */
-const SEOMeta: React.FC<SEOMetaProps> = ({
+export const SEOMeta: React.FC<SEOMetaProps> = ({
   title = 'Solana Volume Bot - Automated Trading Bot for Solana',
   description = 'Solana Volume Bot is an automated trading bot designed to help traders maximize their profits on the Solana blockchain. Get started with our easy-to-use platform today.',
   keywords = 'solana, trading bot, automated trading, cryptocurrency, defi, volume bot, solana bot',
@@ -75,7 +75,7 @@ const SEOMeta: React.FC<SEOMetaProps> = ({
       <meta httpEquiv="content-language" content="en-US" />
       
       {/* Performance & Device Meta Tags */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       
       {/* Security Tags - YMYL Trust Indicators */}
@@ -126,7 +126,6 @@ const SEOMeta: React.FC<SEOMetaProps> = ({
       {/* Favicon and App Icons */}
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       
       {/* Structured Data */}
       <script type="application/ld+json">
@@ -135,5 +134,3 @@ const SEOMeta: React.FC<SEOMetaProps> = ({
     </Helmet>
   );
 };
-
-export default SEOMeta;
