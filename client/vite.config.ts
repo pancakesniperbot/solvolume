@@ -12,11 +12,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-helmet'],
           ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
+          icons: ['lucide-react', 'react-icons'],
+          motion: ['framer-motion'],
+          utils: ['class-variance-authority', 'clsx', 'tailwind-merge']
         },
       },
     },

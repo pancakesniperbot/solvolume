@@ -1,15 +1,14 @@
 [build]
 command = "cd client && npm install && npm run build"
-publish = "client/dist"
-
-[build.upload]
-format = "service-worker"
-
-[site]
-bucket = "client/dist"
 
 [build.environment]
 NODE_VERSION = "20"
+
+[site]
+bucket = "./client/dist"
+
+[pages]
+pages_build_output_dir = "client/dist"
 
 [[redirects]]
 from = "/*"
