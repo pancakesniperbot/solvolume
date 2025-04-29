@@ -2,7 +2,7 @@ export default {
   async fetch(request, env, ctx) {
     // CORS headers for all responses
     const corsHeaders = {
-      'Access-Control-Allow-Origin': 'https://solvolume-94b.pages.dev',
+      'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Upgrade, Connection, Sec-WebSocket-Key, Sec-WebSocket-Version, Sec-WebSocket-Extensions',
       'Access-Control-Allow-Credentials': 'true'
@@ -31,7 +31,7 @@ export default {
       server.addEventListener('message', async (event) => {
         try {
           const message = JSON.parse(event.data);
-          console.log('Received message:', message); // Debug log
+          console.log('Received message:', message);
           
           // Handle different message types
           switch (message.type) {
@@ -50,7 +50,7 @@ export default {
                 }
 
                 const data = await response.json();
-                console.log('Fetched data:', data); // Debug log
+                console.log('Fetched data:', data);
                 
                 // Transform data into our format with proper error handling
                 const prices = [
@@ -112,7 +112,7 @@ export default {
                     marketData
                   }
                 };
-                console.log('Sending response:', responseData); // Debug log
+                console.log('Sending response:', responseData);
                 server.send(JSON.stringify(responseData));
               } catch (error) {
                 console.error('Error fetching price data:', error);
