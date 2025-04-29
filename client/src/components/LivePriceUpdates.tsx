@@ -26,6 +26,7 @@ export function LivePriceUpdates() {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [manuallyConnected, setManuallyConnected] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('disconnected');
   
   // Use the centralized crypto context
   const { state, dispatch } = useCrypto();
@@ -37,11 +38,14 @@ export function LivePriceUpdates() {
     
     // Connect to WebSocket if not already connected
     if (!websocketService.isConnected()) {
+      console.log("[LivePriceUpdates] Initiating WebSocket connection...");
       websocketService.connect();
       setManuallyConnected(true);
+      setConnectionStatus('connecting');
     }
     
     // Send refresh request to get fresh data
+    console.log("[LivePriceUpdates] Sending refresh request...");
     websocketService.sendMessage({
       type: 'refresh_request',
       data: {
@@ -58,6 +62,7 @@ export function LivePriceUpdates() {
   // Update tokens from the centralized context when data changes
   useEffect(() => {
     if (coins && coins.length > 0) {
+      console.log("[LivePriceUpdates] Received new price data:", coins);
       // Map from context coins to token price format
       const updatedTokens = coins.map(coin => ({
         symbol: coin.symbol,
@@ -85,8 +90,19 @@ export function LivePriceUpdates() {
 
   // Set up WebSocket connection and message handling
   useEffect(() => {
+    const handleConnect = () => {
+      console.log("[LivePriceUpdates] WebSocket connected");
+      setConnectionStatus('connected');
+    };
+
+    const handleDisconnect = () => {
+      console.log("[LivePriceUpdates] WebSocket disconnected");
+      setConnectionStatus('disconnected');
+    };
+
     const handleMessage = (message: any) => {
       if (message.type === 'price_update' && message.data) {
+        console.log("[LivePriceUpdates] Received price update:", message.data);
         // Update the context with new data
         dispatch({
           type: 'UPDATE_ALL',
@@ -100,107 +116,62 @@ export function LivePriceUpdates() {
       }
     };
 
-    // Register message listener
+    // Register event listeners
+    websocketService.addConnectListener(handleConnect);
+    websocketService.addDisconnectListener(handleDisconnect);
     websocketService.addMessageListener(handleMessage);
 
     // Connect to WebSocket if not already connected
     if (!websocketService.isConnected()) {
+      console.log("[LivePriceUpdates] Initializing WebSocket connection...");
       websocketService.connect();
+      setConnectionStatus('connecting');
     }
 
     // Cleanup
     return () => {
+      websocketService.removeConnectListener(handleConnect);
+      websocketService.removeDisconnectListener(handleDisconnect);
       websocketService.removeMessageListener(handleMessage);
     };
   }, [dispatch]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
-      <div className="bg-black/40 backdrop-blur-lg rounded-xl p-6 border border-[#14F195]/20">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-white">Live Price Updates</h2>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold">Live Price Updates</h2>
+        <div className="flex items-center space-x-2">
+          <span className={`text-sm ${connectionStatus === 'connected' ? 'text-green-500' : connectionStatus === 'connecting' ? 'text-yellow-500' : 'text-red-500'}`}>
+            {connectionStatus === 'connected' ? 'Connected' : connectionStatus === 'connecting' ? 'Connecting...' : 'Disconnected'}
+          </span>
           <button
             onClick={handleRefresh}
-            className={`p-2 rounded-lg transition-colors ${
-              isRefreshing
-                ? 'bg-[#14F195]/20 cursor-not-allowed'
-                : 'bg-[#14F195]/10 hover:bg-[#14F195]/20'
-            }`}
             disabled={isRefreshing}
-            title="Refresh price data"
-            aria-label="Refresh price data"
+            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
           >
-            <RefreshCw
-              className={`h-5 w-5 text-[#14F195] ${
-                isRefreshing ? 'animate-spin' : ''
-              }`}
-            />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
           </button>
         </div>
-
-        <div className="flex items-center" aria-live="polite">
-          <div 
-            className={`h-2 w-2 rounded-full mr-2 ${manuallyConnected ? 'bg-green-500' : 'bg-yellow-500'}`}
-            role="status" 
-            aria-label={manuallyConnected ? "Connected to price feed" : "Not connected to price feed"}
-            title={manuallyConnected ? "Connected to price feed" : "Not connected to price feed"}
-          ></div>
-          <span 
-            className="text-xs text-gray-400"
-            role="status"
-            aria-live="polite"
-          >
-            {lastUpdated ? `Updated ${lastUpdated}` : 'Click refresh to load data'}
-          </span>
-        </div>
-
-        <div className="space-y-2" aria-labelledby="token-prices-heading">
-          <AnimatePresence>
-            {tokens.map((token) => (
-              <motion.div
-                key={token.symbol}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="flex items-center justify-between p-3 bg-black/20 rounded-lg"
-              >
-                <div className="flex items-center space-x-3">
-                  <img
-                    src={getCoinLogo(token.symbol)}
-                    alt={`${token.name} logo`}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div>
-                    <h3 className="text-white font-medium">{token.name}</h3>
-                    <p className="text-gray-400 text-sm">{token.symbol}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-white font-medium">
-                    ${token.price.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 6,
-                    })}
-                  </p>
-                  <div className="flex items-center space-x-1">
-                    {token.change >= 0 ? (
-                      <TrendingUp className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <TrendingDown className="h-4 w-4 text-red-500" />
-                    )}
-                    <p
-                      className={`text-sm ${
-                        token.change >= 0 ? 'text-green-500' : 'text-red-500'
-                      }`}
-                    >
-                      {token.change.toFixed(2)}%
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+      </div>
+      
+      {lastUpdated && (
+        <p className="text-sm text-gray-500">Last updated: {lastUpdated}</p>
+      )}
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {tokens.map((token) => (
+          <div key={token.symbol} className="p-4 bg-white rounded-lg shadow">
+            <div className="flex items-center justify-between">
+              <span className="font-semibold">{token.symbol}</span>
+              <span className={`text-sm ${token.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                {token.change >= 0 ? '+' : ''}{token.change}%
+              </span>
+            </div>
+            <div className="mt-2">
+              <span className="text-2xl font-bold">${token.price.toFixed(2)}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

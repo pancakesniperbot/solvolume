@@ -29,7 +29,7 @@ const disconnectCallbacks: Set<ConnectionCallback> = new Set();
  */
 export function initWebSocket(): WebSocket | null {
   if (socket && socket.readyState === WebSocket.OPEN) {
-    console.log("WebSocket connection already established");
+    console.log("[WebSocket] Connection already established");
     return socket;
   }
 
@@ -52,7 +52,7 @@ export function initWebSocket(): WebSocket | null {
     // Use the Cloudflare Worker WebSocket endpoint
     const wsUrl = `${protocol}//${host}/ws`;
     
-    console.log(`Connecting to WebSocket at ${wsUrl}`);
+    console.log(`[WebSocket] Connecting to ${wsUrl}`);
     
     // Show WebSocket connection errors to the user
     document.dispatchEvent(new CustomEvent('websocket-connecting', { 
@@ -69,7 +69,7 @@ export function initWebSocket(): WebSocket | null {
 
     return socket;
   } catch (error) {
-    console.error("Error initializing WebSocket:", error);
+    console.error("[WebSocket] Error initializing:", error);
     return null;
   }
 }
@@ -78,7 +78,7 @@ export function initWebSocket(): WebSocket | null {
  * Handle socket open event
  */
 function handleSocketOpen(): void {
-  console.log("WebSocket connection established");
+  console.log("[WebSocket] Connection established");
   
   // Reset reconnection attempts
   reconnectAttempts = 0;
@@ -97,7 +97,7 @@ function handleSocketOpen(): void {
  * Handle socket close event
  */
 function handleSocketClose(): void {
-  console.log("WebSocket connection closed");
+  console.log("[WebSocket] Connection closed");
   
   // Clear any existing heartbeat interval
   if (heartbeatInterval !== null) {
@@ -120,19 +120,8 @@ function handleSocketClose(): void {
 /**
  * Handle socket error event
  */
-function handleSocketError(event: Event): void {
-  console.error("WebSocket error:", event);
-  
-  // Clear any existing heartbeat interval
-  if (heartbeatInterval !== null) {
-    window.clearInterval(heartbeatInterval);
-    heartbeatInterval = null;
-  }
-  
-  // Schedule reconnection if the socket is closed
-  if (socket && socket.readyState === WebSocket.CLOSED) {
-    scheduleReconnect();
-  }
+function handleSocketError(error: Event): void {
+  console.error("[WebSocket] Error:", error);
 }
 
 /**
@@ -172,10 +161,15 @@ function startHeartbeat(): void {
 function handleSocketMessage(event: MessageEvent): void {
   try {
     const message = JSON.parse(event.data) as GameMessage;
+    console.log("[WebSocket] Received message:", message.type, message.data);
+    
+    // Update last message timestamp
     lastMessageReceived = Date.now();
+    
+    // Notify all message listeners
     messageCallbacks.forEach(callback => callback(message));
   } catch (error) {
-    console.error("Error parsing WebSocket message:", error);
+    console.error("[WebSocket] Error parsing message:", error);
   }
 }
 
