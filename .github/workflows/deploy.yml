@@ -14,15 +14,11 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: client/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install Dependencies
-        run: |
-          cd client
-          npm ci
+        run: npm ci
       - name: Build
-        run: |
-          cd client
-          npm run build
+        run: npm run build
         env:
           VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
       - name: Deploy to Cloudflare Pages
@@ -30,7 +26,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: client
           command: pages publish dist --project-name solvolume
 
   deploy-websocket:
@@ -42,15 +37,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: worker/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install Dependencies
-        run: |
-          cd worker
-          npm ci
+        run: npm ci
+      - name: Build Worker
+        run: npm run build:worker
       - name: Deploy WebSocket Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: worker
           command: deploy 
