@@ -23,7 +23,7 @@ interface SEOMetaProps {
  * according to W3C standards and YMYL guidelines
  */
 export const SEOMeta: React.FC<SEOMetaProps> = ({
-  title = 'Solana Volume Bot - Automated Trading Bot for Solana',
+  title = 'Solana Volume Bot: SOL Volume Bot » Pump Fun Volume Bot',
   description = 'Solana Volume Bot is an automated trading bot designed to help traders maximize their profits on the Solana blockchain. Get started with our easy-to-use platform today.',
   keywords = 'solana, trading bot, automated trading, cryptocurrency, defi, volume bot, solana bot',
   ogTitle,
