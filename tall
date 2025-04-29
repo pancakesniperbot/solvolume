@@ -1,5 +1,0 @@
-[33mcommit ce722e6faa1a5425b75ab7f6b0a0aeb5fd49e1f0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
-Author: pancakesniperbot <sensepin@proton.me>
-Date:   Tue Apr 29 13:39:44 2025 -0700
-
-    Add worker dependencies and fix TypeScript configuration

@@ -1,5 +1,0 @@
-[33mcommit 9579979b685c397b746f5c008c57b3991e420b0b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
-Author: pancakesniperbot <sensepin@proton.me>
-Date:   Tue Apr 29 14:28:54 2025 -0700
-
-    fix: update CORS headers and WebSocket handling - Update CORS headers for Cloudflare Pages - Add WebSocket connection headers - Improve error handling
