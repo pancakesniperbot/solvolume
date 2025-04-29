@@ -1,4 +1,4 @@
-﻿[build]
+[build]
 command = "cd client && npm install && npm run build"
 publish = "client/dist"
 
@@ -22,4 +22,4 @@ route = "solvolume-94b.pages.dev/*"
 zone_id = "your-zone-id"
 
 [env.production.vars]
-VITE_WS_URL = "wss://small-meadow-d788.comojaw412.workers.dev/ws"
+VITE_WS_URL = "wss://small-meadow-d788.comojaw412.workers.dev/ws" 
