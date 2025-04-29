@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="100" fill="#14F195" opacity="0.2" />
+  
+  <!-- Main face shape -->
+  <circle cx="100" cy="100" r="70" fill="#14F195" opacity="0.8" />
+  
+  <!-- Cyberpunk facial features -->
+  <circle cx="70" cy="85" r="10" fill="#000" />
+  <circle cx="130" cy="85" r="10" fill="#000" />
+  
+  <!-- Cyber implants -->
+  <rect x="65" y="60" width="10" height="5" fill="#9945FF" />
+  <rect x="125" y="60" width="10" height="5" fill="#9945FF" />
+  
+  <!-- Glowing elements -->
+  <circle cx="70" cy="85" r="5" fill="#fff" />
+  <circle cx="130" cy="85" r="5" fill="#fff" />
+  
+  <!-- Circuit lines -->
+  <path d="M50 40 L80 70" stroke="#9945FF" stroke-width="2" />
+  <path d="M150 40 L120 70" stroke="#9945FF" stroke-width="2" />
+  
+  <!-- Mouth circuitry -->
+  <path d="M70 120 Q100 140 130 120" stroke="#000" stroke-width="4" />
+  
+  <!-- Cyberpunk headgear -->
+  <path d="M40 80 L20 60 L40 40 L160 40 L180 60 L160 80" stroke="#9945FF" stroke-width="3" fill="none" />
+  
+  <!-- Digital accents -->
+  <rect x="95" y="30" width="10" height="20" fill="#9945FF" />
+  <circle cx="100" cy="20" r="5" fill="#14F195" />
+</svg>

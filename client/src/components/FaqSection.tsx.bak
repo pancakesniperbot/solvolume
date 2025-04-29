@@ -1,0 +1,202 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { HelpCircle, Plus, Minus, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { CyberpunkBackground } from "./CyberpunkBackground";
+
+interface Faq {
+  question: string;
+  answer: string;
+}
+
+export function FaqSection() {
+  const [activeTab, setActiveTab] = useState("general");
+  
+  // FAQ data organized by categories
+  const faqs: Record<string, Faq[]> = {
+    general: [
+      {
+        question: "What is Solana Volume Bot?",
+        answer: "Solana Volume Bot is a professional service that helps meme coin creators increase their token's visibility on DEX trackers like DexScreener, Pump.fun, and Dextools by strategically generating trading volume at optimal times without requiring access to your private keys or wallet connection."
+      },
+      {
+        question: "How does the Volume Bot work?",
+        answer: "Our Volume Bot operates by generating strategic trading transactions at optimal times to increase your token's visibility on major DEX platforms. It analyzes market conditions, sentiment data, and trading patterns to determine the best timing for volume generation that appears natural and organic."
+      },
+      {
+        question: "Is using Solana Volume Bot safe?",
+        answer: "Yes, Solana Volume Bot is designed with security as the top priority. We never require access to your private keys, wallet connection, or passwords. The service operates independently using only your token's public address for identification."
+      },
+      {
+        question: "How quickly can I get started?",
+        answer: "You can get started in just 5 minutes! Our simple setup process requires only your token's address. There's no coding required, and you can cancel anytime."
+      }
+    ],
+    technical: [
+      {
+        question: "What DEX platforms do you support?",
+        answer: "We currently support major Solana DEX trackers including DexScreener, Pump.fun, and Dextools. Our volume generation efforts work across all these platforms simultaneously to maximize your token's visibility."
+      },
+      {
+        question: "How long does it take to see results?",
+        answer: "Most tokens begin to see improved visibility and ranking on DEX trackers within 24-48 hours of activating our service. However, the exact timing can vary based on market conditions and your token's existing volume levels."
+      },
+      {
+        question: "Can I customize the volume generation strategy?",
+        answer: "Yes, we offer customizable volume strategies through our dashboard. You can set preferred trading hours, transaction sizes, and volume targets to match your specific marketing goals and token economics."
+      },
+      {
+        question: "How do I monitor the performance?",
+        answer: "Our platform provides a comprehensive dashboard with real-time metrics on volume generation, DEX ranking improvements, sentiment analysis, and visibility metrics to help you track performance and optimize your strategy."
+      }
+    ],
+    pricing: [
+      {
+        question: "How much does Solana Volume Bot cost?",
+        answer: "We offer flexible pricing plans starting from $99/week, with options for daily, weekly, or monthly subscriptions. The exact pricing depends on your volume requirements and the specific features you need. Contact us for a customized quote."
+      },
+      {
+        question: "Is there a free trial available?",
+        answer: "Yes, we offer a limited free trial that allows you to test our basic volume generation features. This gives you a chance to see how our service works before committing to a paid plan."
+      },
+      {
+        question: "Can I cancel anytime?",
+        answer: "Absolutely! There are no long-term commitments required. You can cancel your subscription at any time without penalties. We believe in earning your business through results, not contracts."
+      },
+      {
+        question: "Do you offer refunds?",
+        answer: "We offer a 48-hour satisfaction guarantee for new customers. If you're not satisfied with our service within the first 48 hours, contact our support team for a full refund of your initial payment."
+      }
+    ],
+    support: [
+      {
+        question: "How can I contact support?",
+        answer: "Our support team is available 24/7 via email at support@solanavolumebot.io. For premium plans, we also offer priority Discord support with response times under 2 hours during business hours."
+      },
+      {
+        question: "Do you provide setup assistance?",
+        answer: "Yes, all plans include basic setup assistance. Our premium plans include personalized onboarding with a dedicated account manager who will help optimize your volume strategy based on your specific token goals."
+      },
+      {
+        question: "What if I need help outside business hours?",
+        answer: "We offer 24/7 email support for urgent issues, and our comprehensive knowledge base is always available. Premium plans include extended support hours and emergency assistance when needed."
+      },
+      {
+        question: "Is there documentation available?",
+        answer: "Yes, we provide detailed documentation covering all aspects of our service, from setup to advanced strategies. This is regularly updated and accessible from your account dashboard."
+      }
+    ]
+  };
+  
+  // Tab categories
+  const tabCategories = [
+    { id: "general", label: "General" },
+    { id: "technical", label: "Technical" },
+    { id: "pricing", label: "Pricing" },
+    { id: "support", label: "Support" }
+  ];
+  
+  return (
+    <section id="faqs" className="py-20 relative overflow-hidden">
+      {/* Cyberpunk background */}
+      <CyberpunkBackground variant="dark" withGrid withNoise withGlitch />
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <div className="flex justify-center mb-4">
+            <div className="bg-[#9945FF]/10 p-3 rounded-full">
+              <HelpCircle className="h-8 w-8 text-[#9945FF]" />
+            </div>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Frequently Asked <span className="text-[#9945FF]">Questions</span>
+          </h2>
+          <p className="text-gray-400 max-w-3xl mx-auto">
+            Find answers to common questions about our Solana Volume Bot service, from technical details to pricing and support options.
+          </p>
+        </motion.div>
+        
+        {/* Tab Categories */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {tabCategories.map((tab) => (
+            <Button
+              key={tab.id}
+              variant={activeTab === tab.id ? "default" : "outline"}
+              onClick={() => setActiveTab(tab.id)}
+              className={activeTab === tab.id 
+                ? "bg-[#9945FF] hover:bg-[#8035E5] text-white" 
+                : "border-[#1e2035] text-gray-400 hover:text-white hover:bg-[#1e2035]/50"
+              }
+            >
+              {tab.label}
+            </Button>
+          ))}
+        </div>
+        
+        {/* FAQ Accordion */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto"
+        >
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs[activeTab]?.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`faq-${index}`}
+                className="border border-[#1e2035] rounded-lg bg-[#0c0c15] overflow-hidden"
+              >
+                <AccordionTrigger className="px-6 py-4 text-white hover:text-[#9945FF] hover:bg-[#1e2035]/30 transition-all">
+                  <div className="flex items-start text-left">
+                    <span className="text-lg font-medium">{faq.question}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pt-0 pb-4">
+                  <div className="text-gray-400">
+                    {faq.answer}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </motion.div>
+        
+        {/* Didn't find your answer box */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-12 bg-[#1e2035]/30 border border-[#1e2035] rounded-lg p-8 max-w-3xl mx-auto text-center"
+        >
+          <h3 className="text-xl font-bold text-white mb-3">
+            Didn't find the answer you're looking for?
+          </h3>
+          <p className="text-gray-400 mb-6">
+            Our support team is here to help with any questions you may have about our service.
+          </p>
+          <Button 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-[#9945FF] hover:bg-[#8035E5]"
+          >
+            Contact Support
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

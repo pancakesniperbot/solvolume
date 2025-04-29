@@ -1,0 +1,26 @@
+# Robots.txt file for Solana Volume Bot
+# Website: https://solanavolumebot.io
+# Last updated: April 21, 2025
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://solanavolumebot.io/sitemap.xml
+
+# Crawl delay for all bots
+Crawl-delay: 10
+
+# Disallow specific paths
+Disallow: /private/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /temp/
+Disallow: /unfinished/
+Disallow: /dev/
+Disallow: /beta/
+Disallow: /*.json$
+
+# Allow specific files
+Allow: /manifest.json
+Allow: /browserconfig.xml

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="32" r="32" fill="#0c0c15"/>
+  <defs>
+    <linearGradient id="solanaGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14F195"/>
+      <stop offset="100%" stop-color="#03E1FF"/>
+    </linearGradient>
+    <linearGradient id="solanaGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9945FF"/>
+      <stop offset="100%" stop-color="#03E1FF"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Glowing effect for the bars -->
+  <g filter="url(#glow)" transform="scale(0.5) translate(32, 32)">
+    <!-- Top bar -->
+    <path d="M25 25H75C77 25 78 26.2386 78 28V32C78 33.7614 77 35 75 35H25C23 35 22 33.7614 22 32V28C22 26.2386 23 25 25 25Z" 
+          fill="url(#solanaGradient1)"/>
+    
+    <!-- Middle bar -->
+    <path d="M25 45H75C77 45 78 46.2386 78 48V52C78 53.7614 77 55 75 55H25C23 55 22 53.7614 22 52V48C22 46.2386 23 45 25 45Z" 
+          fill="url(#solanaGradient2)"/>
+    
+    <!-- Bottom bar -->
+    <path d="M25 65H75C77 65 78 66.2386 78 68V72C78 73.7614 77 75 75 75H25C23 75 22 73.7614 22 72V68C22 66.2386 23 65 25 65Z" 
+          fill="url(#solanaGradient1)"/>
+  </g>
+</svg>
