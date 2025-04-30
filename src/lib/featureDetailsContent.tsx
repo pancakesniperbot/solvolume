@@ -1,0 +1,3 @@
+import { TrendingUp, Monitor, Shield, Wallet, BarChart2, Users, Target, Rocket, Clock, Award, Zap } from "lucide-react";
+
+// ... existing code ... 

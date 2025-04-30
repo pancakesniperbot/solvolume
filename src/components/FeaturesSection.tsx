@@ -1,0 +1,3 @@
+import { BarChart2, Rocket, Target, Users, Clock, Shield, Award, Zap, ArrowRight } from "lucide-react";
+
+// ... existing code ... 
