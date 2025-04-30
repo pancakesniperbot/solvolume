@@ -16,10 +16,12 @@ export default defineConfig({
       "@services": path.resolve(__dirname, "./src/services"),
     },
   },
+  root: '.',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
+      input: './index.html',
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
