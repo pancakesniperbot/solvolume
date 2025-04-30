@@ -26,7 +26,6 @@ export default defineConfig({
             '@radix-ui/react-tooltip',
           ],
           'ui-components': [
-            '@radix-ui/react-icons',
             'class-variance-authority',
             'clsx',
             'tailwind-merge',
