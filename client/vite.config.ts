@@ -1,17 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path';
 
 export default defineConfig({
   plugins: [
     react(),
-    visualizer({
-      filename: 'dist/stats.html',
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
-    }),
   ],
   resolve: {
     alias: {
@@ -27,6 +20,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: false,
     rollupOptions: {
+      input: './index.html',
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
@@ -64,7 +58,6 @@ export default defineConfig({
           'icons': ['lucide-react', 'react-icons'],
           'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
         },
-        inlineDynamicImports: false,
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash][extname]'
