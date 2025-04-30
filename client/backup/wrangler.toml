@@ -1,0 +1,25 @@
+name = "solvolume"
+main = "worker.js"
+compatibility_date = "2023-10-25"
+build.command = "npm run build"
+pages_build_output_dir = "dist"
+
+[env.production]
+name = "solvolume-prod"
+route = "solvolume.com/*"
+
+[env.staging]
+name = "solvolume-staging"
+route = "staging.solvolume.com/*"
+
+[site]
+bucket = "./dist"
+entry-point = "dist/index.html"
+
+[build]
+command = "npm run build"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200 

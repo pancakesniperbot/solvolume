@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(333, 80%, 60%)" stop-opacity="1"/>
+      <stop offset="100%" stop-color="hsl(297, 80%, 60%)" stop-opacity="1"/>
+    </linearGradient>
+    <clipPath id="circle">
+      <circle cx="50" cy="50" r="45"/>
+    </clipPath>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="50" cy="50" r="45" fill="url(#bg-gradient)" />
+  
+  <!-- Pattern -->
+  <g opacity="0.2" clip-path="url(#circle)">
+    <path d="M10,10 L90,90" stroke="white" stroke-width="0.5" />
+    <path d="M90,10 L10,90" stroke="white" stroke-width="0.5" />
+    <circle cx="50" cy="50" r="25" fill="none" stroke="white" stroke-width="0.5" />
+    <rect x="25" y="25" width="50" height="50" fill="none" stroke="white" stroke-width="0.5" />
+  </g>
+  
+  <!-- Avatar face -->
+  <text x="50" y="65" font-family="Arial" font-size="40" font-weight="bold" fill="white" text-anchor="middle">I</text>
+  
+  <!-- Glowing outline -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="hsl(333, 80%, 60%)" stroke-width="2" opacity="0.8" />
+  <circle cx="50" cy="50" r="47" fill="none" stroke="hsl(297, 80%, 60%)" stroke-width="1" opacity="0.4" />
+</svg>
+=======
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Background circle -->
@@ -57,3 +88,4 @@
   <line x1="100" y1="30" x2="100" y2="20" stroke="#03E1FF" stroke-width="1" stroke-dasharray="2 1" />
   <circle cx="100" cy="15" r="5" fill="#03E1FF" opacity="0.5" />
 </svg>
+>>>>>>> da983d9 (fix: update build scripts and convert to ES modules)

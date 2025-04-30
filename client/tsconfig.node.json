@@ -4,7 +4,12 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
+<<<<<<< HEAD
+    "allowSyntheticDefaultImports": true,
+    "strict": true
+=======
     "allowSyntheticDefaultImports": true
+>>>>>>> da983d9 (fix: update build scripts and convert to ES modules)
   },
   "include": ["vite.config.ts"]
 } 
