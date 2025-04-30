@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CyberpunkThemeProvider } from "@/context/CyberpunkThemeContext";
 import { LicenseProvider } from "@/components/LicenseProvider";
 import { CryptoProvider } from "@/state/CryptoContext";
+import { HelmetProvider } from 'react-helmet-async';
 
 import Home from "@/pages/Home";
 import NotFound from "@/pages/not-found";
@@ -31,34 +32,36 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <CryptoProvider>
-        <CyberpunkThemeProvider>
-          <TooltipProvider>
-            <LicenseProvider>
-              {/* Use proper semantic HTML structure */}
-              <div className="min-h-screen flex flex-col">
-                {/* Notifications component */}
-                <Toaster />
-                
-                {/* Main application content wrapped in semantic tags */}
-                <div className="flex-grow">
-                  <Switch>
-                    <Route path="/" component={Home} />
-                    <Route component={NotFound} />
-                  </Switch>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <CryptoProvider>
+          <CyberpunkThemeProvider>
+            <TooltipProvider>
+              <LicenseProvider>
+                {/* Use proper semantic HTML structure */}
+                <div className="min-h-screen flex flex-col">
+                  {/* Notifications component */}
+                  <Toaster />
+                  
+                  {/* Main application content wrapped in semantic tags */}
+                  <div className="flex-grow">
+                    <Switch>
+                      <Route path="/" component={Home} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  </div>
+                  
+                  {/* Skip to content link for accessibility */}
+                  <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white p-2 z-50">
+                    Skip to content
+                  </a>
                 </div>
-                
-                {/* Skip to content link for accessibility */}
-                <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white p-2 z-50">
-                  Skip to content
-                </a>
-              </div>
-            </LicenseProvider>
-          </TooltipProvider>
-        </CyberpunkThemeProvider>
-      </CryptoProvider>
-    </QueryClientProvider>
+              </LicenseProvider>
+            </TooltipProvider>
+          </CyberpunkThemeProvider>
+        </CryptoProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
