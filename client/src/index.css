@@ -8,7 +8,47 @@
  * - Simplified styling to improve performance
  */
 
-/* Simple scrollbar styling without animations */
+/* Critical CSS - Load First */
+:root {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 142 89% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 270 100% 63%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 240 10% 13%;
+  --muted-foreground: 240 5% 65%;
+  --accent: 240 10% 10%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 10% 14%;
+  --input: 240 10% 14%;
+  --ring: 142 89% 50%;
+  --radius: 0.5rem;
+}
+
+/* Base Styles - Optimized for Performance */
+html {
+  overflow-x: hidden;
+  scrollbar-color: #14F195 #0a0a14;
+  scrollbar-width: thin;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Optimized Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   background: rgba(10, 10, 20, 0.2);
@@ -42,23 +82,16 @@ html {
 
 /* Mobile Optimizations */
 @media (max-width: 768px) {
-  /* Better touch handling for mobile devices */
   button, 
   a, 
   .touch-manipulation {
     touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
     user-select: none;
-  }
-  
-  /* Larger touch targets for better usability */
-  button, 
-  a {
-    min-height: 44px; /* Apple's recommended minimum touch target size */
+    min-height: 44px;
     padding: 0.75rem 1rem;
   }
   
-  /* Prevent mobile text selection on navigation elements */
   nav, 
   header, 
   .button, 
@@ -66,9 +99,13 @@ html {
     user-select: none;
   }
   
-  /* Better mobile scrolling */
   * {
     -webkit-overflow-scrolling: touch;
+  }
+  
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
   }
   
   /* Fix mobile VH issues (100vh is too tall on mobile browsers due to address bar) */
@@ -84,21 +121,13 @@ html {
   }
 }
 
-body {
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* Additional mobile-specific fixes are already defined above */
-
-/* Section spacing consistency */
+/* Layout Components */
 .section-spacing {
   padding-top: clamp(3rem, 10vh, 6rem);
   padding-bottom: clamp(3rem, 10vh, 6rem);
   position: relative;
 }
 
-/* Center content consistently across different device widths */
 .content-container {
   width: 100%;
   max-width: 1200px;
@@ -108,48 +137,20 @@ body {
   padding-right: clamp(1rem, 5vw, 2rem);
 }
 
-/* Simplified glassmorphism effect - no blur filter */
+/* Optimized Glass Effect */
 .glass-effect {
   background: rgba(15, 15, 25, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
+/* Dark Mode Overrides */
 @layer base {
-  :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 142 89% 50%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 270 100% 63%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 240 10% 13%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 240 10% 10%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 10% 14%;
-    --input: 240 10% 14%;
-    --ring: 142 89% 50%;
-    --radius: 0.5rem;
-  }
-
   * {
     @apply border-border;
-    border-color: hsl(var(--border));
   }
 
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-  }
-  
-  /* Force dark backgrounds for all elements */
   .bg-background,
   .bg-card,
   .bg-popover,
@@ -157,12 +158,10 @@ body {
     background-color: hsl(var(--background)) !important;
   }
   
-  /* Override any white backgrounds that might appear */
   [class*="bg-white"] {
     background-color: hsl(var(--background)) !important;
   }
   
-  /* Ensure all cards have proper dark styling */
   .card,
   [class*="card"] {
     background-color: hsl(var(--card)) !important;

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { createRoot } from "react-dom/client";
-import App from "./App";
 import "./index.css";
 import "./components/ui-overrides.css";
+
+// Lazy load the main App component
+const App = lazy(() => import("./App"));
 
 // Import the Three.js patch to fix BatchedMesh error
 import './lib/three-patch';
@@ -62,9 +64,18 @@ window.addEventListener('error', (event) => {
   }
 });
 
-// Performant rendering
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen bg-background">
+    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
+
+// Performant rendering with Suspense
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback={<LoadingFallback />}>
+      <App />
+    </Suspense>
   </React.StrictMode>
 );
