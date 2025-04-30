@@ -35,4 +35,7 @@ zone_id = ""
 ENVIRONMENT = "production"
 
 [env.production.build]
-command = "npm run build" 
+command = "npm run build"
+
+[env.production.build.upload]
+format = "service-worker" 
