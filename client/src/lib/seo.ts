@@ -3,9 +3,12 @@
  * Implements YMYL (Your Money Your Life) guidelines
  * Follows W3C standards for HTML and structured data
  */
+const defaultTitle = "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot";
+const defaultDescription = "Professional Solana Volume Bot Platform. Enhance your token's visibility with strategic transaction distribution. Features include real-time analytics, multi-wallet support, and compliance.";
+
 export const defaultSEO = {
-  title: "Solana Volume Bot - Professional Token Visibility Enhancement Platform",
-  description: "Professional Solana volume distribution service with transparent methodologies and compliant strategies. Boost your token's visibility on DEXTools, Pump.Fun & DEXScreener through strategic volume distribution.",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
+  description: "Professional Solana Volume Bot Platform. Enhance your token's visibility with strategic transaction distribution. Features include real-time analytics, multi-wallet support, and compliance.",
   keywords: "Solana volume bot, token visibility enhancement, professional DEX visibility, volume distribution, token visibility strategies, DEX ranking optimization, compliant volume distribution, Solana trading volume, DEX visibility platform, volume bot service",
   ogImage: "/logo.svg",
   ogUrl: "https://solanavolumebot.io",
@@ -14,7 +17,7 @@ export const defaultSEO = {
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Solana Volume Bot",
+      "name": defaultTitle,
       "url": "https://solanavolumebot.io",
       "logo": "https://solanavolumebot.io/logo.svg",
       "description": "Professional token visibility enhancement platform providing Solana volume distribution services with transparent methodology and compliant strategies for maximum DEX presence.",
@@ -93,7 +96,7 @@ export const defaultSEO = {
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Solana Volume Bot - Professional Token Visibility Platform",
+      "name": defaultTitle,
       "url": "https://solanavolumebot.io",
       "description": "Professional Solana Volume Bot platform providing token visibility enhancement through strategic transaction distribution. Boost DEX rankings with compliant, natural-looking volume patterns and real-time performance monitoring.",
       "potentialAction": {
@@ -133,7 +136,7 @@ export const defaultSEO = {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "Solana Volume Bot Platform",
+      "name": defaultTitle,
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web, Cloud, SaaS",
       "offers": [
@@ -328,7 +331,7 @@ export const defaultSEO = {
  * YMYL-optimized for transparency and legal compliance
  */
 export const termsSEO = {
-  title: "Terms of Service & Legal Agreement - Solana Volume Bot | Volume Enhancement Platform",
+  title: defaultTitle,
   description: "Official legally-binding terms and conditions for Solana Volume Bot's professional volume enhancement platform. Transparent information about user rights, data handling, and service limitations.",
   keywords: "solana volume bot terms, legal terms of service, binding user agreement, professional volume bot terms, compliant token visibility, legal platform terms, token volume terms, financial bot terms, blockchain volume agreement",
   ogImage: "/logo.svg",
@@ -379,7 +382,7 @@ export const termsSEO = {
  * YMYL-optimized for data protection compliance and transparency
  */
 export const privacySEO = {
-  title: "Privacy Policy & Data Protection Standards - Solana Volume Bot",
+  title: defaultTitle,
   description: "Comprehensive privacy policy detailing how we collect, process, protect, and secure your personal data, in full compliance with global data protection regulations.",
   keywords: "privacy policy, GDPR compliant privacy, blockchain data protection, token volume privacy, data security policy, SOC 2 compliance, data encryption standards, user data protection, secure volume platform, data rights policy",
   ogImage: "/logo.svg",
@@ -427,7 +430,7 @@ export const privacySEO = {
  * YMYL-optimized for intellectual property protection and legal compliance
  */
 export const dmcaSEO = {
-  title: "DMCA & Intellectual Property Protection Policy - Solana Volume Bot",
+  title: defaultTitle,
   description: "Official Digital Millennium Copyright Act (DMCA) compliance policy with transparent procedures for reporting intellectual property infringement and copyright protection measures.",
   keywords: "DMCA policy, copyright infringement reporting, intellectual property protection, digital rights management, content takedown procedure, copyright compliance, IP protection policy, legal content compliance",
   ogImage: "/logo.svg",

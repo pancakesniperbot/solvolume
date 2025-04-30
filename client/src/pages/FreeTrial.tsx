@@ -47,7 +47,7 @@ export default function FreeTrial() {
     setTimeout(() => {
       setLoading(false);
       toast({
-        title: "Free Trial Successful!",
+        title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
         description: "Welcome to Solana Volume Bot! Details have been sent to your email address.",
         variant: "default",
       });

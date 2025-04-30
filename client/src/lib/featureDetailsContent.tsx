@@ -18,7 +18,7 @@ const BulletList = ({ items }: { items: string[] }) => (
 
 // Volume Generation Content
 export const volumeGenerationContent: FeatureDetailContent = {
-  title: "Volume Generation",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <TrendingUp className="h-6 w-6 text-[#14F195]" />,
   description: (
     <>
@@ -62,7 +62,7 @@ export const volumeGenerationContent: FeatureDetailContent = {
 
 // Real-time Monitoring Content
 export const realTimeMonitoringContent: FeatureDetailContent = {
-  title: "Real-time Monitoring",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Monitor className="h-6 w-6 text-[#03E1FF]" />,
   description: (
     <>
@@ -114,7 +114,7 @@ export const realTimeMonitoringContent: FeatureDetailContent = {
 
 // Anti-Detection System Content
 export const antiDetectionContent: FeatureDetailContent = {
-  title: "Anti-Detection System",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Shield className="h-6 w-6 text-[#DC1FFF]" />,
   description: (
     <>
@@ -162,7 +162,7 @@ export const antiDetectionContent: FeatureDetailContent = {
 
 // Multi-Wallet Support Content
 export const multiWalletContent: FeatureDetailContent = {
-  title: "Multi-Wallet Support",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Wallet className="h-6 w-6 text-[#9945FF]" />,
   description: (
     <>
@@ -214,7 +214,7 @@ export const multiWalletContent: FeatureDetailContent = {
 
 // Automated Multithreaded Trades Content
 export const automatedTradesContent: FeatureDetailContent = {
-  title: "Automated Multithreaded Trades",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <BarChart2 className="h-6 w-6 text-[#00FFA3]" />,
   description: (
     <>
@@ -266,7 +266,7 @@ export const automatedTradesContent: FeatureDetailContent = {
 
 // Attract New Holders & Whales Content
 export const attractHoldersContent: FeatureDetailContent = {
-  title: "Attract New Holders & Whales",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Users className="h-6 w-6 text-[#DC1FFF]" />,
   description: (
     <>
@@ -318,7 +318,7 @@ export const attractHoldersContent: FeatureDetailContent = {
 
 // Create FOMO & Trending Status Content
 export const createFOMOContent: FeatureDetailContent = {
-  title: "Create FOMO & Trending Status",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Target className="h-6 w-6 text-[#00FFA3]" />,
   description: (
     <>
@@ -370,7 +370,7 @@ export const createFOMOContent: FeatureDetailContent = {
 
 // Real-Time Performance Analytics Content
 export const performanceAnalyticsContent: FeatureDetailContent = {
-  title: "Real-Time Performance Analytics",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <BarChart className="h-6 w-6 text-blue-400" />,
   description: (
     <>
@@ -432,7 +432,7 @@ export const performanceAnalyticsContent: FeatureDetailContent = {
 
 // Strategic Volume Distribution Content
 export const volumeDistributionContent: FeatureDetailContent = {
-  title: "Strategic Volume Distribution",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Rocket className="h-6 w-6 text-[#DC1FFF]" />,
   description: (
     <>
@@ -484,7 +484,7 @@ export const volumeDistributionContent: FeatureDetailContent = {
 
 // Customizable Trading Parameters Content
 export const tradingParametersContent: FeatureDetailContent = {
-  title: "Customizable Trading Parameters",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Clock className="h-6 w-6 text-amber-400" />,
   description: (
     <>
@@ -546,7 +546,7 @@ export const tradingParametersContent: FeatureDetailContent = {
 
 // Anti-Detection Technology Content
 export const antiDetectionTechnologyContent: FeatureDetailContent = {
-  title: "Anti-Detection Technology",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Shield className="h-6 w-6 text-green-400" />,
   description: (
     <>
@@ -608,7 +608,7 @@ export const antiDetectionTechnologyContent: FeatureDetailContent = {
 
 // 24/7 Automated Operation Content
 export const automatedOperationContent: FeatureDetailContent = {
-  title: "24/7 Automated Operation",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <Award className="h-6 w-6 text-blue-400" />,
   description: (
     <>
@@ -670,7 +670,7 @@ export const automatedOperationContent: FeatureDetailContent = {
 
 // SOL-Optimized Architecture Content
 export const solArchitectureContent: FeatureDetailContent = {
-  title: "SOL-Optimized Architecture",
+  title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
   icon: <SiSolana className="h-6 w-6 text-[#00FFA3]" />,
   description: (
     <>
@@ -732,17 +732,17 @@ export const solArchitectureContent: FeatureDetailContent = {
 
 // Export all content in a map for easy access
 export const featureDetailsMap = {
-  "Volume Generation": volumeGenerationContent,
-  "Real-time Monitoring": realTimeMonitoringContent,
-  "Anti-Detection System": antiDetectionContent,
-  "Multi-Wallet Support": multiWalletContent,
-  "Automated Multithreaded Trades": automatedTradesContent,
-  "Attract New Holders & Whales": attractHoldersContent,
-  "Create FOMO & Trending Status": createFOMOContent,
-  "Real-Time Performance Analytics": performanceAnalyticsContent,
-  "Strategic Volume Distribution": volumeDistributionContent,
-  "Customizable Trading Parameters": tradingParametersContent,
-  "Anti-Detection Technology": antiDetectionTechnologyContent,
-  "24/7 Automated Operation": automatedOperationContent,
-  "SOL-Optimized Architecture": solArchitectureContent
+  "volume_generation": volumeGenerationContent,
+  "real_time_monitoring": realTimeMonitoringContent,
+  "anti_detection_system": antiDetectionContent,
+  "multi_wallet_support": multiWalletContent,
+  "automated_trades": automatedTradesContent,
+  "attract_holders": attractHoldersContent,
+  "create_fomo": createFOMOContent,
+  "performance_analytics": performanceAnalyticsContent,
+  "volume_distribution": volumeDistributionContent,
+  "trading_parameters": tradingParametersContent,
+  "anti_detection_tech": antiDetectionTechnologyContent,
+  "automated_operation": automatedOperationContent,
+  "sol_architecture": solArchitectureContent
 };

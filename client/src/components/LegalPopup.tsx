@@ -187,12 +187,12 @@ function renderTermsContent(section: string, navigate: (section: string) => void
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           {[
-            { title: "Service Description", section: "service", desc: "Details about the Solana Volume Bot service" },
-            { title: "Account Registration", section: "account", desc: "Requirements for creating and maintaining an account" },
-            { title: "Payment Terms", section: "payment", desc: "Pricing, billing, and refund policies" },
-            { title: "User Obligations", section: "obligations", desc: "Rules and responsibilities when using our service" },
-            { title: "Intellectual Property", section: "ip", desc: "Ownership of content and technology" },
-            { title: "Limitation of Liability", section: "liability", desc: "Legal boundaries of our responsibility" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "service", desc: "Details about the Solana Volume Bot service" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "account", desc: "Requirements for creating and maintaining an account" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "payment", desc: "Pricing, billing, and refund policies" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "obligations", desc: "Rules and responsibilities when using our service" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "ip", desc: "Ownership of content and technology" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "liability", desc: "Legal boundaries of our responsibility" },
           ].map((item, i) => (
             <motion.div 
               key={item.section}
@@ -361,12 +361,12 @@ function renderPrivacyContent(section: string, navigate: (section: string) => vo
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           {[
-            { title: "Information We Collect", section: "collect", desc: "Types of data we gather from users" },
-            { title: "How We Use Information", section: "use", desc: "Ways we utilize collected data" },
-            { title: "Data Security", section: "security", desc: "How we protect your information" },
-            { title: "Third-Party Services", section: "third-party", desc: "Our relationships with external services" },
-            { title: "User Rights", section: "rights", desc: "Your control over your data" },
-            { title: "Policy Updates", section: "updates", desc: "How we notify you of changes" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "collect", desc: "Types of data we gather from users" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "use", desc: "Ways we utilize collected data" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "security", desc: "How we protect your information" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "third-party", desc: "Our relationships with external services" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "rights", desc: "Your control over your data" },
+            { title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot", section: "updates", desc: "How we notify you of changes" },
           ].map((item, i) => (
             <motion.div 
               key={item.section}

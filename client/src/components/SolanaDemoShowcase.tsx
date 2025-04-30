@@ -7,25 +7,25 @@ export function SolanaDemoShowcase() {
   // Demo steps showing how the Solana Volume Bot works
   const steps = [
     {
-      title: "Connect Your Token",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Easily connect your Solana token by providing the contract address",
       icon: "🔌",
       color: "#9945FF"
     },
     {
-      title: "Configure Volume Settings",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Set your desired volume levels and trading patterns for realistic activity",
       icon: "⚙️",
       color: "#14F195"
     },
     {
-      title: "Activate Trading Bots",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Our AI-powered bots start generating volume across multiple DEXs",
       icon: "🚀",
       color: "#03E1FF"
     },
     {
-      title: "Track Progress",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Watch your token climb the trending charts in real-time",
       icon: "📈",
       color: "#DC1FFF"

@@ -63,7 +63,7 @@ const SolanaFeaturesSection = () => {
   }[] = [
     {
       icon: <TrendingUp className="h-10 w-10 text-white" />,
-      title: "Volume Generation",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Create organic-looking trading volume with distributed buy and sell orders to get noticed on DEXTools",
       gradientFrom: "#9945FF",
       gradientTo: "#14F195",
@@ -71,7 +71,7 @@ const SolanaFeaturesSection = () => {
     },
     {
       icon: <Monitor className="h-10 w-10 text-white" />,
-      title: "Real-time Monitoring",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Track your token's performance across all major DEX platforms with real-time analytics",
       gradientFrom: "#14F195",
       gradientTo: "#03E1FF",
@@ -79,7 +79,7 @@ const SolanaFeaturesSection = () => {
     },
     {
       icon: <Shield className="h-10 w-10 text-white" />,
-      title: "Anti-Detection System",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Our advanced algorithms create natural trading patterns that avoid detection by monitoring systems",
       gradientFrom: "#03E1FF",
       gradientTo: "#DC1FFF",
@@ -87,7 +87,7 @@ const SolanaFeaturesSection = () => {
     },
     {
       icon: <Wallet className="h-10 w-10 text-white" />,
-      title: "Multi-Wallet Support",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Connect multiple wallets to create realistic distributed trading activity across the blockchain",
       gradientFrom: "#DC1FFF",
       gradientTo: "#9945FF",
@@ -269,7 +269,14 @@ export default function Home() {
 
   return (
     <>
-      <SEOMeta {...defaultSEO} />
+      <SEOMeta 
+        title="Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot"
+        description={defaultSEO.description}
+        keywords={defaultSEO.keywords}
+        ogImage={defaultSEO.ogImage}
+        ogUrl={defaultSEO.ogUrl}
+        canonicalUrl={defaultSEO.canonicalUrl}
+      />
       <div className="flex flex-col min-h-screen">
         <MainNavigation />
         <main className="flex-1" role="main" aria-label="Solana Volume Bot features and information">

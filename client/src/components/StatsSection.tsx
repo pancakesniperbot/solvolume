@@ -36,7 +36,7 @@ const platformData = [
 
 const statsData = [
   {
-    title: "Avg. Visibility Increase",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     value: "380%",
     subtext: "Platform metric score",
     icon: <TrendingUp className="h-6 w-6 text-[#00FFA3]" />,

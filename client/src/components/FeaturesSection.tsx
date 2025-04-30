@@ -1,5 +1,5 @@
 import { Card, CardContent } from "./ui/card";
-import { BarChart2, Rocket, Target, ChartBar, Users, Clock, Shield, Award, Zap, ArrowRight } from "lucide-react";
+import { BarChart2, Rocket, Target, BarChart, Users, Clock, Shield, Award, Zap, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { SiSolana } from "react-icons/si";
 import { useState } from "react";
@@ -61,67 +61,76 @@ const FeatureCard = ({ title, description, icon, gradient, delay, onLearnMore }:
 
 const features = [
   {
-    title: "Automated Multithreaded Trades",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Advanced algorithms create natural trading patterns that mimic real user activity, avoiding detection while maximizing impact.",
     icon: <BarChart2 className="text-[#00FFA3] h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-[#00FFA3] to-[#00FFA3]/60",
-    modalContent: automatedTradesContent
+    modalContent: automatedTradesContent,
+    key: "automated_trades"
   },
   {
-    title: "Attract New Holders & Whales",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Increased volume and trending status attract new investors looking for the next big opportunity in the Solana ecosystem.",
     icon: <Users className="text-[#DC1FFF] h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-[#DC1FFF] to-[#DC1FFF]/60",
-    modalContent: attractHoldersContent
+    modalContent: attractHoldersContent,
+    key: "attract_holders"
   },
   {
-    title: "Create FOMO & Trending Status",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Generate excitement as your token climbs charts and reaches trending status on DEXTools, Pump.Fun & Dexscreener.",
     icon: <Target className="text-[#00FFA3] h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-[#00FFA3] to-[#DC1FFF]",
-    modalContent: createFOMOContent
+    modalContent: createFOMOContent,
+    key: "create_fomo"
   },
   {
-    title: "Real-Time Performance Analytics",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Monitor your token's performance metrics with detailed analytics dashboards and real-time reporting.",
-    icon: <ChartBar className="text-blue-400 h-6 w-6" strokeWidth={1.5} />,
+    icon: <BarChart className="text-blue-400 h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-blue-400 to-blue-600",
-    modalContent: performanceAnalyticsContent
+    modalContent: performanceAnalyticsContent,
+    key: "performance_analytics"
   },
   {
-    title: "Strategic Volume Distribution",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Optimize trading patterns across multiple DEXs to maximize visibility and create organic market dynamics.",
     icon: <Rocket className="text-[#DC1FFF] h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-[#DC1FFF] to-purple-700",
-    modalContent: volumeDistributionContent
+    modalContent: volumeDistributionContent,
+    key: "volume_distribution"
   },
   {
-    title: "Customizable Trading Parameters",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Fine-tune volume, timing, and trading strategies to perfectly align with your token's specific goals.",
     icon: <Clock className="text-amber-400 h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-amber-400 to-orange-600",
-    modalContent: tradingParametersContent
+    modalContent: tradingParametersContent,
+    key: "trading_parameters"
   },
   {
-    title: "Anti-Detection Technology",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Proprietary algorithms ensure trading patterns appear natural and pass exchange monitoring systems.",
     icon: <Shield className="text-green-400 h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-green-400 to-emerald-600",
-    modalContent: antiDetectionTechnologyContent
+    modalContent: antiDetectionTechnologyContent,
+    key: "anti_detection_tech"
   },
   {
-    title: "24/7 Automated Operation",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Set your campaign parameters once and let our bot work continuously, monitoring and adjusting to market conditions.",
     icon: <Award className="text-blue-400 h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-blue-400 to-indigo-600",
-    modalContent: automatedOperationContent
+    modalContent: automatedOperationContent,
+    key: "automated_operation"
   },
   {
-    title: "SOL-Optimized Architecture",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     description: "Purpose-built for the Solana ecosystem, taking advantage of low fees and high transaction speeds.",
     icon: <SiSolana className="text-[#00FFA3] h-6 w-6" />,
     gradient: "bg-gradient-to-r from-[#00FFA3] to-[#DC1FFF]",
-    modalContent: solArchitectureContent
+    modalContent: solArchitectureContent,
+    key: "sol_architecture"
   }
 ];
 
@@ -130,8 +139,8 @@ export function FeaturesSection() {
   const [activeFeatureModal, setActiveFeatureModal] = useState<string | null>(null);
 
   // Handle opening a specific feature modal
-  const openFeatureModal = (title: string) => {
-    setActiveFeatureModal(title);
+  const openFeatureModal = (key: string) => {
+    setActiveFeatureModal(key);
   };
 
   // Handle closing the feature modal
@@ -140,7 +149,7 @@ export function FeaturesSection() {
   };
 
   // Find the active feature for the modal
-  const activeFeature = features.find(feature => feature.title === activeFeatureModal);
+  const activeFeature = features.find(feature => feature.key === activeFeatureModal);
 
   return (
     <section id="features" className="py-20 relative overflow-hidden">
@@ -176,13 +185,13 @@ export function FeaturesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <FeatureCard
-              key={index}
+              key={feature.key}
               title={feature.title}
               description={feature.description}
               icon={feature.icon}
               gradient={feature.gradient}
               delay={index}
-              onLearnMore={() => openFeatureModal(feature.title)}
+              onLearnMore={() => openFeatureModal(feature.key)}
             />
           ))}
         </div>

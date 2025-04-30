@@ -52,7 +52,7 @@ const AVATAR_COLORS = [
 const reviews: ReviewData[] = [
   {
     name: "Alex Thompson",
-    title: "Token Project Owner",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "Using this Volume Bot completely transformed how we manage our token's market presence. The customizable trading strategies and detailed analytics give us full control over our volume generation.",
     rating: 5,
     avatar: "/avatars/cyber-1.svg", 
@@ -67,7 +67,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Michael Chen",
-    title: "Crypto Developer",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The interface is intuitive and the bot's performance is exceptional. We've seen a 340% increase in organic trading since deploying our first campaign. Support team is responsive and helpful.",
     rating: 4.5,
     avatar: "/avatars/cyber-2.svg", 
@@ -82,7 +82,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Sophia Williams",
-    title: "Trading Group Admin",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "Our community was looking for a reliable way to increase volume without risking market manipulation flags. This Volume Bot provided exactly what we needed - legitimate, distributed trading that looks natural.",
     rating: 5,
     avatar: "/avatars/cyber-3.svg", 
@@ -97,7 +97,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "David Chang",
-    title: "Solana NFT Creator",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "I was skeptical at first, but the results speak for themselves. Our token's visibility increased dramatically in just a week. The fact that it uses advanced strategies to mimic organic trading is what sold me.",
     rating: 5,
     avatar: "/avatars/cyber-4.svg",
@@ -112,7 +112,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Emma Rodriguez",
-    title: "Marketing Director",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "What stands out is how the bot adapts to different market conditions automatically. It's helped us maintain trending status across multiple platforms without triggering any alarms. Worth every SOL we spent.",
     rating: 4.5,
     avatar: "/avatars/cyber-5.svg",
@@ -127,7 +127,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "James Wilson",
-    title: "DeFi Protocol Lead",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The analytics dashboard alone is worth the price. Being able to track our volume impact in real-time has been invaluable for our marketing decisions. I recommend this to all serious token projects.",
     rating: 5,
     avatar: "/avatars/cyber-6.svg",
@@ -142,7 +142,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Olivia Kumar",
-    title: "Blockchain Consultant",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "After trying multiple volume solutions, this one is clearly superior. The parameter customization allows for precise control, and the anti-detection features have kept our campaigns running smoothly for months.",
     rating: 5,
     avatar: "/avatars/cyber-7.svg",
@@ -157,7 +157,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Ryan Patel",
-    title: "Exchange Listing Specialist",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "Getting tokens listed on exchanges requires demonstrating reliable trading volume. This solution helped three of my clients meet volume requirements for tier-2 exchanges. Professional service all around.",
     rating: 4.5,
     avatar: "/avatars/cyber-4.svg",
@@ -172,7 +172,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Natalie Lee",
-    title: "Crypto Influencer",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "I recommend this to all the projects I advise. It's the perfect balance of effectiveness and safety. The team behind it clearly understands both the technical and marketing aspects of volume generation.",
     rating: 5,
     avatar: "/avatars/cyber-5.svg",
@@ -188,7 +188,7 @@ const reviews: ReviewData[] = [
   // Additional reviews with requested keywords
   {
     name: "Thomas Johnson",
-    title: "Token Project Founder",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The Solana Volume Bot has been a game-changer for our token's visibility. We went from barely being noticed to consistently trending on DEXScreener within days. The natural volume patterns make it undetectable as bot activity.",
     rating: 5,
     avatar: "/avatars/cyber-8.svg",
@@ -203,7 +203,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Robert Smith",
-    title: "Crypto Startup CEO",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "After struggling with visibility, we tried the SOL Volume Bot platform. The results were immediate - our trading volume increased by 275% and we started trending on multiple DEX platforms. The ROI was evident within the first week.",
     rating: 5,
     avatar: "/avatars/cyber-9.svg",
@@ -218,7 +218,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Richard Taylor",
-    title: "DeFi Protocol Manager",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The Pump Fun Trending Bot functionality is exceptional. We've maintained consistent trending status for weeks now. What impressed me most was how the bot adjusted volume patterns to match market conditions and avoid detection.",
     rating: 4.5,
     avatar: "/avatars/cyber-10.svg",
@@ -233,7 +233,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Nathan Wilson",
-    title: "Token Marketing Lead",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "We tried several services before finding the Pump Fun Volume Bot, and nothing else comes close. The customization options let us create natural-looking volume patterns that helped us trend on DEXTools without triggering any flags.",
     rating: 5,
     avatar: "/avatars/cyber-11.svg",
@@ -248,7 +248,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Kevin Garcia",
-    title: "Meme Coin Founder",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The Solana Volume Bot platform was instrumental in our successful launch. We managed to get our token trending on all major DEX aggregators, which brought in genuine traders and holders. Worth every penny of our marketing budget.",
     rating: 5,
     avatar: "/avatars/cyber-12.svg",
@@ -263,7 +263,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Daniel Park",
-    title: "Crypto Trading Group Admin",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "Using the Pump Fun Trending service helped our community token gain the visibility it deserved. The bot's smart distribution of trades across wallets and time periods ensured we maintained organic-looking volume patterns.",
     rating: 4.5,
     avatar: "/avatars/cyber-13.svg",
@@ -278,7 +278,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Andrew Miller",
-    title: "Blockchain Developer",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The SOL Volume Bot is technically impressive. As a developer, I appreciate the sophisticated algorithms that distribute volume in a way that mimics natural trading patterns. Our token has been trending consistently for over a month.",
     rating: 5,
     avatar: "/avatars/cyber-14.svg",
@@ -293,7 +293,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Matthew Brown",
-    title: "Solana Ecosystem Advisor",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "I've recommended the Solana Volume Bot to multiple projects in our accelerator program. Every team has reported significant improvements in token visibility and liquidity. The analytics dashboard also provides valuable insights.",
     rating: 5,
     avatar: "/avatars/cyber-15.svg",
@@ -308,7 +308,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Jason Lee",
-    title: "Web3 Marketing Expert",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "For token visibility, the Pump Fun Volume Bot delivers consistent results. We've used it for three different tokens, and each time it's helped us achieve trending status. The team behind it clearly understands what DEX trackers look for.",
     rating: 4.5,
     avatar: "/avatars/cyber-16.svg",
@@ -323,7 +323,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Mark Anderson",
-    title: "Token Launch Strategist",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The SOL Volume Bot platform provides exactly what new tokens need - strategic visibility. We gained 400+ new holders after trending on DEXScreener and Pump.Fun for just three days. The automated volume generation saved us countless hours.",
     rating: 5,
     avatar: "/avatars/cyber-17.svg",
@@ -338,7 +338,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Christopher Wilson",
-    title: "Solana DeFi Researcher",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "As someone who analyzes token performance, I can confirm that the Solana Volume Bot creates genuinely convincing trading patterns. The volume looks natural, avoids detection, and consistently helps tokens maintain visibility on key platforms.",
     rating: 5,
     avatar: "/avatars/cyber-18.svg",
@@ -353,7 +353,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Brian Thomas",
-    title: "Crypto Community Manager",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The Pump Fun Trending Bot exceeded our expectations. Within days of implementing it, our token was trending on all major DEX platforms. The increased visibility brought in genuine traders and our community grew by over 200% in just two weeks.",
     rating: 5,
     avatar: "/avatars/cyber-19.svg",
@@ -368,7 +368,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Michael Wright",
-    title: "Solana Developer & Trader",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The DEXTools Volume Bot from Solana Volume Bot is engineered perfectly for token visibility. After enabling it, our trading metrics improved significantly and DEXTools started featuring our token in the trending section. The technical implementation is impressive.",
     rating: 5,
     avatar: "/avatars/cyber-1.svg",
@@ -384,7 +384,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Eric Sullivan",
-    title: "Meme Coin Creator",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "The SOL Volume Bot delivers exactly what it promises - visibility and trending status. Our meme coin started trending on Pump.Fun within 36 hours of activating the service. The price impact was minimal while visibility increased dramatically.",
     rating: 5,
     avatar: "/avatars/cyber-2.svg",
@@ -399,7 +399,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Justin Harrison",
-    title: "Token Marketing Strategist",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "If visibility is your goal, Pump Fun Trending Bot is the perfect solution. We implemented it for our Solana token launch and immediately saw results. The natural-looking volume distribution is what makes this service stand out from others.",
     rating: 4.5,
     avatar: "/avatars/cyber-3.svg",
@@ -414,7 +414,7 @@ const reviews: ReviewData[] = [
   },
   {
     name: "Alan Morris",
-    title: "Web3 Growth Hacker",
+    title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
     content: "I've used multiple volume services, but the Solana Volume Bot outperforms them all in terms of results and safety. The ability to precisely target DEXScreener, Pump.Fun and DEXTools simultaneously is invaluable for any serious token project.",
     rating: 5,
     avatar: "/avatars/cyber-4.svg",

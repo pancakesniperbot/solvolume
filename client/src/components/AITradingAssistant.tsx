@@ -285,7 +285,7 @@ Focus on compliant visibility enhancement techniques, DEX placement optimization
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-[#9945FF]" />
-              Volume Distribution Strategy Assistant
+              Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot
             </h2>
             <p className="text-gray-400 mt-1">Access compliant volume enhancement strategies and visibility insights for Solana tokens</p>
           </div>

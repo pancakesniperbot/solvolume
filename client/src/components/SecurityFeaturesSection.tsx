@@ -15,22 +15,22 @@ export function SecurityFeaturesSection() {
   const securityFeatures = [
     {
       icon: <Key className="h-8 w-8 text-[#14F195]" />,
-      title: "No Private Key Required",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Our system never requires access to your private keys, keeping your crypto assets completely secure and under your control."
     },
     {
       icon: <Link2 className="h-8 w-8 text-[#14F195]" />,
-      title: "No Wallet Connection",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "No need to connect your wallet to our platform. We operate without requiring any direct connection to your cryptocurrency wallets."
     },
     {
       icon: <Wallet className="h-8 w-8 text-[#14F195]" />,
-      title: "No Password Required",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "We use token address based identification which eliminates the need for passwords and reduces security risks associated with credential theft."
     },
     {
       icon: <Clock className="h-8 w-8 text-[#14F195]" />,
-      title: "Cancel Anytime",
+      title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
       description: "Complete flexibility with our service. Start or stop your volume campaigns instantly with no long-term commitment required."
     }
   ];

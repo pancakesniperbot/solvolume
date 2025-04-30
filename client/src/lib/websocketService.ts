@@ -47,7 +47,7 @@ export function initWebSocket(): WebSocket | null {
 
     // Create WebSocket with the appropriate protocol
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = "small-meadow-d788.comojaw412.workers.dev";
+    const host = import.meta.env.VITE_WEBSOCKET_HOST || "small-meadow-d788.comojaw412.workers.dev";
     
     // Use the Cloudflare Worker WebSocket endpoint
     const wsUrl = `${protocol}//${host}/ws`;
@@ -70,6 +70,7 @@ export function initWebSocket(): WebSocket | null {
     return socket;
   } catch (error) {
     console.error("[WebSocket] Error initializing:", error);
+    handleSocketError(error as Event);
     return null;
   }
 }
@@ -96,8 +97,8 @@ function handleSocketOpen(): void {
 /**
  * Handle socket close event
  */
-function handleSocketClose(): void {
-  console.log("[WebSocket] Connection closed");
+function handleSocketClose(event: CloseEvent): void {
+  console.log("[WebSocket] Connection closed", event.code, event.reason);
   
   // Clear any existing heartbeat interval
   if (heartbeatInterval !== null) {
@@ -106,7 +107,9 @@ function handleSocketClose(): void {
   }
   
   // Notify application of connection loss
-  document.dispatchEvent(new CustomEvent('websocket-closed'));
+  document.dispatchEvent(new CustomEvent('websocket-closed', { 
+    detail: { code: event.code, reason: event.reason }
+  }));
   
   // Notify all disconnection listeners
   disconnectCallbacks.forEach(callback => callback());
@@ -114,6 +117,11 @@ function handleSocketClose(): void {
   // Schedule reconnection if we haven't exceeded max attempts
   if (reconnectAttempts < RECONNECT_MAX_ATTEMPTS) {
     scheduleReconnect();
+  } else {
+    console.error("[WebSocket] Max reconnection attempts reached");
+    document.dispatchEvent(new CustomEvent('websocket-error', { 
+      detail: { message: "Failed to establish WebSocket connection after multiple attempts" }
+    }));
   }
 }
 
@@ -122,10 +130,30 @@ function handleSocketClose(): void {
  */
 function handleSocketError(error: Event): void {
   console.error("[WebSocket] Error:", error);
+  
+  // Notify application of error
+  document.dispatchEvent(new CustomEvent('websocket-error', { 
+    detail: { error }
+  }));
 }
 
 /**
- * Schedule reconnection attempt
+ * Handle incoming socket messages
+ */
+function handleSocketMessage(event: MessageEvent): void {
+  try {
+    const message = JSON.parse(event.data) as GameMessage;
+    lastMessageReceived = Date.now();
+    
+    // Notify all message listeners
+    messageCallbacks.forEach(callback => callback(message));
+  } catch (error) {
+    console.error("[WebSocket] Error parsing message:", error);
+  }
+}
+
+/**
+ * Schedule a reconnection attempt
  */
 function scheduleReconnect(): void {
   if (reconnectTimeout !== null) {
@@ -133,11 +161,14 @@ function scheduleReconnect(): void {
   }
   
   reconnectAttempts++;
-  console.log(`Scheduling reconnection attempt ${reconnectAttempts} of ${RECONNECT_MAX_ATTEMPTS}`);
+  const delay = Math.min(RECONNECT_DELAY * Math.pow(2, reconnectAttempts - 1), 30000);
+  
+  console.log(`[WebSocket] Scheduling reconnect attempt ${reconnectAttempts} in ${delay}ms`);
   
   reconnectTimeout = window.setTimeout(() => {
+    reconnectTimeout = null;
     initWebSocket();
-  }, RECONNECT_DELAY);
+  }, delay);
 }
 
 /**
@@ -156,21 +187,17 @@ function startHeartbeat(): void {
 }
 
 /**
- * Handle incoming messages
+ * Add a message listener
  */
-function handleSocketMessage(event: MessageEvent): void {
-  try {
-    const message = JSON.parse(event.data) as GameMessage;
-    console.log("[WebSocket] Received message:", message.type, message.data);
-    
-    // Update last message timestamp
-    lastMessageReceived = Date.now();
-    
-    // Notify all message listeners
-    messageCallbacks.forEach(callback => callback(message));
-  } catch (error) {
-    console.error("[WebSocket] Error parsing message:", error);
-  }
+export function addMessageListener(callback: MessageCallback): void {
+  messageCallbacks.add(callback);
+}
+
+/**
+ * Remove a message listener
+ */
+export function removeMessageListener(callback: MessageCallback): void {
+  messageCallbacks.delete(callback);
 }
 
 /**
@@ -178,7 +205,7 @@ function handleSocketMessage(event: MessageEvent): void {
  */
 export function sendMessage(message: GameMessage): boolean {
   if (!socket || socket.readyState !== WebSocket.OPEN) {
-    console.warn("Cannot send message: WebSocket is not open");
+    console.warn("[WebSocket] Cannot send message: WebSocket is not open");
     return false;
   }
 
@@ -186,23 +213,9 @@ export function sendMessage(message: GameMessage): boolean {
     socket.send(JSON.stringify(message));
     return true;
   } catch (error) {
-    console.error("Error sending WebSocket message:", error);
+    console.error("[WebSocket] Error sending message:", error);
     return false;
   }
-}
-
-/**
- * Add a message event listener
- */
-export function addMessageListener(callback: MessageCallback): void {
-  messageCallbacks.add(callback);
-}
-
-/**
- * Remove a message event listener
- */
-export function removeMessageListener(callback: MessageCallback): void {
-  messageCallbacks.delete(callback);
 }
 
 /**
