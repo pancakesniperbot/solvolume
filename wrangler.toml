@@ -38,4 +38,7 @@ ENVIRONMENT = "production"
 command = "npm run build"
 
 [env.production.build.upload]
-format = "service-worker" 
+format = "service-worker"
+
+[env.production.site]
+bucket = "./client/dist" 
