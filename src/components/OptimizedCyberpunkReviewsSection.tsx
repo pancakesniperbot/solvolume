@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -554,29 +554,7 @@ export function OptimizedCyberpunkReviewsSection() {
   const [focusedReview, setFocusedReview] = useState<number | null>(null);
   const [visibleReviews, setVisibleReviews] = useState(6); // Show 6 by default
   const [loadingMore, setLoadingMore] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   
-  // Detect mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Optimize animation settings based on device
-  const animationSettings = {
-    initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: isMobile ? "-50px" : "-100px" },
-    transition: { 
-      duration: isMobile ? 0.3 : 0.5,
-      ease: "easeOut"
-    }
-  };
-
   // JSON-LD structured data for SEO
   const reviewsJsonLd = useMemo(() => {
     return {
@@ -749,15 +727,14 @@ export function OptimizedCyberpunkReviewsSection() {
           {reviews.slice(0, visibleReviews).map((review, index) => (
             <motion.div
               key={index}
-              {...animationSettings}
-              onHoverStart={() => !isMobile && setFocusedReview(index)}
-              onHoverEnd={() => !isMobile && setFocusedReview(null)}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: review.delay }}
+              onHoverStart={() => setFocusedReview(index)}
+              onHoverEnd={() => setFocusedReview(null)}
               className="h-full"
-              layout={!isMobile} // Disable layout animations on mobile
-              style={{
-                willChange: "transform, opacity",
-                transform: "translateZ(0)"
-              }}
+              layout
             >
               <Card 
                 className={`h-full cyberpunk-card glass-effect backdrop-blur-sm border-0 bg-black/20 transition-all duration-300 ${

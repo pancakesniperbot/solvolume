@@ -19,13 +19,9 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   priority = false,
   ...props
 }) => {
-  // Generate WebP and AVIF sources with responsive sizes
+  // Generate WebP and AVIF sources
   const webpSrc = src.replace(/\.(jpg|jpeg|png)$/, '.webp');
   const avifSrc = src.replace(/\.(jpg|jpeg|png)$/, '.avif');
-  
-  // Generate responsive sizes for mobile
-  const mobileWidth = Math.min(width, 768);
-  const mobileSrcSet = `${webpSrc} ${mobileWidth}w, ${src} ${mobileWidth}w`;
 
   return (
     <picture>
@@ -33,13 +29,13 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       <source
         type="image/avif"
         srcSet={avifSrc}
-        sizes={`(max-width: 768px) ${mobileWidth}px, ${width}px`}
+        sizes={`(max-width: ${width}px) 100vw, ${width}px`}
       />
       {/* WebP format - good compression */}
       <source
         type="image/webp"
-        srcSet={mobileSrcSet}
-        sizes={`(max-width: 768px) ${mobileWidth}px, ${width}px`}
+        srcSet={webpSrc}
+        sizes={`(max-width: ${width}px) 100vw, ${width}px`}
       />
       {/* Fallback to original format */}
       <img
@@ -50,10 +46,6 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         className={cn('object-cover', className)}
-        style={{
-          contentVisibility: 'auto',
-          containIntrinsicSize: `${width}px ${height}px`
-        }}
         {...props}
       />
     </picture>

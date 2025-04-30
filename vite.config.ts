@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   plugins: [
     react(),
+    visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ],
   resolve: {
     alias: {
@@ -20,7 +27,7 @@ export default defineConfig({
     target: 'es2020',
     minify: 'esbuild',
     chunkSizeWarningLimit: 1000,
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     rollupOptions: {
       input: './index.html',
       output: {
@@ -55,36 +62,21 @@ export default defineConfig({
             '@radix-ui/react-toggle-group',
             '@radix-ui/react-tooltip'
           ],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
           'animation': ['framer-motion', 'framer-motion-3d'],
           'icons': ['lucide-react', 'react-icons'],
           'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
         },
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: (assetInfo) => {
-          const info = assetInfo.name.split('.');
-          const ext = info[info.length - 1];
-          if (/\.(png|jpe?g|gif|svg|webp|avif)$/.test(assetInfo.name)) {
-            return `assets/images/[name].[hash][extname]`;
-          }
-          if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
-            return `assets/fonts/[name].[hash][extname]`;
-          }
-          return `assets/[name].[hash][extname]`;
-        }
-      },
-      external: ['three-mesh-bvh']
+        assetFileNames: 'assets/[name].[hash][extname]'
+      }
     },
-    sourcemap: false,
-    assetsInlineLimit: 4096,
+    sourcemap: true,
+    assetsInlineLimit: 8192,
   },
   css: {
     devSourcemap: true,
-    modules: {
-      localsConvention: 'camelCase',
-      generateScopedName: '[name]__[local]___[hash:base64:5]'
-    }
   },
   optimizeDeps: {
     include: [
@@ -94,11 +86,19 @@ export default defineConfig({
       'framer-motion-3d',
       'three',
       '@react-three/fiber',
-      '@react-three/drei'
+      '@react-three/drei',
+      'three-mesh-bvh',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-toast',
+      'class-variance-authority',
+      'clsx',
+      'tailwind-merge'
     ],
     exclude: ['@babel/runtime'],
     esbuildOptions: {
-      target: 'es2020'
+      target: 'es2020',
     }
   },
   server: {
@@ -107,11 +107,18 @@ export default defineConfig({
     },
     hmr: {
       overlay: false
+    },
+    watch: {
+      usePolling: false,
+      interval: 100
     }
   },
-  preview: {
-    port: 4173,
-    strictPort: true,
-    host: true
+  esbuild: {
+    target: 'es2020',
+    supported: {
+      'top-level-await': true
+    },
+    treeShaking: true,
+    minify: true
   }
 }); 
