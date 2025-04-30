@@ -114,51 +114,39 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-:root {
-  --color-primary: #3b82f6;
-  --color-secondary: #1e40af;
-  --color-accent: #60a5fa;
-  --color-background: #111218;
-  --color-card: #1a1c25;
-  --color-text: #ffffff;
-  --color-border: #2563eb;
-}
-
 @layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 142 89% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 270 100% 63%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 10% 13%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 10% 10%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 10% 14%;
+    --input: 240 10% 14%;
+    --ring: 142 89% 50%;
+    --radius: 0.5rem;
+  }
+
   * {
     @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
-  }
-  
-  /* Theme overrides with strict Solana styling */
-  :root {
-    --background: #050508;
-    --foreground: #ffffff;
-    --card: #0a0a12;
-    --card-foreground: #f3f3f7;
-    --primary: #14F195;
-    --primary-foreground: #000000;
-    --secondary: #9945FF;
-    --secondary-foreground: #ffffff;
-    --accent: #03E1FF;
-    --accent-foreground: #000000;
-    --muted: #1a1a28;
-    --muted-foreground: #777788;
-    --border: #18192d;
-    --popover: #0a0a12;
-    --popover-foreground: #ffffff;
-    --destructive: #ff433d;
-    --destructive-foreground: #ffffff;
-    --ring: #14F195;
-    color-scheme: dark;
-  }
-  
-  body {
-    background-color: var(--background);
-    color: var(--foreground);
+    @apply bg-background text-foreground font-sans antialiased;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
   
   /* Force dark backgrounds for all elements */
@@ -166,48 +154,19 @@ body {
   .bg-card,
   .bg-popover,
   .bg-muted {
-    background-color: var(--background) !important;
+    background-color: hsl(var(--background)) !important;
   }
   
   /* Override any white backgrounds that might appear */
   [class*="bg-white"] {
-    background-color: var(--background) !important;
+    background-color: hsl(var(--background)) !important;
   }
   
   /* Ensure all cards have proper dark styling */
   .card,
   [class*="card"] {
-    background-color: var(--card) !important;
-    color: var(--card-foreground) !important;
-    border-color: var(--border) !important;
-  }
-  
-  /* Static theme classes - no animations or transitions */
-  .mood-theme-primary {
-    color: var(--color-primary);
-  }
-  
-  .mood-theme-secondary {
-    color: var(--color-secondary);
-  }
-  
-  .mood-theme-accent {
-    color: var(--color-accent);
-  }
-  
-  .mood-theme-bg-primary {
-    background-color: var(--color-primary);
-  }
-  
-  .mood-theme-bg-secondary {
-    background-color: var(--color-secondary);
-  }
-  
-  .mood-theme-bg-accent {
-    background-color: var(--color-accent);
-  }
-  
-  .mood-theme-border {
-    border-color: var(--color-border);
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-color: hsl(var(--border)) !important;
   }
 }
