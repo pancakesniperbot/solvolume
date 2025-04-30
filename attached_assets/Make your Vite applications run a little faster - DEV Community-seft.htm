@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en" class="js-focus-visible" data-js-focus-visible=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Make your Vite applications run a little faster - DEV Community</title>
+      <meta name="last-updated" content="2025-04-29 18:27:03 UTC">
+      <meta name="user-signed-in" content="false">
+      <meta name="head-cached-at" content="1745951223">
+      <meta name="environment" content="production">
+      <link rel="stylesheet" href="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/minimal-6f5c5ed9c571b36ab9c316526d7032b5a4c789f3a4c35503492e.css" media="all" id="main-minimal-stylesheet">
+<link rel="stylesheet" href="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/views-1c703342dce6eac414f19ca7fd07bcf83cbe44088659758144e52e.css" media="all" id="main-views-stylesheet">
+<link rel="stylesheet" href="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/crayons-0f2fc85bc159498f8ae6fba58c460e6deba863d02d59dfa994c1.css" media="all" id="main-crayons-stylesheet">
+
+      <script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/base-b8bdff515245fe895f3035d77697afb35d5d7e114bdf68291667479d.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/application-7258612fccf5d56314a6e4ad1898b4f818f474c4bb3485e30.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/baseInitializers-b74902d56433062a87f5f1ce74769baf2a1a698772f4.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/baseTracking-b6bf73e5ee66633e151e7d5b7c6bbccedfa4c59e3615be97.js" defer="defer"></script>
+
+        <meta name="search-script" content="https://assets.dev.to/assets/Search-7dcdad3172ab4501a4598fe8b716c7a88146e79fd42256d36fb1b83e27bf77cf.js">
+      
+    <link rel="canonical" href="https://dev.to/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7">
+    <meta name="description" content="Background   While Vite runs fast by default, performance issues can creep in as your... Tagged with frontend, vite, performance.">
+    <meta name="keywords" content="frontend, vite, performance, software, coding, development, engineering, inclusive, community">
+
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://dev.to/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7">
+    <meta property="og:title" content="Make your Vite applications run a little faster">
+    <meta property="og:description" content="Background   While Vite runs fast by default, performance issues can creep in as your...">
+    <meta property="og:site_name" content="DEV Community">
+    <meta name="twitter:site" content="@thepracticaldev">
+    <meta name="twitter:creator" content="@">
+    <meta name="twitter:title" content="Make your Vite applications run a little faster">
+    <meta name="twitter:description" content="Background   While Vite runs fast by default, performance issues can creep in as your...">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:widgets:new-embed-design" content="on">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+      <meta property="og:image" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1p3s9k8bjorsz35deqzx.png">
+      <meta name="twitter:image:src" content="https://media2.dev.to/dynamic/image/width=1000,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1p3s9k8bjorsz35deqzx.png">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+      <link rel="icon" type="image/x-icon" href="https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="https://media2.dev.to/dynamic/image/width=152,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="https://media2.dev.to/dynamic/image/width=180,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link rel="apple-touch-icon" sizes="167x167" href="https://media2.dev.to/dynamic/image/width=167,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <link href="https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="192x192">
+      <link href="https://media2.dev.to/dynamic/image/width=128,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png" rel="icon" sizes="128x128">
+      <meta name="apple-mobile-web-app-title" content="dev.to">
+      <meta name="application-name" content="dev.to">
+      <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+      <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+      <link rel="search" href="https://dev.to/open-search.xml" type="application/opensearchdescription+xml" title="DEV Community">
+
+      <meta property="forem:name" content="DEV Community">
+      <meta property="forem:logo" content="https://media2.dev.to/dynamic/image/width=512,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png">
+      <meta property="forem:domain" content="dev.to">
+    
+  <script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/google-analytics_analytics.js" async=""></script><meta name="csrf-param" content="authenticity_token"><meta name="csrf-token" content="uuRMTsgpU_4pwwHybwovj4H46P98bEDthJpZsu6Xgq7PjMxAvV6_pjXZaRtfpIMPWeHWt23WnamrGJk5xpaVEA"></head>
+      <body class="sans-serif-article-body default-header" data-user-status="logged-out" data-is-root-subforem="" data-community-name="DEV Community" data-subscription-icon="https://assets.dev.to/assets/subscription-icon-805dfa7ac7dd660f07ed8d654877270825b07a92a03841aa99a1093bd00431b2.png" data-locale="en" data-honeybadger-key="hbp_nqu4Y66HuEKlD6YRGssZuRQnPOjDm50J8Zkr" data-deployed-at="2025-04-29T15:46:31Z" data-latest-commit-id="ecdb1a899f6fd194f08eaa76253684056a371716" data-ga-tracking="UA-71991109-1" data-cookie-banner-user-context="logged_out_only" data-cookie-banner-platform-context="off" data-algolia-id="PRSOBFP46H" data-algolia-search-key="9aa7d31610cba78851c9b1f63776a9dd" data-algolia-display="true" data-dynamic-url-component="bmar11" data-ga4-tracking-id="G-TYEM8Y3JN3" data-runtime="Browser-Windows" data-loaded="true">
+        
+        <script>
+          if (navigator.userAgent === 'ForemWebView/1' || window.frameElement) {
+            document.body.classList.add("hidden-shell");
+          }
+        </script>
+
+        <link rel="stylesheet" href="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/minimal-6f5c5ed9c571b36ab9c316526d7032b5a4c789f3a4c35503492e.css" media="all" id="secondary-minimal-stylesheet">
+<link rel="stylesheet" href="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/views-1c703342dce6eac414f19ca7fd07bcf83cbe44088659758144e52e.css" media="all" id="secondary-views-stylesheet">
+<link rel="stylesheet" href="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/crayons-0f2fc85bc159498f8ae6fba58c460e6deba863d02d59dfa994c1.css" media="all" id="secondary-crayons-stylesheet">
+
+        <div id="body-styles">
+          <style>
+            :root {
+              --accent-brand-lighter-rgb: 80, 99, 301;
+              --accent-brand-rgb: 59, 73, 223;
+              --accent-brand-darker-rgb: 47, 58, 178;
+            }
+          </style>
+        </div>
+        <div id="audiocontent" data-podcast="">
+          
+        </div>
+        <div class="navigation-progress" id="navigation-progress"></div>
+
+<header id="topbar" class="crayons-header topbar print-hidden">
+  <span id="route-change-target" tabindex="-1"></span>
+  <a href="#main-content" class="skip-content-link">Skip to content</a>
+  <div class="crayons-header__container">
+    <span class="inline-block m:hidden ">
+      <button class="c-btn c-btn--icon-alone js-hamburger-trigger mx-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="ac2pchqvi3sddlwivk3q05vw1j7o8qte" class="crayons-icon"><title id="ac2pchqvi3sddlwivk3q05vw1j7o8qte">Navigation menu</title>
+    <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z"></path>
+</svg>
+
+      </button>
+    </span>
+    <a href="https://dev.to/" class="site-logo" aria-label="DEV Community Home">
+    <img class="site-logo__img" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/resized_logo_UQww2soKuUsjaOGNB38o.png" style="aspect-ratio: 10 / 8" alt="DEV Community">
+</a>
+
+
+    <div class="crayons-header--search js-search-form" id="header-search">
+      <form accept-charset="UTF-8" method="get" action="/search" role="search">
+        <div class="crayons-fields crayons-fields--horizontal">
+          <div class="crayons-field flex-1 relative">
+            <input id="search-input" class="crayons-header--search-input crayons-textfield js-search-input" type="text" name="q" placeholder="Find related posts..." autocomplete="off">
+            <button type="submit" aria-label="Search" class="c-btn c-btn--icon-alone absolute inset-px right-auto mt-0 py-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a1iam08idfwtuamal5irgunygcqw1vo2" aria-hidden="true" class="crayons-icon"><title id="a1iam08idfwtuamal5irgunygcqw1vo2">Search</title>
+    <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0111 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 01-1.969 5.617zm-2.006-.742A6.977 6.977 0 0018 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 004.875-1.975l.15-.15z"></path>
+</svg>
+
+            </button>
+
+            <a class="crayons-header--search-brand-indicator" href="https://www.algolia.com/developers/?utm_source=devto&amp;utm_medium=referral" target="_blank" rel="noopener noreferrer">
+                Powered by
+                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" width="24" height="24" viewBox="0 0 500 500.34" role="img" aria-labelledby="asdpaofxcfx1u60ob6q316hvlbt5648x" aria-hidden="true" class="crayons-icon"><title id="asdpaofxcfx1u60ob6q316hvlbt5648x">Search</title>
+  <defs></defs><path class="cls-1" d="M250,0C113.38,0,2,110.16,.03,246.32c-2,138.29,110.19,252.87,248.49,253.67,42.71,.25,83.85-10.2,120.38-30.05,3.56-1.93,4.11-6.83,1.08-9.52l-23.39-20.74c-4.75-4.22-11.52-5.41-17.37-2.92-25.5,10.85-53.21,16.39-81.76,16.04-111.75-1.37-202.04-94.35-200.26-206.1,1.76-110.33,92.06-199.55,202.8-199.55h202.83V407.68l-115.08-102.25c-3.72-3.31-9.43-2.66-12.43,1.31-18.47,24.46-48.56,39.67-81.98,37.36-46.36-3.2-83.92-40.52-87.4-86.86-4.15-55.28,39.65-101.58,94.07-101.58,49.21,0,89.74,37.88,93.97,86.01,.38,4.28,2.31,8.28,5.53,11.13l29.97,26.57c3.4,3.01,8.8,1.17,9.63-3.3,2.16-11.55,2.92-23.6,2.07-35.95-4.83-70.39-61.84-127.01-132.26-131.35-80.73-4.98-148.23,58.18-150.37,137.35-2.09,77.15,61.12,143.66,138.28,145.36,32.21,.71,62.07-9.42,86.2-26.97l150.36,133.29c6.45,5.71,16.62,1.14,16.62-7.48V9.49C500,4.25,495.75,0,490.51,0H250Z"></path>
+</svg>
+
+                Algolia
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="flex items-center h-100 ml-auto">
+        <div class="flex" id="authentication-top-nav-actions">
+          <span class="hidden m:block">
+            <a href="https://dev.to/enter" class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" data-no-instant="">
+              Log in
+            </a>
+          </span>
+
+          <a href="https://dev.to/enter?state=new-user" data-tracking-id="ca_top_nav" data-tracking-source="top_navbar" class="c-cta c-cta--branded whitespace-nowrap mr-2" data-no-instant="">
+            Create account
+          </a>
+        </div>
+    </div>
+  </div>
+</header>
+
+<div class="hamburger">
+  <div class="hamburger__content">
+    <header class="hamburger__content__header">
+      <h2 class="fs-l fw-bold flex-1 break-word lh-tight">DEV Community</h2>
+
+      <button class="c-btn c-btn--icon-alone js-hamburger-trigger shrink-0" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a2gr6812ubol6kxkpogn4rmcby33rlk5" aria-hidden="true" class="crayons-icon c-btn__icon"><title id="a2gr6812ubol6kxkpogn4rmcby33rlk5">Close</title><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path></svg>
+
+      </button>
+    </header>
+
+    <div class="p-2 js-navigation-links-container" id="authentication-hamburger-actions">
+    </div>
+  </div>
+  <div class="hamburger__overlay js-hamburger-trigger"></div>
+</div>
+
+
+        <div id="active-broadcast" class="broadcast-wrapper"></div>
+<div id="page-content" class="wrapper stories stories-show articletag-frontend articletag-vite articletag-performance articleuser-1424952" data-current-page="stories-show">
+  <div id="page-content-inner" data-internal-nav="false" data-follow-clicks-initialized="true">
+    <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
+
+    
+<link rel="prefetch" href="https://dev.to/reactions?article_id=2000317">
+
+<style>
+  .html-variant-wrapper { display: none}
+</style>
+
+
+
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/webcomponents-loader.js" integrity="sha384-3HK5hxQbkFqOIxMbpROlRmRtYl2LBZ52t+tqcjzsmr9NJuOWQxl8RgQSyFvq2lhy" crossorigin="anonymous" defer="defer"></script>
+
+  <script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/webShare-0686f0b9ac40589694ef6ae6a6202c44119bc781c254f6cf6d52.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/articlePage-ff7786f9ca30f9a27ba077d38a79026bc9b6f706ad8ab3f17.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/commentDropdowns-7a28d130e5b78d38b30a9495a964003a66bd64fa455f.js" defer="defer"></script>
+
+    <script type="application/ld+json">
+      {"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://dev.to/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7"},"url":"https://dev.to/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7","image":["https://media2.dev.to/dynamic/image/width=1080,height=1080,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1p3s9k8bjorsz35deqzx.png","https://media2.dev.to/dynamic/image/width=1280,height=720,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1p3s9k8bjorsz35deqzx.png","https://media2.dev.to/dynamic/image/width=1600,height=900,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1p3s9k8bjorsz35deqzx.png"],"publisher":{"@context":"http://schema.org","@type":"Organization","name":"DEV Community","logo":{"@context":"http://schema.org","@type":"ImageObject","url":"https://media2.dev.to/dynamic/image/width=192,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png","width":"192","height":"192"}},"headline":"Make your Vite applications run a little faster","author":{"@context":"http://schema.org","@type":"Person","url":"https://dev.to/modyqyw","name":"Rui Wu"},"datePublished":"2024-09-14T08:49:39Z","dateModified":"2024-09-14T08:49:39Z"}
+    </script>
+
+  
+<div class="crayons-layout crayons-layout--3-cols crayons-layout--article">
+  <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+    <div class="crayons-article-actions print-hidden">
+  <div class="crayons-article-actions__inner">
+
+    
+<div class="reaction-drawer__outer hoverdown" style="">
+  <button id="reaction-drawer-trigger" aria-label="reaction-drawer-trigger" aria-pressed="false" class="hoverdown-trigger crayons-reaction pseudo-reaction crayons-tooltip__activator relative">
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction--like crayons-reaction__icon--inactive" style="width: 40px; height: 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon">
+    <g clip-path="url(#clip0_988_3276)">
+        <path d="M19 14V17H22V19H18.999L19 22H17L16.999 19H14V17H17V14H19ZM20.243 4.75698C22.505 7.02498 22.583 10.637 20.479 12.992L19.059 11.574C20.39 10.05 20.32 7.65998 18.827 6.16998C17.324 4.67098 14.907 4.60698 13.337 6.01698L12.002 7.21498L10.666 6.01798C9.09103 4.60598 6.67503 4.66798 5.17203 6.17198C3.68203 7.66198 3.60703 10.047 4.98003 11.623L13.412 20.069L12 21.485L3.52003 12.993C1.41603 10.637 1.49503 7.01898 3.75603 4.75698C6.02103 2.49298 9.64403 2.41698 12 4.52898C14.349 2.41998 17.979 2.48998 20.242 4.75698H20.243Z" fill="#525252"></path>
+    </g>
+    <defs>
+        <clipPath id="clip0_988_3276">
+        <rect width="24" height="24" fill="white"></rect>
+        </clipPath>
+    </defs>
+</svg>
+
+      </span>
+      <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--active" style="width: 40px; height: 40px">
+        <img aria_hidden="true" height="24" width="24" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/heart-plus-active-9ea3b22f2bc311281db911d416166c5f430636e76b.svg">
+      </span>
+      <span class="crayons-reaction__count" id="reaction_total_count">4</span>
+      <span class="crayons-tooltip__content">
+        Add reaction
+      </span>
+  </button>
+
+  <div class="reaction-drawer" aria-expanded="false">
+    <div class="reaction-drawer__container">
+        <button id="reaction-butt-like" name="Like" aria-label="Like" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2 activated" data-category="like">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2b.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-like">4</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Like
+    </span>
+</button>
+
+        <button id="reaction-butt-unicorn" name="Unicorn" aria-label="Unicorn" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="unicorn">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-unicorn">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Unicorn
+    </span>
+</button>
+
+        <button id="reaction-butt-exploding_head" name="Exploding Head" aria-label="Exploding Head" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="exploding_head">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-exploding_head">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Exploding Head
+    </span>
+</button>
+
+        <button id="reaction-butt-raised_hands" name="Raised Hands" aria-label="Raised Hands" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="raised_hands">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-raised_hands">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Raised Hands
+    </span>
+</button>
+
+        <button id="reaction-butt-fire" name="Fire" aria-label="Fire" aria-pressed="false" class="crayons-reaction crayons-tooltip__activator relative pt-2 pr-2 pb-1 pl-2" data-category="fire">
+    <span class="crayons-reaction__icon crayons-reaction__icon--inactive p-0">
+      <img aria_hidden="true" height="32" width="32" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332.svg">
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-fire">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Fire
+    </span>
+</button>
+
+    </div>
+  </div>
+</div>
+
+<button id="reaction-butt-comment" aria-label="Jump to Comments" aria-pressed="false" class="crayons-reaction crayons-reaction--comment crayons-tooltip__activator relative" data-category="comment">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-comment" data-count="0">0</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Jump to Comments
+    </span>
+</button>
+
+<button id="reaction-butt-readinglist" aria-label="Add to reading list" aria-pressed="false" class="crayons-reaction crayons-reaction--readinglist crayons-tooltip__activator relative activated" data-category="readinglist">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="crayons-icon">
+    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+</svg>
+
+    </span>
+    <span class="crayons-reaction__count" id="reaction-number-readinglist">3</span>
+
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Save
+    </span>
+</button>
+
+
+<button id="reaction-butt-boost" aria-label="Boost" aria-pressed="false" class="crayons-reaction crayons-reaction--boost crayons-tooltip__activator relative">
+    <span class="crayons-reaction__icon crayons-reaction__icon--borderless crayons-reaction__icon--inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-hidden="true" class="crayons-icon" width="24" height="24">
+  <path transform="translate(24,0) scale(-1,1)" d="M6 4H21C21.5523 4 22 4.44772 22 5V12H20V6H6V9L1 5L6 1V4ZM18 20H3C2.44772 20 2 19.5523 2 19V12H4V18H18V15L23 19L18 23V20Z"></path>
+</svg>
+
+    </span>
+    <span data-testid="tooltip" class="crayons-tooltip__content">
+      Boost
+    </span>
+</button>
+
+
+    <div class="only-sidebar-menu-item">
+      <div id="mod-actions-menu-btn-area" class="print-hidden trusted-visible-block align-center">
+      </div>
+    </div>
+    <div class="align-center m:relative">
+      <button id="article-show-more-button" aria-controls="article-show-more-dropdown" aria-expanded="false" aria-haspopup="true" class="dropbtn crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon-rounded" aria-label="Share post options" data-dropdown-initialized="true" data-initialized="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-labelledby="a15ga08jvddv4hkbgxtxew4o00cxmp76" aria-hidden="true" class="crayons-icon dropdown-icon"><title id="a15ga08jvddv4hkbgxtxew4o00cxmp76">More...</title><path fill-rule="evenodd" clip-rule="evenodd" d="M7 12a2 2 0 11-4 0 2 2 0 014 0zm7 0a2 2 0 11-4 0 2 2 0 014 0zm5 2a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+
+      </button>
+
+      <div id="article-show-more-dropdown" class="crayons-dropdown side-bar left-2 right-2 m:right-auto m:left-100 s:left-auto mb-1 m:mb-0 top-unset bottom-100 m:top-0 m:bottom-unset">
+        <div class="only-mobile-menu-item">
+          <button class="mod-actions-menu-btn crayons-link crayons-link--block w-100 bg-transparent border-0 fw-bold">
+            Moderate
+          </button>
+        </div>
+        <div>
+          <button id="copy-post-url-button" class="flex justify-between crayons-link crayons-link--block w-100 bg-transparent border-0" data-posturl="https://dev.to/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7">
+            <span class="fw-bold">Copy link</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="article-copy-icon" role="img" aria-labelledby="ahnjn3qp7xc9kcjpllijplv9c139lgjo" aria-hidden="true" class="crayons-icon mx-2 shrink-0"><title id="ahnjn3qp7xc9kcjpllijplv9c139lgjo">Copy link</title>
+    <path d="M7 6V3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1 1 0 013 21l.003-14c0-.552.45-1 1.007-1H7zm2 0h8v10h2V4H9v2zm-2 5v2h6v-2H7zm0 4v2h6v-2H7z"></path>
+</svg>
+
+          </button>
+          <div id="article-copy-link-announcer" aria-live="polite" class="crayons-notice crayons-notice--success my-2 p-1" hidden="">Copied to Clipboard</div>
+        </div>
+
+        <div class="Desktop-only">
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://twitter.com/intent/tweet?text=%22Make%20your%20Vite%20applications%20run%20a%20little%20faster%22%20by%20Rui%20Wu%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fmodyqyw%2Fmake-your-vite-applications-run-a-little-faster-5bp7">
+            Share to X
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdev.to%2Fmodyqyw%2Fmake-your-vite-applications-run-a-little-faster-5bp7&amp;title=Make%20your%20Vite%20applications%20run%20a%20little%20faster&amp;summary=Background%20%20%20While%20Vite%20runs%20fast%20by%20default%2C%20performance%20issues%20can%20creep%20in%20as%20your...&amp;source=DEV%20Community">
+            Share to LinkedIn
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fmodyqyw%2Fmake-your-vite-applications-run-a-little-faster-5bp7">
+            Share to Facebook
+          </a>
+          <a target="_blank" class="crayons-link crayons-link--block" rel="noopener" href="https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fmodyqyw%2Fmake-your-vite-applications-run-a-little-faster-5bp7">
+            Share to Mastodon
+          </a>
+        </div>
+
+        <web-share-wrapper shareurl="https://dev.to/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7" sharetitle="Make your Vite applications run a little faster" sharetext="Background   While Vite runs fast by default, performance issues can creep in as your..." template="web-share-button">
+        </web-share-wrapper>
+        <template id="web-share-button">
+          <a href="#" class="dropdown-link-row crayons-link crayons-link--block">Share Post via...</a>
+        </template>
+
+        <a href="https://dev.to/report-abuse" class="crayons-link crayons-link--block">Report Abuse</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </aside>
+
+  <main id="main-content" class="crayons-layout__content grid gap-4">
+    <div class="article-wrapper">
+
+
+      <article class="crayons-card crayons-article mb-4" id="article-show-container" data-article-id="2000317" data-article-slug="make-your-vite-applications-run-a-little-faster-5bp7" data-author-id="1424952" data-author-name="Rui Wu" data-author-username="modyqyw" data-co-author-ids="" data-path="/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7" data-pin-path="/stories/feed/pinned_article" data-pinned-article-id="" data-published="true" data-scheduled="false" lang="en">
+        <script>
+          try {
+            if(localStorage) {
+              let currentUser = localStorage.getItem('current_user');
+
+              if (currentUser) {
+                currentUser = JSON.parse(currentUser);
+                if (currentUser.id === 1424952) {
+                  document.getElementById('article-show-container').classList.add('current-user-is-article-author');
+                }
+              }
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        </script>
+        <header class="crayons-article__header" id="main-title">
+
+          <div class="crayons-article__header__meta">
+            <div class="flex s:items-start flex-col s:flex-row">
+              <div id="action-space" class="crayons-article__actions mb-4 s:mb-0 s:order-last"></div>
+              <div class="flex flex-1 mb-5 items-start">
+                <div class="relative">
+                    <a href="https://dev.to/modyqyw"><img class="radius-full align-middle" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_user_pr_002.webp" width="40" height="40" alt="Rui Wu"></a>
+                </div>
+                <div class="pl-3 flex-1">
+                  <a href="https://dev.to/modyqyw" class="crayons-link fw-bold">Rui Wu</a>
+                  
+                  <p class="fs-xs color-base-60">
+                      Posted on <time datetime="2024-09-14T08:49:39Z" class="date" title="Saturday, 14 September 2024 at 01:49:39">14 Sept 2024</time>
+
+
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="multiple_reactions_engagement">
+    <span class="reaction_engagement_like">
+      <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2b.svg" width="24" height="24">
+      <span id="reaction_engagement_like_count">4</span>
+    </span>
+    <span class="reaction_engagement_unicorn hidden">
+      <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4.svg" width="24" height="24">
+      <span id="reaction_engagement_unicorn_count">&nbsp;</span>
+    </span>
+    <span class="reaction_engagement_exploding_head hidden">
+      <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41.svg" width="24" height="24">
+      <span id="reaction_engagement_exploding_head_count">&nbsp;</span>
+    </span>
+    <span class="reaction_engagement_raised_hands hidden">
+      <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01.svg" width="24" height="24">
+      <span id="reaction_engagement_raised_hands_count">&nbsp;</span>
+    </span>
+    <span class="reaction_engagement_fire hidden">
+      <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332.svg" width="24" height="24">
+      <span id="reaction_engagement_fire_count">&nbsp;</span>
+    </span>
+</div>
+
+
+            <h1 class=" fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 medium">
+              Make your Vite applications run a little faster
+            </h1>
+            
+                <div class="spec__tags flex flex-wrap">
+                    <a class="crayons-tag   " style="
+        --tag-bg: rgba(255, 51, 224, 0.10);
+        --tag-prefix: #ff33e0;
+        --tag-bg-hover: rgba(255, 51, 224, 0.10);
+        --tag-prefix-hover: #ff33e0;
+      " href="https://dev.to/t/frontend"><span class="crayons-tag__prefix">#</span>frontend</a>
+                    <a class="crayons-tag   " style="
+        --tag-bg: rgba(100, 108, 255, 0.10);
+        --tag-prefix: #646cff;
+        --tag-bg-hover: rgba(100, 108, 255, 0.10);
+        --tag-prefix-hover: #646cff;
+      " href="https://dev.to/t/vite"><span class="crayons-tag__prefix">#</span>vite</a>
+                    <a class="crayons-tag   " style="
+        --tag-bg: rgba(255, 163, 100, 0.10);
+        --tag-prefix: #ffa364;
+        --tag-bg-hover: rgba(255, 163, 100, 0.10);
+        --tag-prefix-hover: #ffa364;
+      " href="https://dev.to/t/performance"><span class="crayons-tag__prefix">#</span>performance</a>
+                </div>
+          </div>
+        </header>
+
+        <div class="crayons-article__main ">
+
+          <div class="crayons-article__body text-styles spec__body" data-article-id="2000317" id="article-body">
+              <p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdpx6sahhwhmpa1tirko9.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_dp.webp" alt="make-your-vite-applications-run-a-little-faster" loading="lazy"></a></p>
+
+<h2>
+  <a name="background" href="#background">
+  </a>
+  Background
+</h2>
+
+<p>While Vite runs fast by default, performance issues can creep in as 
+your project's needs grow. This article hopes to present different 
+optimizations from multiple perspectives to make your Vite application 
+run a little bit faster, solving problems such as slow server startups, 
+slow page loads, and slow builds.</p>
+
+<h2>
+  <a name="browser" href="#browser">
+  </a>
+  Browser
+</h2>
+
+<h3>
+  <a name="extensions" href="#extensions">
+  </a>
+  Extensions
+</h3>
+
+<p>For the most part, we view our Vite applications in a browser and 
+develop debugging. Some browser extensions (e.g. de-advertising 
+extensions uBlock, adGuard) may interfere with the requests, resulting 
+in slower startups and refreshes. In this case, it is recommended to use
+ a plugin-free configuration dedicated to development, and it is also 
+recommended to use Traceless Mode to get faster speeds.</p>
+
+<h3>
+  <a name="developer-tools" href="#developer-tools">
+  </a>
+  Developer Tools
+</h3>
+
+<p>In addition, the Vite Development Server has a strong cache of 
+pre-packaged dependencies and a fast 304 response to source code, which 
+may significantly affect startup speed and full page refresh time if the
+ cache is disabled while the Developer Tools are open. Therefore, it is 
+recommended to turn off the "Disable Cache" feature to ensure faster 
+startup and full page refresh.</p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fljlpijfd1ll9ncmnwh27.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_lj.webp" alt="disable-cache" loading="lazy"></a></p>
+
+<h2>
+  <a name="vite-configuration" href="#vite-configuration">
+  </a>
+  Vite configuration
+</h2>
+
+<h3>
+  <a name="plugins" href="#plugins">
+  </a>
+  Plugins
+</h3>
+
+<p>Official Vite plugins have been optimizing performance, such as <a href="https://github.com/vitejs/vite-plugin-react/pull/212" target="_blank" rel="noopener noreferrer">vitejs/vite-plugin-react</a> which reduces Node.js startup time by dynamically importing large dependencies.</p>
+
+<p>Community plugins may not be as concerned about performance, which in turn affects the developer experience.</p>
+
+<p>As an example, <a href="https://github.com/gxmari007/vite-plugin-eslint" target="_blank" rel="noopener noreferrer">vite-plugin-eslint</a>
+ is still recommended in many community articles, but as of today it 
+hasn't been updated in two years, and support for newer versions of Vite
+ and ESLint is mediocre.</p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvgdb5hx3vm8eivsecszx.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_vg.webp" alt="vite-plugin-eslint-2-years-ago-updated" loading="lazy"></a></p>
+
+<p>On the other hand, it forces ESLint checksums to be run in the <code>buildStart</code> and <code>transform</code> hooks, where checksums in <code>buildStart</code>
+ can lead to long waits during the startup of the development server, 
+delaying the time when the site can be accessed in the browser, and 
+checksums in the <code>transform</code> hooks can lead to some files 
+loading slower than others, delaying the time when the site is loaded in
+ the browser. The slower some files load than others, the more 
+noticeable the request waterfall in the browser when loading the site, 
+and the more noticeable the lag that can be felt during development.</p>
+
+<p>Although the purpose of ESLint validation is achieved, the 
+development experience is degraded and the development speed is reduced,
+ is it worth it? This is a question worth considering.</p>
+
+<p>There are many ways to identify this performance issue, such as using <code>vite --debug plugin-transform</code> or <a href="https://github.com/antfu-collective/vite-plugin-inspect" target="_blank" rel="noopener noreferrer">vite-plugin-inspect</a> to Alternatively, you can visit the site after running <code>vite --profile</code>, press <code>p + enter</code> in the terminal to record a <code>.cpuprofile</code>, and then use a tool like <a href="https://www.speedscope.app/" target="_blank" rel="noopener noreferrer">speedscope</a> to examine the configuration file and identify bottlenecks.</p>
+
+<p>Once you've identified a performance issue, you can consider forking 
+and improving the appropriate plugin, or just using a replacement. For 
+the example above, you might consider replacing it with <a href="https://github.com/fi3ework/vite-plugin-checker" target="_blank" rel="noopener noreferrer">vite-plugin-checker</a>, <a href="https://github%20.com/nabla/vite-plugin-eslint" target="_blank" rel="noopener noreferrer">@nabla/vite-plugin-eslint</a> or <a href="https://github.com/ModyQyW/vite-plugin-eslint2" target="_blank" rel="noopener noreferrer">vite-plugin-eslint2</a>,
+ all of which support asynchronous ESLint checksums so as not to 
+particularly impact performance and development experience, while still 
+serving the purpose of ESLint checksums.</p>
+
+<blockquote>
+<p>Interests: I am the author of vite-plugin-eslint2, welcome to communicate and discuss.</p>
+</blockquote>
+
+<h3>
+  <a name="toolchain" href="#toolchain">
+  </a>
+  Toolchain
+</h3>
+
+<p>Streamlining your toolchain is a great way to speed things up.</p>
+
+<p>As an example, many people use SCSS primarily for variables and nesting, but in reality CSS <a href="https://caniuse.com/css-variables" target="_blank" rel="noopener noreferrer">variables</a> and <a href="https://caniuse.com/css-nesting" target="_blank" rel="noopener noreferrer">nesting</a> have both officially landed.</p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F629ig409hvbd8fkm4xm0.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_62.webp" alt="css-variables" loading="lazy"></a></p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftcusf644zq9m3f8vsvn8.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_tc.webp" alt="css-nesting" loading="lazy"></a></p>
+
+<p>If the production environment is going to support slightly older 
+versions of browsers that don't support nesting, it's entirely possible 
+to use PostCSS to handle nesting in production builds so that it doesn't
+ impact the speed of the Vite development server. Very, very old 
+versions of browsers are neither secure nor fast and have a poor 
+experience, and should be gradually guided to phase out this part of the
+ process to improve the user experience and the development experience, 
+check out <a href="https://browser-update.org/update-browser.html" target="_blank" rel="noopener noreferrer">browser-update</a> if you're interested.</p>
+
+<p>Using a more raw toolchain is also a good way to speed things up; the
+ SWC website shows it to be 20 to 70 times faster than Babel, and there 
+are tons of speed advantages in complex real-world applications, which 
+proves that rawness can be a big help in speeding things up. Instead of <code>vite-plugin-react</code>, you can use <a href="https://github.com/vitejs/vite-plugin-react-swc" target="_blank" rel="noopener noreferrer">@vitejs/plugin-react-swc</a>, with <a href="https://https//%20github.com/vitejs/vite/discussions/13835">LightningCSS</a> instead of PostCSS, <a href="https://swc.rs/" target="_blank" rel="noopener noreferrer">SWC</a> or <a href="https://esbuild.github.io/" target="_blank" rel="noopener noreferrer">esbuild</a> instead of Babel, etc. etc. to achieve better performance.</p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F779y2z2qxrgr96rcqzeb.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_77.webp" alt="swc-speed" loading="lazy"></a></p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fj7p13uawhufl3vyntzbm.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_j7.webp" alt="lightningcss-speed" loading="lazy"></a></p>
+
+<h3>
+  <a name="dependency-prebundling" href="#dependency-prebundling">
+  </a>
+  Dependency pre-bundling
+</h3>
+
+<p>Vite converts dependencies provided as CommonJS or UMD into ES 
+modules, and also converts ESM dependencies with many internal modules 
+into a single module - this is Vite's dependency pre-bundling.</p>
+
+<p>The former is for compatibility reasons, which we won't discuss in 
+detail here. The latter is for performance reasons; without this step, 
+when we execute <code>import { debounce } from 'lodash-es'</code>, the browser will make more than 600 HTTP requests at the same time, corresponding to more than 600 modules of <code>lodash-es</code>!
+ Even though the server can handle them easily, the large number of 
+requests causes network congestion on the browser side and makes the 
+page load significantly slower.</p>
+
+<p>This is why we need to rely on pre-bundling dependencies; Vite itself
+ does this automatically and transparently, and we can explicitly 
+specify which dependencies need to be pre-bundled via configuration.</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight typescript"><code>
+
+<span class="c1">// vite.config.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">defineConfig</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vite</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pkg</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./package.json</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nf">defineConfig</span><span class="p">({</span>
+  <span class="na">optimizeDeps</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">include</span><span class="p">:</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="nx">pkg</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">),</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+
+
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+<h3>
+  <a name="warming-up" href="#warming-up">
+  </a>
+  Warming up
+</h3>
+
+<p>Warming up is an often overlooked optimization, and one that I've 
+barely seen in some of the articles that have been written about Vite, 
+but it can be an effective way to improve the development experience and
+ reduce wait times.</p>
+
+<p>By default, the Vite Development Server only converts files requested
+ by the browser on demand, which allows it to start up quickly and only 
+perform conversions on the files it uses.</p>
+
+<p>However, this practice can leave the Vite Development Server idle, 
+resulting in a wait for switching pages to load, leading to a poor 
+development experience. If certain files are expected to be requested 
+for a short period of time, they can be converted and cached in advance 
+to improve page load speed. This practice is known as warming up.</p>
+
+<p>Frequently used files can be found by running <code>vite --debug transform</code> and examining the logs, then adding it inside the Vite configuration.</p>
+<div class="highlight js-code-highlight">
+<pre class="highlight shell"><code>
+
+vite:transform 28.72ms /@vite/client +1ms
+vite:transform 62.95ms /src/components/BigComponent.vue +1ms
+vite:transform 102.54ms /src/utils/big-utils.js +1ms
+
+
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+<div class="highlight js-code-highlight">
+<pre class="highlight typescript"><code>
+
+<span class="c1">// vite.config.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">defineConfig</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vite</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nf">defineConfig</span><span class="p">({</span>
+  <span class="na">server</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">warmup</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">clientFiles</span><span class="p">:</span> <span class="p">[</span>
+        <span class="dl">'</span><span class="s1">./src/components/BigComponent.vue</span><span class="dl">'</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">./src/utils/big-utils.js</span><span class="dl">'</span><span class="p">,</span>
+      <span class="p">],</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+
+
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+<p>Note that only frequently used files should be warmed up, this is to 
+avoid overloading the Vite development server. However, I still prefer 
+to just warm up them all straight away. 🤪</p>
+
+<p>The latest version of Nuxt has this feature configured, you can also check <a href="https://cn.vitejs.dev/config/server-options.html#server-warmup" target="_blank" rel="noopener noreferrer">Vite / Configuration / server.warmup</a> for more information.</p>
+
+<p>For 4.3 &lt;= Vite &lt; 5, <a href="https://github.com/bluwy/vite-plugin-warmup" target="_blank" rel="noopener noreferrer">vite-plugin-warmup</a> is required, there is no support for lower versions.</p>
+
+<h2>
+  <a name="project" href="#project">
+  </a>
+  Project
+</h2>
+
+<h3>
+  <a name="path-resolution" href="#path-resolution">
+  </a>
+  Path resolution
+</h3>
+
+<p>It may be difficult to predict how expensive it is to parse imported paths.</p>
+
+<p>When you try to use <code>import './Component'</code> to import <code>./Component.jsx</code>, Vite will run the following steps to parse it:</p>
+
+<ul>
+<li>Check if <code>./Component</code> exists, it does not.</li>
+<li>Check for <code>./Component.mjs</code> exists and does not exist.</li>
+<li>Checks if <code>./Component.js</code> exists and does not exist.</li>
+<li>Check <code>./Component.mts</code> exists, does not exist.</li>
+<li>Checks if <code>./Component.ts</code> exists and does not exist.</li>
+<li>Checks if <code>./Component.jsx</code> exists, it does!</li>
+</ul>
+
+<p>Parsing a simple imported path takes 6 filesystem checks! The more 
+implicit imports there are, the more time it takes to resolve the path.</p>
+
+<p>Therefore, it's usually better to explicitly import the path, e.g. <code>import './Component.jsx'</code>, you can also narrow down the list of <a href="https://cn.vitejs.dev/config/shared-options.html#resolve-extensions" target="_blank" rel="noopener noreferrer">resolve.extensions</a> to minimize the general filesystem checking but must make sure that it also applies to files in node_modules.</p>
+
+<p>If you want to use ESLint to force explicit import paths, you can configure <a href="https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/extensions.md" target="_blank" rel="noopener noreferrer">import/extensions</a> or <a href="https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/extensions.md" target="_blank" rel="noopener noreferrer">import-x/extensions</a> rule, as shown below.</p>
+
+<div class="highlight js-code-highlight">
+<pre class="highlight plaintext"><code>
+
+"import/extensions": ["warn", "ignorePackages"]
+"import-x/extensions": ["warn", "ignorePackages"]
+
+
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+<h3>
+  <a name="barrel-files" href="#barrel-files">
+  </a>
+  Barrel files
+</h3>
+
+<p>Barrel files are files that re-export the APIs of other files in the same directory. For example:</p>
+<div class="highlight js-code-highlight">
+<pre class="highlight javascript"><code>
+
+<span class="c1">// src/utils/index.js</span>
+<span class="k">export</span> <span class="o">*</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./color.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="o">*</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./dom.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="o">*</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./slash.js</span><span class="dl">'</span><span class="p">;</span>
+
+
+</code></pre>
+<div class="highlight__panel js-actions-panel">
+<div class="highlight__panel-action js-fullscreen-code-action">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-on"><title>Enter fullscreen mode</title>
+    <path d="M16 3h6v6h-2V5h-4V3zM2 3h6v2H4v4H2V3zm18 16v-4h2v6h-6v-2h4zM4 19h4v2H2v-6h2v4z"></path>
+</svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="highlight-action crayons-icon highlight-action--fullscreen-off"><title>Exit fullscreen mode</title>
+    <path d="M18 7h4v2h-6V3h2v4zM8 9H2V7h4V3h2v6zm10 8v4h-2v-6h6v2h-4zM8 15v6H6v-4H2v-2h6z"></path>
+</svg>
+
+</div>
+</div>
+</div>
+
+<p>When you only import a single API, such as <code>import { slash } from '. /utils'</code>,
+ you still need to fetch and convert all the files in the bucket file, 
+as they may contain the slash API and may also contain other side 
+effects that run at initialization time. This means that on initial page
+ load, you are loading more files than needed, which in turn leads to 
+slower page loads. As there are more and more modules, the loading time 
+increases, and tests have shown that loading time shows a 
+near-exponential or quasi-exponential increase with the number of 
+modules.</p>
+
+<p><a href="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fvlop4l7nwjynl20kimve.png" class="article-body-image-wrapper"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_vlo.png" alt="js-tools-module-cost" loading="lazy"></a></p>
+
+<p>If possible, you should try to avoid using barrel files and import individual APIs directly. you can read <a href="https://marvinh.dev/blog/speeding-up-javascript-ecosystem-part-7/" target="_blank" rel="noopener noreferrer">Speeding up the JavaScript ecosystem - The barrel file debacle</a> for more details and data, the image above is from this article.</p>
+
+<h2>
+  <a name="summary" href="#summary">
+  </a>
+  Summary
+</h2>
+
+<p>This article was written with reference to <a href="https://vitejs.dev/guide/performance.html" target="_blank" rel="noopener noreferrer">Vite Official Documentation / Performance</a>, and I would like to express my heartfelt thanks to the Vite team. 🙏</p>
+
+<p>This article describes different optimization approaches from three 
+aspects: browser, Vite configuration, and project, with the goal of 
+making Vite apps run a little bit faster and solving problems such as 
+slow server startups, slow page loads, and slow builds.</p>
+
+<p>However, it's important to note that these methods are not a panacea 
+and they won't affect performance in a production environment. To 
+optimize the production environment performance, you need to consider 
+splitting the code, optimizing static resources, introducing SSR, 
+introducing CDN, preloading, prefetching, optimizing CSS, caching, Web 
+Worker, reducing DOM operations and so on, these will not be here to 
+expand in detail, interested in leaving a message to ask me to write 
+about it.</p>
+
+<p>It is worth mentioning that Vite is not everything, as <a href="https://www.farmfe.org/zh/docs/why-farm" target="_blank" rel="noopener noreferrer">Farm documentation</a>
+ said, inconsistencies between development and production, unpacking 
+optimization difficulties and other issues still need to be resolved, 
+all of which require us to wait patiently, or actively participate in 
+it. If you can't wait any longer, we recommend checking out <a href="https://www.farmfe.org/zh/" target="_blank" rel="noopener noreferrer">Farm</a> or <a href="https://rsbuild.dev/" target="_blank" rel="noopener noreferrer">Rsbuild</a>.</p>
+
+<p>I hope this article can bring you some inspiration and help!</p>
+
+
+          </div>
+
+            <div class="js-billboard-container body-billboard-container" data-async-url="/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7/bmar11/post_body_bottom"><div>  <style>
+  .long-bb-body {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+  .long-bb-bottom {
+    height: 180px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+    margin-top: -180px;
+    position:relative;
+    z-index: 5;
+  }
+</style>
+
+  <div class="crayons-card crayons-card--secondary crayons-bb js-billboard body-billboard mb-2 mt-6" style="" data-display-unit="" data-id="217501" data-category-click="click" data-category-impression="impression" data-context-type="article" data-dismissal-sku="" data-special="nothing" data-article-id="2000317" data-type-of="partner">
+    <div class="crayons-story__top flex">
+      <div class="crayons-bb__header relative">
+    <div class="flex">
+        <a href="https://dev.to/heroku" target="_blank" rel="noopener" class="flex">
+          <img width="24" height="24" class="radius-default crayons-bb__image" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_organization.jpg" alt="profile" loading="lazy">
+          <div class="crayons-bb__title ml-2 fs-s fw-medium">Heroku</div>
+        </a>
+        <span class="crayons-bb__indicator c-indicator c-indicator--subtle c-indicator--round fs-2xs fw-medium ml-2 py-1 px-2">Promoted</span>
+    </div>
+
+  <button id="sponsorship-dropdown-trigger-217501" aria-controls="sponsorship-dropdown-217501" aria-expanded="false" aria-haspopup="true" class="dropBtn crayons-bb__dropdown crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon" aria-label="Toggle dropdown menu" data-dropdown-initialized="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a189y5upfk0lrmdeudkd6ubv8la7bym8" class="crayons-icon pointer-events-none"><title id="a189y5upfk0lrmdeudkd6ubv8la7bym8">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+  </button>
+
+  <div id="sponsorship-dropdown-217501" class="crayons-dropdown bb-dropdown right-0">
+    <ul class="list-none m-0">
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/billboards">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+</svg>
+
+            What's a billboard?
+          </a>
+        </li>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/settings/customization#sponsors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M3.34 16.9999C2.91727 16.2689 2.58866 15.4874 2.362 14.6739C2.85531 14.423 3.26959 14.0406 3.55903 13.5688C3.84846 13.0971 4.00176 12.5545 4.00197 12.0011C4.00218 11.4476 3.84928 10.9049 3.5602 10.4329C3.27112 9.961 2.85712 9.57821 2.364 9.32694C2.81604 7.69243 3.67673 6.1999 4.865 4.98994C5.32909 5.29167 5.86762 5.45911 6.42098 5.47373C6.97434 5.48834 7.52095 5.34958 8.00033 5.07278C8.47971 4.79598 8.87315 4.39194 9.13713 3.90539C9.4011 3.41883 9.52531 2.86872 9.496 2.31594C11.1381 1.89157 12.8612 1.89226 14.503 2.31795C14.474 2.87071 14.5984 3.42073 14.8626 3.90715C15.1268 4.39357 15.5204 4.79742 15.9998 5.07401C16.4793 5.35059 17.0259 5.48913 17.5793 5.4743C18.1326 5.45946 18.671 5.29183 19.135 4.98994C19.714 5.57994 20.228 6.25095 20.66 6.99995C21.093 7.74895 21.417 8.52995 21.638 9.32595C21.1447 9.57685 20.7304 9.95932 20.441 10.4311C20.1515 10.9028 19.9982 11.4454 19.998 11.9988C19.9978 12.5523 20.1507 13.095 20.4398 13.5669C20.7289 14.0389 21.1429 14.4217 21.636 14.6729C21.184 16.3075 20.3233 17.8 19.135 19.0099C18.6709 18.7082 18.1324 18.5408 17.579 18.5262C17.0257 18.5115 16.479 18.6503 15.9997 18.9271C15.5203 19.2039 15.1268 19.6079 14.8629 20.0945C14.5989 20.5811 14.4747 21.1312 14.504 21.6839C12.8619 22.1083 11.1388 22.1076 9.497 21.6819C9.52605 21.1292 9.4016 20.5792 9.13742 20.0927C8.87324 19.6063 8.47964 19.2025 8.00017 18.9259C7.5207 18.6493 6.97405 18.5108 6.42073 18.5256C5.8674 18.5404 5.32896 18.7081 4.865 19.0099C4.27399 18.4069 3.76159 17.7315 3.34 16.9999ZM9 17.1959C10.0656 17.8106 10.8668 18.797 11.25 19.9659C11.749 20.0129 12.25 20.0139 12.749 19.9669C13.1324 18.7978 13.934 17.8114 15 17.1969C16.0652 16.5806 17.3205 16.3794 18.525 16.6319C18.815 16.2239 19.065 15.7889 19.273 15.3339C18.4524 14.4174 17.9991 13.2302 18 11.9999C18 10.7399 18.47 9.56295 19.273 8.66595C19.0635 8.21109 18.8125 7.77658 18.523 7.36795C17.3193 7.62025 16.0648 7.41942 15 6.80395C13.9344 6.18932 13.1332 5.20293 12.75 4.03394C12.251 3.98694 11.75 3.98594 11.251 4.03294C10.8676 5.20209 10.066 6.1885 9 6.80295C7.93478 7.41926 6.67948 7.62046 5.475 7.36795C5.18556 7.77623 4.93513 8.21081 4.727 8.66595C5.54757 9.5825 6.00088 10.7697 6 11.9999C6 13.2599 5.53 14.4369 4.727 15.3339C4.93647 15.7888 5.18754 16.2233 5.477 16.6319C6.68072 16.3796 7.93521 16.5805 9 17.1959ZM12 14.9999C11.2044 14.9999 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 11.9999C9 11.2043 9.31607 10.4412 9.87868 9.87862C10.4413 9.31602 11.2044 8.99995 12 8.99995C12.7956 8.99995 13.5587 9.31602 14.1213 9.87862C14.6839 10.4412 15 11.2043 15 11.9999C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 14.9999 12 14.9999ZM12 12.9999C12.2652 12.9999 12.5196 12.8946 12.7071 12.7071C12.8946 12.5195 13 12.2652 13 11.9999C13 11.7347 12.8946 11.4804 12.7071 11.2928C12.5196 11.1053 12.2652 10.9999 12 10.9999C11.7348 10.9999 11.4804 11.1053 11.2929 11.2928C11.1054 11.4804 11 11.7347 11 11.9999C11 12.2652 11.1054 12.5195 11.2929 12.7071C11.4804 12.8946 11.7348 12.9999 12 12.9999Z" fill="black"></path>
+</svg>
+
+          Manage preferences
+        </a>
+      </li>
+      <hr>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/report-abuse?billboard=217501">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12.382 3a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5v6H3V3h9.382Zm-.618 2H5v9h8.236l1 2H19V7h-6.236l-1-2Z"></path>
+</svg>
+
+          Report billboard
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+    </div>
+    <div class="p-1 pt-3 text-styles text-styles--billboard long-bb-body">
+      <p><a href="https://www.heroku.com/?utm_source=devto&amp;utm_medium=paid&amp;utm_campaign=heroku_2025&amp;bb=217501" target="_blank" rel="noopener noreferrer"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___i.imgur.com_EtkoO96.png" alt="Heroku" width="1200" height="1200" loading="lazy"></a></p>
+<h2>  <a name="built-for-developers-by-developers" href="#built-for-developers-by-developers">  </a>  <a href="https://www.heroku.com/?utm_source=devto&amp;utm_medium=paid&amp;utm_campaign=heroku_2025&amp;bb=217501" target="_blank" rel="noopener noreferrer">Built for developers, by developers.</a>
+</h2>
+<p>Whether you're building a simple prototype or a business-critical 
+product, Heroku's fully-managed platform gives you the simplest path to 
+delivering apps quickly — using the tools and languages you already 
+love!</p>
+<p><a href="https://www.heroku.com/?utm_source=devto&amp;utm_medium=paid&amp;utm_campaign=heroku_2025&amp;bb=217501" class="ltag_cta ltag_cta--branded" role="button" target="_blank" rel="noopener noreferrer">Learn More</a></p>
+    </div>
+      <div class="long-bb-bottom"></div>
+      <div class="crayons-card__footer">
+        <button class="c-cta c-cta--branded billboard-readmore-button">
+          Read More
+        </button>
+      </div>
+  </div>
+
+</div></div>
+        </div>
+          <section id="comments" data-follow-button-container="true" data-updated-at="2025-04-29 18:27:03 UTC" class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+      <header class="relative flex justify-between items-center mb-6">
+        <div class="flex items-center">
+          <h2 class="crayons-subtitle-1">
+            Top comments <span class="js-comments-count" data-comments-count="0">(0)</span>
+          </h2>
+        </div>
+
+
+        <div id="comment-subscription" class="print-hidden">
+          <div class="crayons-btn-group">
+            <span class="crayons-btn crayons-btn--outlined">Subscribe</span>
+          </div>
+        </div>
+      </header>
+      <div id="billboard_delay_trigger"></div>
+      <div id="comments-container" data-testid="comments-container" data-commentable-id="2000317" data-commentable-type="Article" data-has-recent-comment-activity="false">
+
+          <div id="response-templates-data" class="hidden"></div>
+
+
+<form class="comment-form print-hidden" id="new_comment" action="/comments" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" autocomplete="off">
+
+  <input type="hidden" name="authenticity_token" value="NOTHING" id="new_comment_authenticity_token">
+
+    <input value="2000317" autocomplete="off" type="hidden" name="comment[commentable_id]" id="comment_commentable_id">
+    <input value="Article" autocomplete="off" type="hidden" name="comment[commentable_type]" id="comment_commentable_type">
+    
+
+  <span class="crayons-avatar m:crayons-avatar--l mr-2 shrink-0">
+    <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_8j7.png" width="32" height="32" alt="pic" class="crayons-avatar__image overflow-hidden" id="comment-primary-user-profile--avatar" loading="lazy">
+  </span>
+  <div class="comment-form__inner">
+    <div class="comment-form__field" data-tracking-name="comment_form_textfield">
+      <textarea placeholder="Add to the discussion" onfocus="handleFocus(event)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" oninput="handleChange(event)" id="text-area" required="required" class="crayons-textfield comment-textarea crayons-textfield--ghost" aria-label="Add a comment to the discussion" name="comment[body_markdown]"></textarea>
+
+    </div>
+
+    <div class="response-templates-container crayons-card crayons-card--secondary p-4 mb-4 comment-form__templates fs-base hidden">
+      <header class="mb-3">
+        <button type="button" class="crayons-btn personal-template-button active" data-target-type="personal" data-form-id="new_comment">Personal</button>
+        <button type="button" class="crayons-btn moderator-template-button hidden" data-target-type="moderator" data-form-id="new_comment">Trusted User</button>
+      </header>
+
+      <div class="personal-responses-container">
+      </div>
+      <div class="moderator-responses-container hidden">
+      </div>
+
+      <a target="_blank" rel="noopener nofollow" href="https://dev.to/settings/response-templates">
+        Create template
+      </a>
+      <p>Templates let you quickly answer FAQs or store snippets for re-use.</p>
+    </div>
+
+    <div class="comment-form__preview text-styles text-styles--secondary" id="preview-div"></div>
+
+    <div class="comment-form__buttons mb-4">
+      <button type="submit" class="crayons-btn mr-2 js-btn-enable" onclick="validateField(event)" data-tracking-name="comment_submit_button" disabled="disabled">Submit</button>
+      <button type="button" class="preview-toggle crayons-btn crayons-btn--secondary comment-action-preview js-btn-enable mr-2" data-tracking-name="comment_preview_button" disabled="disabled">Preview</button>
+      <a href="https://dev.to/404.html" class="dismiss-edit-comment crayons-btn crayons-btn--ghost js-btn-dismiss hidden">Dismiss</a>
+    </div>
+  </div>
+
+  <div class="code-of-conduct" id="toggle-code-of-conduct-checkbox"></div>
+</form>
+
+
+        <div class="comments" id="comment-trees-container">
+        </div>
+      </div>
+
+      <div class="align-center">
+
+
+  <nav class="fs-s align-center block" aria-label="Conduct controls">
+  <a href="https://dev.to/code-of-conduct" class="crayons-link crayons-link--secondary">Code of Conduct</a>
+  <span class="opacity-25 px-2" role="presentation">•</span>
+  <a href="https://dev.to/report-abuse" class="crayons-link crayons-link--secondary">Report abuse</a>
+</nav>
+
+</div>
+
+  </section>
+  <div id="hide-comments-modal" class="hidden">
+  <form id="hide-comments-modal__form" class="hide-comments-modal__form" data-type="json" action="/comments/hide" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓" autocomplete="off"><input type="hidden" name="_method" value="patch" autocomplete="off"><input type="hidden" name="authenticity_token" value="jSO6IdCZw8LnF8dUSPrmKzkYj6mE82ey4rRugsn4AI4n2pcdnKMQh7xlnULUQmOvV8cg2ueLVlE8Hs3jGvL2pw" autocomplete="off">
+    <div class="hide-comments-modal__content">
+      <p class="pb-2">
+        Are you sure you want to hide this comment? It will become 
+hidden in your post, but will still be visible via the comment's <a id="hide-comments-modal__comment-permalink" href="#">permalink</a>.
+      </p>
+      <label class="crayons-field crayons-field--checkbox my-2">
+        <input name="hide_children" type="hidden" value="0" autocomplete="off"><input class="hide_children crayons-checkbox" type="checkbox" value="1" name="hide_children" id="hide_children">
+        <p class="crayons-field__label">Hide child comments as well</p>
+      </label>
+      <p class="pb-4 pt-2">
+        <button type="submit" class="crayons-btn">
+          Confirm
+        </button>
+      </p>
+    </div>
+</form>  <p class="fs-s color-base-60">For further actions, you may consider blocking this person and/or <a id="hide-comments-modal__report-link" href="https://dev.to/report-abuse">reporting abuse</a></p>
+</div>
+
+
+
+      </article>
+
+      <div class="pb-4 crayons-layout__comments-billboard">
+        <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7/bmar11/post_comments"><div>  <style>
+  .long-bb-body {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+  .long-bb-bottom {
+    height: 180px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+    margin-top: -180px;
+    position:relative;
+    z-index: 5;
+  }
+</style>
+
+  <div class="crayons-card crayons-card--secondary crayons-bb bb-placement js-billboard" style="" data-display-unit="" data-id="225963" data-category-click="click" data-category-impression="impression" data-context-type="article" data-special="nothing" data-article-id="2000317" data-type-of="partner">
+    <div class="crayons-bb__header relative">
+    <div class="flex">
+        <a href="https://dev.to/stellar" target="_blank" rel="noopener" class="flex">
+          <img width="24" height="24" class="radius-default crayons-bb__image" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_organiz_002.webp" alt="profile" loading="lazy">
+          <div class="crayons-bb__title ml-2 fs-s fw-medium">Stellar Development Foundation</div>
+        </a>
+        <span class="crayons-bb__indicator c-indicator c-indicator--subtle c-indicator--round fs-2xs fw-medium ml-2 py-1 px-2">Promoted</span>
+    </div>
+
+  <button id="sponsorship-dropdown-trigger-225963" aria-controls="sponsorship-dropdown-225963" aria-expanded="false" aria-haspopup="true" class="dropBtn crayons-bb__dropdown crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon" aria-label="Toggle dropdown menu" data-dropdown-initialized="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="adalo757sbspl9zignqpko0q8e1dgz5c" class="crayons-icon pointer-events-none"><title id="adalo757sbspl9zignqpko0q8e1dgz5c">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+  </button>
+
+  <div id="sponsorship-dropdown-225963" class="crayons-dropdown bb-dropdown right-0">
+    <ul class="list-none m-0">
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/billboards">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+</svg>
+
+            What's a billboard?
+          </a>
+        </li>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/settings/customization#sponsors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M3.34 16.9999C2.91727 16.2689 2.58866 15.4874 2.362 14.6739C2.85531 14.423 3.26959 14.0406 3.55903 13.5688C3.84846 13.0971 4.00176 12.5545 4.00197 12.0011C4.00218 11.4476 3.84928 10.9049 3.5602 10.4329C3.27112 9.961 2.85712 9.57821 2.364 9.32694C2.81604 7.69243 3.67673 6.1999 4.865 4.98994C5.32909 5.29167 5.86762 5.45911 6.42098 5.47373C6.97434 5.48834 7.52095 5.34958 8.00033 5.07278C8.47971 4.79598 8.87315 4.39194 9.13713 3.90539C9.4011 3.41883 9.52531 2.86872 9.496 2.31594C11.1381 1.89157 12.8612 1.89226 14.503 2.31795C14.474 2.87071 14.5984 3.42073 14.8626 3.90715C15.1268 4.39357 15.5204 4.79742 15.9998 5.07401C16.4793 5.35059 17.0259 5.48913 17.5793 5.4743C18.1326 5.45946 18.671 5.29183 19.135 4.98994C19.714 5.57994 20.228 6.25095 20.66 6.99995C21.093 7.74895 21.417 8.52995 21.638 9.32595C21.1447 9.57685 20.7304 9.95932 20.441 10.4311C20.1515 10.9028 19.9982 11.4454 19.998 11.9988C19.9978 12.5523 20.1507 13.095 20.4398 13.5669C20.7289 14.0389 21.1429 14.4217 21.636 14.6729C21.184 16.3075 20.3233 17.8 19.135 19.0099C18.6709 18.7082 18.1324 18.5408 17.579 18.5262C17.0257 18.5115 16.479 18.6503 15.9997 18.9271C15.5203 19.2039 15.1268 19.6079 14.8629 20.0945C14.5989 20.5811 14.4747 21.1312 14.504 21.6839C12.8619 22.1083 11.1388 22.1076 9.497 21.6819C9.52605 21.1292 9.4016 20.5792 9.13742 20.0927C8.87324 19.6063 8.47964 19.2025 8.00017 18.9259C7.5207 18.6493 6.97405 18.5108 6.42073 18.5256C5.8674 18.5404 5.32896 18.7081 4.865 19.0099C4.27399 18.4069 3.76159 17.7315 3.34 16.9999ZM9 17.1959C10.0656 17.8106 10.8668 18.797 11.25 19.9659C11.749 20.0129 12.25 20.0139 12.749 19.9669C13.1324 18.7978 13.934 17.8114 15 17.1969C16.0652 16.5806 17.3205 16.3794 18.525 16.6319C18.815 16.2239 19.065 15.7889 19.273 15.3339C18.4524 14.4174 17.9991 13.2302 18 11.9999C18 10.7399 18.47 9.56295 19.273 8.66595C19.0635 8.21109 18.8125 7.77658 18.523 7.36795C17.3193 7.62025 16.0648 7.41942 15 6.80395C13.9344 6.18932 13.1332 5.20293 12.75 4.03394C12.251 3.98694 11.75 3.98594 11.251 4.03294C10.8676 5.20209 10.066 6.1885 9 6.80295C7.93478 7.41926 6.67948 7.62046 5.475 7.36795C5.18556 7.77623 4.93513 8.21081 4.727 8.66595C5.54757 9.5825 6.00088 10.7697 6 11.9999C6 13.2599 5.53 14.4369 4.727 15.3339C4.93647 15.7888 5.18754 16.2233 5.477 16.6319C6.68072 16.3796 7.93521 16.5805 9 17.1959ZM12 14.9999C11.2044 14.9999 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 11.9999C9 11.2043 9.31607 10.4412 9.87868 9.87862C10.4413 9.31602 11.2044 8.99995 12 8.99995C12.7956 8.99995 13.5587 9.31602 14.1213 9.87862C14.6839 10.4412 15 11.2043 15 11.9999C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 14.9999 12 14.9999ZM12 12.9999C12.2652 12.9999 12.5196 12.8946 12.7071 12.7071C12.8946 12.5195 13 12.2652 13 11.9999C13 11.7347 12.8946 11.4804 12.7071 11.2928C12.5196 11.1053 12.2652 10.9999 12 10.9999C11.7348 10.9999 11.4804 11.1053 11.2929 11.2928C11.1054 11.4804 11 11.7347 11 11.9999C11 12.2652 11.1054 12.5195 11.2929 12.7071C11.4804 12.8946 11.7348 12.9999 12 12.9999Z" fill="black"></path>
+</svg>
+
+          Manage preferences
+        </a>
+      </li>
+      <hr>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/report-abuse?billboard=225963">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12.382 3a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5v6H3V3h9.382Zm-.618 2H5v9h8.236l1 2H19V7h-6.236l-1-2Z"></path>
+</svg>
+
+          Report billboard
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+    <div class="p-1 pt-3 text-styles text-styles--billboard">
+      <p><a href="https://www.youtube.com/watch?v=FInE2PSx1es&amp;t=1s&amp;bb=225963" target="_blank" rel="noopener noreferrer"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___i.imgur.com_tUchUr0.webp" alt="Image of Stellar post" width="1098" height="468" loading="lazy"></a></p>
+<h2>  <a name="how-a-hackathon-win-led-to-my-startup-getting-funded" href="#how-a-hackathon-win-led-to-my-startup-getting-funded">  </a>  <a href="https://www.youtube.com/watch?v=FInE2PSx1es&amp;t=1s&amp;bb=225963" target="_blank" rel="noopener noreferrer">How a Hackathon Win Led to My Startup Getting Funded</a>
+</h2>
+<p>In this episode, you'll see:</p>
+<ul>
+<li>The hackathon wins that sparked the journey.</li>
+<li>The moment José and Joseph decided to go all-in.</li>
+<li>Building a working prototype on Stellar.</li>
+<li>Using the PassKeys feature of Soroban.</li>
+<li>Getting funded via the Stellar Community Fund.</li>
+</ul>
+<p><a href="https://www.youtube.com/watch?v=FInE2PSx1es&amp;t=1s&amp;bb=225963" class="ltag_cta ltag_cta--branded" role="button" target="_blank" rel="noopener noreferrer">Watch the video</a></p>
+    </div>
+  </div>
+
+</div></div>
+      </div>
+
+        <div id="aync-bottom-content" class="pb-4"></div>
+    </div>
+  </main>
+
+  <aside class="crayons-layout__sidebar-right" aria-label="Author details">
+    <div class="crayons-article-sticky grid gap-4 pb-4 break-word" id="article-show-primary-sticky-nav">
+  <div class="crayons-card crayons-card--secondary branded-7 p-4 pt-0 gap-4 grid" style="border-top-color: #000000;">
+    <div class="-mt-4">
+  <a href="https://dev.to/modyqyw" class="flex">
+    <span class="crayons-avatar crayons-avatar--xl  mr-2 shrink-0">
+      <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_user_profil.webp" class="crayons-avatar__image" alt="" loading="lazy">
+    </span>
+    <span class="crayons-link crayons-subtitle-2 mt-5">
+      Rui Wu
+      
+    </span>
+  </a>
+</div>
+
+<div class="print-hidden">
+  <button name="button" type="button" data-info="{&quot;className&quot;:&quot;User&quot;,&quot;style&quot;:&quot;&quot;,&quot;id&quot;:1424952,&quot;name&quot;:&quot;Rui Wu&quot;}" class="crayons-btn follow-action-button whitespace-nowrap w-100 follow-user" aria-label="Follow user: Rui Wu" aria-pressed="false" data-fetched="fetched">Follow</button>
+</div>
+
+  <div class="user-metadata-details">
+    <ul class="user-metadata-details-inner">
+        <li>
+          <div class="key">
+            Location
+          </div>
+          <div class="value">
+            Guangdong, China
+          </div>
+        </li>
+      <li>
+        <div class="key">
+          Joined
+        </div>
+        <div class="value">
+          <time datetime="2024-04-15T01:56:40Z" class="date">14 Apr 2024</time>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  </div>
+
+      <div class="crayons-card crayons-card--secondary">
+        <header class="crayons-card__header">
+          <h3 class="crayons-subtitle-2">
+            Trending on <a href="https://dev.to/">DEV Community</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="24" height="24" role="img" aria-labelledby="a2df491b5cmn6f84v7z1541xo836wnpa" class="crayons-icon crayons-icon--default"><title id="a2df491b5cmn6f84v7z1541xo836wnpa">Hot</title>
+    <g class="nc-icon-wrapper">
+        <path fill="#F4900C" d="M39 23a16.96 16.96 0 00-1.04-5.868c-.46 5.389-3.333 8.157-6.335 6.868-2.812-1.208-.917-5.917-.777-8.164.236-3.809-.012-8.169-6.931-11.794 2.875 5.5.333 8.917-2.333 9.125-2.958.231-5.667-2.542-4.667-7.042-3.238 2.386-3.332 6.402-2.333 9 1.042 2.708-.042 4.958-2.583 5.208-2.84.28-4.418-3.041-2.963-8.333A16.936 16.936 0 005 23c0 9.389 7.611 17 17 17s17-7.611 17-17z"></path>
+        <path fill="#FFCC4D" d="M32.394 27.999c.148 3.084-2.561 4.293-4.019 3.709-2.106-.843-1.541-2.291-2.083-5.291s-2.625-5.083-5.708-6c2.25 6.333-1.247 8.667-3.08 9.084-1.872.426-3.753-.001-3.968-4.007A11.964 11.964 0 0010 34c0 .368.023.73.055 1.09C13.125 38.124 17.342 40 22 40s8.875-1.876 11.945-4.91c.032-.36.055-.722.055-1.09 0-2.187-.584-4.236-1.606-6.001z"></path>
+    </g>
+</svg>
+
+          </h3>
+        </header>
+        <div>
+            <a class="crayons-link crayons-link--contentful flex" href="https://dev.to/ben/meme-monday-1l21">
+              <span class="crayons-avatar mr-2 shrink-0">
+                <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_user_pro_002.jpg" class="crayons-avatar__image" loading="lazy" alt="Ben Halpern profile image">
+              </span>
+              <div>
+                Meme Monday
+                <div class="crayons-link__secondary -ml-1">
+                    <span class="mr-1"><span class="opacity-50">#</span>watercooler</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>discuss</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>jokes</span>
+                </div>
+              </div>
+            </a>
+            <a class="crayons-link crayons-link--contentful flex" href="https://dev.to/ammar_larik/i-need-a-buddy-in-my-web-dev-journey-4m66">
+              <span class="crayons-avatar mr-2 shrink-0">
+                <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_user_pr_003.webp" class="crayons-avatar__image" loading="lazy" alt="Ammar Larik profile image">
+              </span>
+              <div>
+                I need a Buddy in my web dev Journey 😊😊
+                <div class="crayons-link__secondary -ml-1">
+                    <span class="mr-1"><span class="opacity-50">#</span>webdev</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>css</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>javascript</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>productivity</span>
+                </div>
+              </div>
+            </a>
+            <a class="crayons-link crayons-link--contentful flex" href="https://dev.to/shricodev/how-i-manage-my-system-and-dotfiles-with-ansible-8m1">
+              <span class="crayons-avatar mr-2 shrink-0">
+                <img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_user_profile.jpg" class="crayons-avatar__image" loading="lazy" alt="Shrijal Acharya profile image">
+              </span>
+              <div>
+                How I Manage my System and Dotfiles (with Ansible) 🔥
+                <div class="crayons-link__secondary -ml-1">
+                    <span class="mr-1"><span class="opacity-50">#</span>discuss</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>productivity</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>devops</span>
+                    <span class="mr-1"><span class="opacity-50">#</span>linux</span>
+                </div>
+              </div>
+            </a>
+        </div>
+      </div>
+</div>
+
+<div class="crayons-article-sticky grid gap-4 break-word js-billboard-container" data-async-url="/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7/bmar11/post_sidebar"><div>  <style>
+  .long-bb-body {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+  .long-bb-bottom {
+    height: 180px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+    margin-top: -180px;
+    position:relative;
+    z-index: 5;
+  }
+</style>
+
+  <div class="crayons-card crayons-card--secondary crayons-bb bb-placement js-billboard" style="" data-display-unit="" data-id="222270" data-category-click="click" data-category-impression="impression" data-context-type="article" data-special="nothing" data-article-id="2000317" data-type-of="partner" data-impression-recorded="true">
+    <div class="crayons-bb__header relative">
+    <div class="flex">
+        <a href="https://dev.to/sentry" target="_blank" rel="noopener" class="flex">
+          <img width="24" height="24" class="radius-default crayons-bb__image" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_organizatio.webp" alt="profile" loading="lazy">
+          <div class="crayons-bb__title ml-2 fs-s fw-medium">Sentry</div>
+        </a>
+        <span class="crayons-bb__indicator c-indicator c-indicator--subtle c-indicator--round fs-2xs fw-medium ml-2 py-1 px-2">Promoted</span>
+    </div>
+
+  <button id="sponsorship-dropdown-trigger-222270" aria-controls="sponsorship-dropdown-222270" aria-expanded="false" aria-haspopup="true" class="dropBtn crayons-bb__dropdown crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon" aria-label="Toggle dropdown menu" data-dropdown-initialized="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="ap1o29twlp7md74tir0xg6onrl88ykuu" class="crayons-icon pointer-events-none"><title id="ap1o29twlp7md74tir0xg6onrl88ykuu">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+  </button>
+
+  <div id="sponsorship-dropdown-222270" class="crayons-dropdown bb-dropdown right-0">
+    <ul class="list-none m-0">
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/billboards">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+</svg>
+
+            What's a billboard?
+          </a>
+        </li>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/settings/customization#sponsors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M3.34 16.9999C2.91727 16.2689 2.58866 15.4874 2.362 14.6739C2.85531 14.423 3.26959 14.0406 3.55903 13.5688C3.84846 13.0971 4.00176 12.5545 4.00197 12.0011C4.00218 11.4476 3.84928 10.9049 3.5602 10.4329C3.27112 9.961 2.85712 9.57821 2.364 9.32694C2.81604 7.69243 3.67673 6.1999 4.865 4.98994C5.32909 5.29167 5.86762 5.45911 6.42098 5.47373C6.97434 5.48834 7.52095 5.34958 8.00033 5.07278C8.47971 4.79598 8.87315 4.39194 9.13713 3.90539C9.4011 3.41883 9.52531 2.86872 9.496 2.31594C11.1381 1.89157 12.8612 1.89226 14.503 2.31795C14.474 2.87071 14.5984 3.42073 14.8626 3.90715C15.1268 4.39357 15.5204 4.79742 15.9998 5.07401C16.4793 5.35059 17.0259 5.48913 17.5793 5.4743C18.1326 5.45946 18.671 5.29183 19.135 4.98994C19.714 5.57994 20.228 6.25095 20.66 6.99995C21.093 7.74895 21.417 8.52995 21.638 9.32595C21.1447 9.57685 20.7304 9.95932 20.441 10.4311C20.1515 10.9028 19.9982 11.4454 19.998 11.9988C19.9978 12.5523 20.1507 13.095 20.4398 13.5669C20.7289 14.0389 21.1429 14.4217 21.636 14.6729C21.184 16.3075 20.3233 17.8 19.135 19.0099C18.6709 18.7082 18.1324 18.5408 17.579 18.5262C17.0257 18.5115 16.479 18.6503 15.9997 18.9271C15.5203 19.2039 15.1268 19.6079 14.8629 20.0945C14.5989 20.5811 14.4747 21.1312 14.504 21.6839C12.8619 22.1083 11.1388 22.1076 9.497 21.6819C9.52605 21.1292 9.4016 20.5792 9.13742 20.0927C8.87324 19.6063 8.47964 19.2025 8.00017 18.9259C7.5207 18.6493 6.97405 18.5108 6.42073 18.5256C5.8674 18.5404 5.32896 18.7081 4.865 19.0099C4.27399 18.4069 3.76159 17.7315 3.34 16.9999ZM9 17.1959C10.0656 17.8106 10.8668 18.797 11.25 19.9659C11.749 20.0129 12.25 20.0139 12.749 19.9669C13.1324 18.7978 13.934 17.8114 15 17.1969C16.0652 16.5806 17.3205 16.3794 18.525 16.6319C18.815 16.2239 19.065 15.7889 19.273 15.3339C18.4524 14.4174 17.9991 13.2302 18 11.9999C18 10.7399 18.47 9.56295 19.273 8.66595C19.0635 8.21109 18.8125 7.77658 18.523 7.36795C17.3193 7.62025 16.0648 7.41942 15 6.80395C13.9344 6.18932 13.1332 5.20293 12.75 4.03394C12.251 3.98694 11.75 3.98594 11.251 4.03294C10.8676 5.20209 10.066 6.1885 9 6.80295C7.93478 7.41926 6.67948 7.62046 5.475 7.36795C5.18556 7.77623 4.93513 8.21081 4.727 8.66595C5.54757 9.5825 6.00088 10.7697 6 11.9999C6 13.2599 5.53 14.4369 4.727 15.3339C4.93647 15.7888 5.18754 16.2233 5.477 16.6319C6.68072 16.3796 7.93521 16.5805 9 17.1959ZM12 14.9999C11.2044 14.9999 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 11.9999C9 11.2043 9.31607 10.4412 9.87868 9.87862C10.4413 9.31602 11.2044 8.99995 12 8.99995C12.7956 8.99995 13.5587 9.31602 14.1213 9.87862C14.6839 10.4412 15 11.2043 15 11.9999C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 14.9999 12 14.9999ZM12 12.9999C12.2652 12.9999 12.5196 12.8946 12.7071 12.7071C12.8946 12.5195 13 12.2652 13 11.9999C13 11.7347 12.8946 11.4804 12.7071 11.2928C12.5196 11.1053 12.2652 10.9999 12 10.9999C11.7348 10.9999 11.4804 11.1053 11.2929 11.2928C11.1054 11.4804 11 11.7347 11 11.9999C11 12.2652 11.1054 12.5195 11.2929 12.7071C11.4804 12.8946 11.7348 12.9999 12 12.9999Z" fill="black"></path>
+</svg>
+
+          Manage preferences
+        </a>
+      </li>
+      <hr>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/report-abuse?billboard=222270">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12.382 3a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5v6H3V3h9.382Zm-.618 2H5v9h8.236l1 2H19V7h-6.236l-1-2Z"></path>
+</svg>
+
+          Report billboard
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+    <div class="p-1 pt-3 text-styles text-styles--billboard">
+      <p><a href="https://sentry.io/lp/make-it-make-sense-acid/?utm_source=devto&amp;utm_medium=paid-community&amp;utm_campaign=general-fy26q1-mims&amp;utm_content=static-ad-acid-startfree&amp;bb=222270" target="_blank" rel="noopener noreferrer"><img src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___i.imgur.com_uyGx4h7.webp" alt="Sentry image" width="1200" height="1200" loading="lazy"></a></p>
+<h2>  <a name="make-it-make-sense" href="#make-it-make-sense">  </a>  <a href="https://sentry.io/lp/make-it-make-sense-acid/?utm_source=devto&amp;utm_medium=paid-community&amp;utm_campaign=general-fy26q1-mims&amp;utm_content=static-ad-acid-startfree&amp;bb=222270" target="_blank" rel="noopener noreferrer">Make it make sense</a>
+</h2>
+<p>Make sense of fixing your code with straight-forward application monitoring.</p>
+<p><a href="https://sentry.io/lp/make-it-make-sense-acid/?utm_source=devto&amp;utm_medium=paid-community&amp;utm_campaign=general-fy26q1-mims&amp;utm_content=static-ad-acid-startfree&amp;bb=222270" class="ltag_cta ltag_cta--branded" role="button" target="_blank" rel="noopener noreferrer">Start debugging →</a></p>
+    </div>
+  </div>
+
+</div></div>
+
+  </aside>
+</div>
+
+
+<div class="mod-actions-menu print-hidden"></div>
+<div data-testid="unpublish-post-modal-container" class="unpublish-post-modal-container hidden"></div>
+
+<div class="fullscreen-code js-fullscreen-code"></div>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/followButtons-f2455d1f50a862b83fa006b1953e3a1644598781243cae2.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/billboard-818c196f17931002334ea0a9f5a2abea9e2afb2d59259a9b910.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/localizeArticleDates-70147c5c6bfe350b42e020ebb2a3dd37419d8397.js" defer="defer"></script>
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/articleReactions-79a44d82fb34a91c3987c24cfd3bcf2b0d38a02730b6.js" defer="defer"></script>
+
+<script>
+  function activateRunkitTags() {
+  if (!areAnyRunkitTagsPresent())
+    return
+
+  var checkRunkit = setInterval(function() {
+    try {
+      dynamicallyLoadRunkitLibrary()
+
+      if (typeof(RunKit) === 'undefined') {
+        return
+      }
+
+      replaceTagContentsWithRunkitWidget()
+      clearInterval(checkRunkit);
+    } catch(e) {
+      console.error(e);
+      clearInterval(checkRunkit);
+    }
+  }, 200);
+}
+
+function isRunkitTagAlreadyActive(runkitTag) {
+  return runkitTag.querySelector("iframe") !== null;
+};
+
+function areAnyRunkitTagsPresent() {
+  var presentRunkitTags = document.getElementsByClassName("runkit-element");
+
+  return presentRunkitTags.length > 0
+}
+
+function replaceTagContentsWithRunkitWidget() {
+  var targets = document.getElementsByClassName("runkit-element");
+  for (var i = 0; i < targets.length; i++) {
+    if (isRunkitTagAlreadyActive(targets[i])) {
+      continue;
+    }
+
+    var wrapperContent = targets[i].textContent;
+    if (/^(<iframe src)/.test(wrapperContent) === false) {
+      if (targets[i].children.length > 0) {
+        var preamble = targets[i].children[0].textContent;
+        var content = targets[i].children[1].textContent;
+        targets[i].innerHTML = "";
+        var notebook = RunKit.createNotebook({
+          element: targets[i],
+          source: content,
+          preamble: preamble
+        });
+      }
+    }
+  }
+};
+
+function dynamicallyLoadRunkitLibrary() {
+  if (typeof(dynamicallyLoadScript) === "undefined")
+    return
+
+  dynamicallyLoadScript("//embed.runkit.com")
+}
+
+activateRunkitTags();
+
+</script>
+<div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="/modyqyw/make-your-vite-applications-run-a-little-faster-5bp7/bmar11/post_fixed_bottom"><div>  <style>
+  .long-bb-body {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+  .long-bb-bottom {
+    height: 180px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+    margin-top: -180px;
+    position:relative;
+    z-index: 5;
+  }
+</style>
+
+  <div class="crayons-card crayons-card--secondary crayons-bb popover-billboard crayons-story__billboard js-billboard fixed bottom-0 left-0 right-0 popover-billboard--menuopenupwards" style="" data-display-unit="" data-id="218176" data-category-click="click" data-category-impression="impression" data-context-type="article" data-dismissal-sku="" data-special="nothing" data-article-id="2000317" data-type-of="in_house" data-impression-recorded="true">
+    <div class="flex">
+      <div class="crayons-bb__header relative">
+    <div class="crayons-bb__title">👋 Kindness is contagious</div>
+
+  <button id="sponsorship-dropdown-trigger-218176" aria-controls="sponsorship-dropdown-218176" aria-expanded="false" aria-haspopup="true" class="dropBtn crayons-bb__dropdown crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon" aria-label="Toggle dropdown menu" data-dropdown-initialized="true" data-initialized="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="ain2qt558544kd20tfnozep4ojg0cof2" class="crayons-icon pointer-events-none"><title id="ain2qt558544kd20tfnozep4ojg0cof2">Dropdown menu</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm5.25 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm3.75 1.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+</svg>
+
+  </button>
+
+  <div id="sponsorship-dropdown-218176" class="crayons-dropdown bb-dropdown right-0">
+    <ul class="list-none m-0">
+        <li>
+          <a class="crayons-link crayons-link--block" href="https://dev.to/billboards">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+</svg>
+
+            What's a billboard?
+          </a>
+        </li>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/settings/customization#sponsors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M3.34 16.9999C2.91727 16.2689 2.58866 15.4874 2.362 14.6739C2.85531 14.423 3.26959 14.0406 3.55903 13.5688C3.84846 13.0971 4.00176 12.5545 4.00197 12.0011C4.00218 11.4476 3.84928 10.9049 3.5602 10.4329C3.27112 9.961 2.85712 9.57821 2.364 9.32694C2.81604 7.69243 3.67673 6.1999 4.865 4.98994C5.32909 5.29167 5.86762 5.45911 6.42098 5.47373C6.97434 5.48834 7.52095 5.34958 8.00033 5.07278C8.47971 4.79598 8.87315 4.39194 9.13713 3.90539C9.4011 3.41883 9.52531 2.86872 9.496 2.31594C11.1381 1.89157 12.8612 1.89226 14.503 2.31795C14.474 2.87071 14.5984 3.42073 14.8626 3.90715C15.1268 4.39357 15.5204 4.79742 15.9998 5.07401C16.4793 5.35059 17.0259 5.48913 17.5793 5.4743C18.1326 5.45946 18.671 5.29183 19.135 4.98994C19.714 5.57994 20.228 6.25095 20.66 6.99995C21.093 7.74895 21.417 8.52995 21.638 9.32595C21.1447 9.57685 20.7304 9.95932 20.441 10.4311C20.1515 10.9028 19.9982 11.4454 19.998 11.9988C19.9978 12.5523 20.1507 13.095 20.4398 13.5669C20.7289 14.0389 21.1429 14.4217 21.636 14.6729C21.184 16.3075 20.3233 17.8 19.135 19.0099C18.6709 18.7082 18.1324 18.5408 17.579 18.5262C17.0257 18.5115 16.479 18.6503 15.9997 18.9271C15.5203 19.2039 15.1268 19.6079 14.8629 20.0945C14.5989 20.5811 14.4747 21.1312 14.504 21.6839C12.8619 22.1083 11.1388 22.1076 9.497 21.6819C9.52605 21.1292 9.4016 20.5792 9.13742 20.0927C8.87324 19.6063 8.47964 19.2025 8.00017 18.9259C7.5207 18.6493 6.97405 18.5108 6.42073 18.5256C5.8674 18.5404 5.32896 18.7081 4.865 19.0099C4.27399 18.4069 3.76159 17.7315 3.34 16.9999ZM9 17.1959C10.0656 17.8106 10.8668 18.797 11.25 19.9659C11.749 20.0129 12.25 20.0139 12.749 19.9669C13.1324 18.7978 13.934 17.8114 15 17.1969C16.0652 16.5806 17.3205 16.3794 18.525 16.6319C18.815 16.2239 19.065 15.7889 19.273 15.3339C18.4524 14.4174 17.9991 13.2302 18 11.9999C18 10.7399 18.47 9.56295 19.273 8.66595C19.0635 8.21109 18.8125 7.77658 18.523 7.36795C17.3193 7.62025 16.0648 7.41942 15 6.80395C13.9344 6.18932 13.1332 5.20293 12.75 4.03394C12.251 3.98694 11.75 3.98594 11.251 4.03294C10.8676 5.20209 10.066 6.1885 9 6.80295C7.93478 7.41926 6.67948 7.62046 5.475 7.36795C5.18556 7.77623 4.93513 8.21081 4.727 8.66595C5.54757 9.5825 6.00088 10.7697 6 11.9999C6 13.2599 5.53 14.4369 4.727 15.3339C4.93647 15.7888 5.18754 16.2233 5.477 16.6319C6.68072 16.3796 7.93521 16.5805 9 17.1959ZM12 14.9999C11.2044 14.9999 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 11.9999C9 11.2043 9.31607 10.4412 9.87868 9.87862C10.4413 9.31602 11.2044 8.99995 12 8.99995C12.7956 8.99995 13.5587 9.31602 14.1213 9.87862C14.6839 10.4412 15 11.2043 15 11.9999C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 14.9999 12 14.9999ZM12 12.9999C12.2652 12.9999 12.5196 12.8946 12.7071 12.7071C12.8946 12.5195 13 12.2652 13 11.9999C13 11.7347 12.8946 11.4804 12.7071 11.2928C12.5196 11.1053 12.2652 10.9999 12 10.9999C11.7348 10.9999 11.4804 11.1053 11.2929 11.2928C11.1054 11.4804 11 11.7347 11 11.9999C11 12.2652 11.1054 12.5195 11.2929 12.7071C11.4804 12.8946 11.7348 12.9999 12 12.9999Z" fill="black"></path>
+</svg>
+
+          Manage preferences
+        </a>
+      </li>
+      <hr>
+      <li>
+        <a class="crayons-link crayons-link--block" href="https://dev.to/report-abuse?billboard=218176">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" aria-hidden="true" class="crayons-icon c-btn__icon">
+    <path d="M12.382 3a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5v6H3V3h9.382Zm-.618 2H5v9h8.236l1 2H19V7h-6.236l-1-2Z"></path>
+</svg>
+
+          Report billboard
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+      <button id="sponsorship-close-trigger-218176" aria-controls="sponsorship-close-218176" class="crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="a7n2zr3kbvqy4xrl1mv27n3zmktlr2j6" class="crayons-icon pointer-events-none"><title id="a7n2zr3kbvqy4xrl1mv27n3zmktlr2j6">Close</title><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path></svg>
+
+      </button>
+    </div>
+    <div class="p-1 text-styles text-styles--billboard">
+      <p>Explore a trove of insights in this engaging article, celebrated within our welcoming DEV Community. <strong>Developers from every background</strong> are invited to join and enhance our shared wisdom.</p>
+<p>A genuine "thank you" can truly uplift someone’s day. Feel free to express your gratitude in the comments below!</p>
+<p>On DEV, <strong>our collective exchange of knowledge lightens the road ahead</strong> and strengthens our community bonds. Found something valuable here? A small thank you to the author can make a big difference.</p>
+<h3>  <a name="-cta-httpsdevtoenterstatenewuser-" href="#-cta-httpsdevtoenterstatenewuser-">  </a>  <a href="https://dev.to/enter?state=new-user&amp;bb=218176" class="ltag_cta ltag_cta--branded" role="button">Okay</a>
+</h3>
+    </div>
+  </div>
+
+</div></div>
+
+
+    <div id="runtime-banner-container"></div>
+  </div>
+</div>
+    
+
+<footer id="footer" class="crayons-footer print-hidden">
+  <div id="footer-container" class="crayons-footer__container">
+
+
+        <style>
+  .long-bb-body {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+  .long-bb-bottom {
+    height: 180px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+    margin-top: -180px;
+    position:relative;
+    z-index: 5;
+  }
+</style>
+
+  <div style="" data-display-unit="" data-id="146443" data-category-click="click" data-category-impression="impression" data-context-type="home" data-special="nothing" data-article-id="" data-type-of="in_house">
+      <p style="font-weight: bold;margin-bottom: 10px">
+Thank you to our Diamond Sponsor <a href="https://neon.tech/?bb=146443" target="_blank" rel="noopener noreferrer">Neon</a> for supporting our community.
+</p>
+  </div>
+
+
+    <p class="fs-s crayons-footer__description">
+      <a class="c-link c-link--branded fw-medium" aria-label="DEV Community Home" href="https://dev.to/">DEV Community</a> — A constructive and inclusive social network for software developers. With you every step of your journey.
+    </p>
+
+    <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="">
+        <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/">
+      Home
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/++">
+      DEV++
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/pod">
+      Podcasts
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/videos">
+      Videos
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/tags">
+      Tags
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/help">
+      DEV Help
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://shop.forem.com/" target="_blank" rel="noopener noreferrer">
+      Forem Shop
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/advertise">
+      Advertise on DEV
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/challenges">
+      DEV Challenges
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/showcase">
+      DEV Showcase
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/about">
+      About
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/contact">
+      Contact
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/free-postgres-database-tier">
+      Free Postgres Database
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/software-comparisons">
+      Software comparisons
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+
+    </ul>
+
+    <ul class="footer__nav-links flex gap-2 justify-center flex-wrap fs-s p-0" style="">
+        <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/code-of-conduct">
+      Code of Conduct
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/privacy">
+      Privacy Policy
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+  <li class="footer__nav-link flex items-center">
+    <a href="https://dev.to/terms">
+      Terms of use
+    </a>
+    <span class="dot ml-2"></span>
+  </li>
+
+    </ul>
+
+    <div class="fs-s">
+      <p>Built on <a class="c-link c-link--branded" target="_blank" rel="noopener noreferrer" href="https://www.forem.com/">Forem</a> — the <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/opensource">open source</a> software that powers <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/">DEV</a> and other inclusive communities.</p>
+      <p>Made with love and <a target="_blank" rel="noopener" class="c-link c-link--branded" href="https://dev.to/t/rails">Ruby on Rails</a>. DEV Community <span title="copyright">©</span> 2016 - 2025.</p>
+    </div>
+  </div>
+</footer>
+<div id="snack-zone"></div>
+
+    <div id="global-signup-modal" class="authentication-modal hidden">
+  <div class="authentication-modal__container">
+    <figure class="authentication-modal__image-container">
+      <img class="authentication-modal__image" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_002.png" alt="DEV Community" loading="lazy">
+    </figure>
+    <div class="authentication-modal__content">
+      <p class="authentication-modal__description">
+          We're a place where coders share, stay up-to-date and grow their careers.
+      </p>
+    </div>
+    <div class="authentication-modal__actions">
+      <a href="https://dev.to/enter" class="crayons-btn" aria-label="Log in" data-no-instant="">
+        Log in
+      </a>
+      <a href="https://dev.to/enter?state=new-user" class="crayons-btn crayons-btn--ghost-brand js-global-signup-modal__create-account" aria-label="Create new account" data-no-instant="">
+        Create account
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/signupModalShortcuts-0b25469b985100a01e94cbd7fccaf7f0a4d776e1.js" defer="defer"></script>
+
+    <div id="cookie-consent"></div>
+  <div id="i18n-translations" data-translations="{&quot;en&quot;:{&quot;core&quot;:{&quot;add_comment&quot;:&quot;Add comment&quot;,&quot;beta&quot;:&quot;beta&quot;,&quot;comment&quot;:&quot;Comment&quot;,&quot;copy_link&quot;:&quot;Copy link&quot;,&quot;edit_profile&quot;:&quot;Edit profile&quot;,&quot;follow&quot;:&quot;Follow&quot;,&quot;follow_back&quot;:&quot;Follow back&quot;,&quot;following&quot;:&quot;Following&quot;,&quot;like&quot;:&quot;Like&quot;,&quot;loading&quot;:&quot;loading...&quot;,&quot;reaction&quot;:&quot;Reaction&quot;,&quot;report_abuse&quot;:&quot;Report abuse&quot;,&quot;search&quot;:&quot;Search&quot;,&quot;success_settings&quot;:&quot;Successfully updated settings.&quot;,&quot;counted_organization&quot;:{&quot;one&quot;:&quot;%{count} organization&quot;,&quot;other&quot;:&quot;%{count} organizations&quot;},&quot;counted_user&quot;:{&quot;one&quot;:&quot;%{count} person&quot;,&quot;other&quot;:&quot;%{count} people&quot;},&quot;not_following&quot;:&quot;You're not following anyone&quot;,&quot;following_everyone&quot;:&quot;You're following %{details} (everyone)&quot;,&quot;you_are_following&quot;:&quot;You're following&quot;,&quot;and&quot;:&quot;and&quot;}}}"></div>
+  <div id="reaction-category-resources" class="hidden" aria-hidden="true">
+    <img data-name="Like" data-slug="like" data-position="1" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2b.svg" width="18" height="18">
+    <img data-name="Unicorn" data-slug="unicorn" data-position="2" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4.svg" width="18" height="18">
+    <img data-name="Exploding Head" data-slug="exploding_head" data-position="3" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41.svg" width="18" height="18">
+    <img data-name="Raised Hands" data-slug="raised_hands" data-position="4" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01.svg" width="18" height="18">
+    <img data-name="Fire" data-slug="fire" data-position="5" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332.svg" width="18" height="18">
+</div>
+
+    <script>
+  var userSignedIn = false;
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initAuth();
+  } else {
+    document.addEventListener('DOMContentLoaded', initAuth);
+  }
+
+  function initAuth() {
+    var paramToken = new URLSearchParams(window.location.search).get('jwt');
+
+    if (paramToken && !userSignedIn) {
+      authenticateUser(paramToken);
+    } else {
+      var iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = 'https://forem.com/auth_pass/iframe';
+  
+      document.body.appendChild(iframe);
+  
+      window.addEventListener('message', function(event) {
+        if (event.origin !== 'https://forem.com' && event.origin !== window.location.origin) {
+          return;
+        }
+  
+        var data = event.data;
+  
+        if (data.authenticated && !userSignedIn) {
+          authenticateUser(data.token);
+        } else if(data.authenticated && window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+          window.ReactNativeWebView.postMessage(JSON.stringify({
+            action: 'login',
+            token: data.token,
+          }));
+        }
+      });  
+    }
+
+    function authenticateUser(token) {
+      fetch('/auth_pass/token_login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': getMetaContent('csrf-token'),
+        },
+        body: JSON.stringify({ token: token }),
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        if (data.success) {
+          if (document.head.querySelector('meta[name="user-signed-in"][content="false"]')) {
+            // Reload the page to update the user's state
+            location.reload();
+          }
+        }
+      })
+      .catch(function(error) {
+        console.error('Error during authentication:', error);
+      });
+    }
+
+    function getMetaContent(name) {
+      var element = document.querySelector('meta[name="' + name + '"]');
+      return element ? element.getAttribute('content') : '';
+    }
+  }
+</script>
+
+  
+  
+  
+<iframe style="display: none;" src="Make%20your%20Vite%20applications%20run%20a%20little%20faster%20-%20DEV%20Community-seft_files/iframe.htm"></iframe></body></html>

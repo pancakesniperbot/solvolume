@@ -358,15 +358,18 @@ function AnimateMobileMenu({
         height: isOpen ? "auto" : 0
       }}
       transition={{
-        duration: 0.3,
-        ease: "easeInOut"
+        duration: 0.2,
+        ease: "easeOut",
+        opacity: { duration: 0.15 }
       }}
       className={`md:hidden fixed top-16 left-0 right-0 bg-[#0c0c15]/95 backdrop-blur-md z-40 overflow-hidden border-b border-[#1e2035] ${
         isOpen ? "shadow-[0_10px_30px_rgba(0,0,0,0.3)]" : ""
       }`}
       style={{ 
-        touchAction: "pan-y", // Better touch handling for mobile
-        WebkitOverflowScrolling: "touch" // Better scroll on iOS
+        touchAction: "pan-y",
+        WebkitOverflowScrolling: "touch",
+        willChange: "opacity, height",
+        transform: "translateZ(0)"
       }}
     >
       {children}

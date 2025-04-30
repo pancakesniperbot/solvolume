@@ -20,7 +20,7 @@ export default defineConfig({
     target: 'es2020',
     minify: 'esbuild',
     chunkSizeWarningLimit: 1000,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     rollupOptions: {
       input: './index.html',
       output: {
@@ -56,36 +56,62 @@ export default defineConfig({
             '@radix-ui/react-tooltip'
           ],
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
-          'animation': ['framer-motion'],
+          'animation': ['framer-motion', 'framer-motion-3d'],
           'icons': ['lucide-react', 'react-icons'],
           'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
         },
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash][extname]'
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.');
+          const ext = info[info.length - 1];
+          if (/\.(png|jpe?g|gif|svg|webp|avif)$/.test(assetInfo.name)) {
+            return `assets/images/[name].[hash][extname]`;
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
+            return `assets/fonts/[name].[hash][extname]`;
+          }
+          return `assets/[name].[hash][extname]`;
+        }
       }
     },
-    sourcemap: true,
-    assetsInlineLimit: 8192,
+    sourcemap: false,
+    assetsInlineLimit: 4096,
   },
   css: {
     devSourcemap: true,
+    modules: {
+      localsConvention: 'camelCase',
+      generateScopedName: '[name]__[local]___[hash:base64:5]'
+    }
   },
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'framer-motion',
+      'framer-motion-3d',
       'three',
       '@react-three/fiber',
       '@react-three/drei',
       'three-mesh-bvh'
     ],
-    exclude: ['@babel/runtime']
+    exclude: ['@babel/runtime'],
+    esbuildOptions: {
+      target: 'es2020'
+    }
   },
   server: {
     fs: {
       strict: true,
     },
+    hmr: {
+      overlay: false
+    }
   },
+  preview: {
+    port: 4173,
+    strictPort: true,
+    host: true
+  }
 }); 
