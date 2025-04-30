@@ -1,4 +1,4 @@
-import { TrendingUp, Monitor, Shield, Wallet, BarChart2, Users, Target, ChartBar, Rocket, Clock, Award, Zap } from "lucide-react";
+import { TrendingUp, Monitor, Shield, Wallet, BarChart2, Users, Target, BarChart, Rocket, Clock, Award, Zap } from "lucide-react";
 import { SiSolana } from "react-icons/si";
 import type { FeatureDetailContent } from "@/components/FeatureDetailModal";
 
@@ -371,7 +371,7 @@ export const createFOMOContent: FeatureDetailContent = {
 // Real-Time Performance Analytics Content
 export const performanceAnalyticsContent: FeatureDetailContent = {
   title: "Real-Time Performance Analytics",
-  icon: <ChartBar className="h-6 w-6 text-blue-400" />,
+  icon: <BarChart className="h-6 w-6 text-blue-400" />,
   description: (
     <>
       <p>
