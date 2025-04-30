@@ -1,18 +1,25 @@
 [build]
-command = "cd client && npm install --legacy-peer-deps && npm run build"
-publish = "client/dist"
+command = "npm run build"
 
+# Environment variables section
 [build.environment]
 NODE_VERSION = "20"
 
+# Configure output directory for Pages
 [site]
-bucket = "./client/dist"
+bucket = "dist"
 
+# Pages-specific configuration
 [pages]
-pages_build_output_dir = "client/dist"
 compatibility_date = "2023-10-30"
 compatibility_flags = ["nodejs_compat"]
 
+# Define where your built assets are
+[pages.build]
+command = "npm run build"
+output_directory = "dist"
+
+# Route all requests to index.html for SPA routing
 [[redirects]]
 from = "/*"
 to = "/index.html"

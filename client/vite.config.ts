@@ -16,16 +16,20 @@ export default defineConfig({
     emptyOutDir: true,
     minify: true,
     cssMinify: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        },
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          'react-libs': ['react-helmet', 'wouter', 'framer-motion'],
+          radix: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
+          utils: ['class-variance-authority', 'clsx', 'tailwind-merge', 'tailwindcss-animate'],
+          icons: ['lucide-react', 'react-icons'],
+          vendor: ['axios', 'date-fns']
+        }
       },
     },
   },

@@ -1,7 +1,11 @@
+import React from 'react';
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import "./components/ui-overrides.css";
+
+// Import the Three.js patch to fix BatchedMesh error
+import './lib/three-patch';
 
 // Apply dark theme directly to the document
 document.documentElement.classList.add("dark");
@@ -59,4 +63,8 @@ window.addEventListener('error', (event) => {
 });
 
 // Performant rendering
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

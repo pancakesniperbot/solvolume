@@ -59,36 +59,52 @@ echo "  4. Set the public directory to: dist/public"
 echo
 echo "Happy deploying! 🎉"
 
-echo "Starting Cloudflare Pages optimized build process..."
+echo "🚀 Starting Cloudflare Pages optimized build process..."
 
 # Set environment to production
 export NODE_ENV=production
 
-# Clean up any old builds
+# Clean up previous builds
+rm -rf dist
 rm -rf client/dist
 
-# Install dependencies in client folder only
-echo "Installing dependencies..."
-cd client
-npm install --legacy-peer-deps
+# Install dependencies at root level
+echo "📦 Installing root dependencies..."
+npm install --no-fund --legacy-peer-deps
 
 # Build the project
-echo "Building optimized production bundle..."
+echo "🏗️ Building optimized production bundle..."
+cd client
+npm install --no-fund --legacy-peer-deps
 npm run build
+cd ..
 
-# Optimize images
-echo "Optimizing assets..."
-find dist -type f -name "*.png" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
-find dist -type f -name "*.jpg" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
-find dist -type f -name "*.jpeg" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+# Create dist directory if it doesn't exist
+mkdir -p dist
 
-# Create Cloudflare Pages configuration file
-echo "Creating Cloudflare Pages configuration..."
+# Copy client files to dist
+echo "📂 Setting up distribution files..."
+cp -r client/dist/* dist/
+
+# Optimize images if needed
+echo "🖼️ Optimizing assets..."
+if [ -x "$(command -v npx)" ]; then
+  find dist -type f -name "*.png" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+  find dist -type f -name "*.jpg" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+  find dist -type f -name "*.jpeg" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+else
+  echo "⚠️ sharp-cli not available, skipping image optimization"
+fi
+
+# Create Cloudflare Pages configuration files
+echo "⚙️ Creating Cloudflare Pages configuration..."
+
+# Create _redirects file for SPA routing
 cat > dist/_redirects << EOL
 /* /index.html 200
 EOL
 
-# Create headers file for Cloudflare Pages
+# Create _headers file for proper caching and security
 cat > dist/_headers << EOL
 /*
   Cache-Control: public, max-age=31536000, immutable
@@ -104,5 +120,5 @@ cat > dist/_headers << EOL
   Cache-Control: public, max-age=31536000, immutable
 EOL
 
-echo "Build completed successfully! Ready for Cloudflare Pages deployment."
-cd ..
+echo "✅ Build completed successfully! Ready for Cloudflare Pages deployment."
+echo "📂 Your optimized files are in the 'dist' directory."
