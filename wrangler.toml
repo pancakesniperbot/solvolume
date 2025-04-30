@@ -2,10 +2,6 @@ name = "solvolume"
 main = "worker.js"
 compatibility_date = "2023-08-01"
 
-# For connecting the Worker to Cloudflare Pages
-[site]
-bucket = "./client/dist"
-
 # KV storage configuration (optional)
 # [[kv_namespaces]]
 # binding = "CRYPTO_KV"
@@ -16,25 +12,14 @@ bucket = "./client/dist"
 [triggers]
 crons = ["*/1 * * * *"] # Runs every minute
 
-[build]
-command = "cd client && npm install && npm run build"
-publish = "client/dist"
+# Worker environment variables
+[vars]
+VITE_WS_URL = "wss://small-meadow-d788.comojaw412.workers.dev/ws"
 
-[build.environment]
-NODE_VERSION = "20"
-
-[pages]
-pages_build_output_dir = "client/dist"
-
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+[site]
+bucket = "client/dist"
 
 [env.production]
 workers_dev = true
 route = "small-meadow-d788.comojaw412.workers.dev/*"
 zone_id = "your-zone-id"
-
-[env.production.vars]
-VITE_WS_URL = "wss://small-meadow-d788.comojaw412.workers.dev/ws" 

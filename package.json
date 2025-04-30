@@ -7,7 +7,7 @@
     "dev": "npm run dev:frontend",
     "build": "npm run build:frontend && npm run build:worker",
     "build:frontend": "cd client && npm install && npm run build",
-    "build:worker": "echo 'Worker build complete'",
+    "build:worker": "cp worker.js client/dist/worker.js && echo 'Worker build complete'",
     "dev:frontend": "cd client && npm run dev",
     "dev:worker": "wrangler dev",
     "deploy": "wrangler publish"

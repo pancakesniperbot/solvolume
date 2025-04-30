@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "client/dist",
+  "nodeVersion": "20",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/api/.*", "dest": "/worker.js" },
+    { "src": "/ws", "dest": "/worker.js" },
+    { "src": ".*", "dest": "/index.html" }
+  ]
+} 
