@@ -9,7 +9,7 @@
     "postbuild": "node scripts/update-image-references.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "optimize-images": "node scripts/optimize-images.js",
+    "optimize-images": "node scripts/optimize-images.cjs",
     "extract-critical": "node scripts/extract-critical-css.js",
     "update-refs": "node scripts/update-image-references.js",
     "analyze": "vite build --mode analyze",
