@@ -4,17 +4,12 @@
  */
 
 import * as THREE from 'three';
+import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 
-// Create a mock BatchedMesh class if it doesn't exist in Three.js
-// This prevents the import error from three-mesh-bvh
-if (!(THREE as any).BatchedMesh) {
-  // Add a minimal mock implementation
-  (THREE as any).BatchedMesh = class BatchedMesh extends THREE.Mesh {
-    constructor() {
-      super();
-      console.warn('BatchedMesh is being used as a mock implementation.');
-    }
-  };
-}
+// Extend the Mesh class with BVH functionality
+THREE.Mesh.prototype.computeBoundsTree = computeBoundsTree;
+THREE.Mesh.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.acceleratedRaycast = acceleratedRaycast;
 
-export default THREE; 
+// Export the patched THREE
+export { THREE }; 
