@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import webSocketService, { GameMessage } from '../services/WebSocketService';
+import { getMemeCoins } from '@/services/memeCoinsService';
 
 // Meme coin interface - reusing from MemeCoinsIndicator component
 type SentimentStatus = 'bullish' | 'neutral' | 'bearish' | 'extreme-bullish' | 'extreme-bearish';
@@ -134,101 +134,18 @@ const cryptoReducer = (state: CryptoState, action: CryptoAction): CryptoState =>
 export const CryptoProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cryptoReducer, initialState);
 
-  // Set up WebSocket message handling (but don't auto-connect)
-  useEffect(() => {
-    // Handle WebSocket connection status changes
-    const handleConnect = () => {
-      dispatch({ type: 'SET_CONNECTED', payload: true });
-      // Show connected state but don't auto-request data
-    };
-
-    const handleDisconnect = () => {
-      dispatch({ type: 'SET_CONNECTED', payload: false });
-      // Don't auto-set loading on disconnect, as this creates pressure to reconnect
-      // Instead, let the user decide when to refresh
-    };
-
-    // Handle incoming WebSocket messages
-    const handleMessage = (message: GameMessage) => {
-      if (message.type === 'price_update' && message.data) {
-        // Convert prices to MemeCoin format
-        const prices = message.data.prices.map((price: any) => ({
-          id: price.symbol,
-          name: price.name,
-          symbol: price.symbol,
-          price: price.price,
-          change24h: price.change,
-          sentiment: 50 + (price.change * 5), // Derive sentiment from price change
-          volume24h: price.volume,
-          color: getSentimentColorFromChange(price.change),
-          trending: price.trending
-        }));
-
-        // Update all related state in one dispatch
-        if (message.data.marketSentiment && message.data.marketInsight && message.data.marketData) {
-          dispatch({
-            type: 'UPDATE_ALL',
-            payload: {
-              prices,
-              marketSentiment: message.data.marketSentiment,
-              marketInsight: message.data.marketInsight,
-              marketData: message.data.marketData
-            }
-          });
-        } else {
-          // Fallback for partial updates
-          dispatch({ type: 'SET_PRICES', payload: prices });
-          
-          if (message.data.marketSentiment) {
-            dispatch({ type: 'SET_MARKET_SENTIMENT', payload: message.data.marketSentiment });
-          }
-          
-          if (message.data.marketInsight) {
-            dispatch({ type: 'SET_MARKET_INSIGHT', payload: message.data.marketInsight });
-          }
-          
-          if (message.data.marketData) {
-            dispatch({ type: 'SET_MARKET_DATA', payload: message.data.marketData });
-          }
-        }
-      }
-    };
-
-    // Register event listeners
-    webSocketService.addConnectListener(handleConnect);
-    webSocketService.addDisconnectListener(handleDisconnect);
-    webSocketService.addMessageListener(handleMessage);
-
-    // Set initial connection state and auto-connect to fetch initial data
-    dispatch({ type: 'SET_CONNECTED', payload: webSocketService.isConnected() });
-    
-    // Auto-connect to WebSocket and request initial data 
-    if (!webSocketService.isConnected()) {
-      // Connect to WebSocket
-      webSocketService.connect();
-      
-      // Request data after a short delay to ensure connection is established
-      const initialDataTimer = setTimeout(() => {
-        if (webSocketService.isConnected()) {
-          webSocketService.sendMessage({
-            type: 'refresh_request',
-            data: {
-              timestamp: Date.now()
-            }
-          });
-        }
-      }, 500);
-      
-      // Cleanup function
-      return () => clearTimeout(initialDataTimer);
-    }
-
-    // Cleanup function
-    return () => {
-      webSocketService.removeConnectListener(handleConnect);
-      webSocketService.removeDisconnectListener(handleDisconnect);
-      webSocketService.removeMessageListener(handleMessage);
-    };
+  // Fetch meme coin data once on mount
+  React.useEffect(() => {
+    let isMounted = true;
+    getMemeCoins()
+      .then((coins) => {
+        if (isMounted) dispatch({ type: 'SET_PRICES', payload: coins });
+      })
+      .catch((err) => {
+        console.error('Error fetching meme coins:', err);
+        if (isMounted) dispatch({ type: 'SET_LOADING', payload: false });
+      });
+    return () => { isMounted = false; };
   }, []);
 
   return (
