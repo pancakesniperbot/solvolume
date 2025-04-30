@@ -225,17 +225,4 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-shimmer {
   animation: shimmer 2s infinite;
-}
-
-/* Background colors with proper contrast */
-.bg-\[#0a0b14\] {
-  background-color: rgb(10, 11, 20);
-}
-
-.bg-\[#0c0c15\] {
-  background-color: rgb(12, 12, 21);
-}
-
-.bg-\[#1e2035\] {
-  background-color: rgb(30, 32, 53);
 } 

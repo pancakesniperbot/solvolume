@@ -53,6 +53,11 @@ export default {
           light: 'rgba(153, 69, 255, 0.1)',
           border: 'rgba(153, 69, 255, 0.3)',
         },
+        dark: {
+          DEFAULT: '#0a0b14',
+          lighter: '#0c0c15',
+          card: '#1e2035',
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
