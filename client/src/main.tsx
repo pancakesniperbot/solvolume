@@ -1,10 +1,9 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import "./components/ui-overrides.css"; // Import dark theme overrides
-import { installManualWebSocketOverride } from "./lib/manualWebSocket";
+import "./components/ui-overrides.css";
 
-// Apply dark theme directly to the document with enhanced styling
+// Apply dark theme directly to the document
 document.documentElement.classList.add("dark");
 document.documentElement.setAttribute("data-theme", "dark");
 document.body.setAttribute("data-theme", "dark");
@@ -13,26 +12,6 @@ document.body.setAttribute("data-theme", "dark");
 document.documentElement.style.colorScheme = "dark";
 document.body.style.backgroundColor = "#080810";
 document.body.style.color = "#ffffff";
-
-// Install our WebSocket override to prevent any automatic reconnection
-// This completely replaces the WebSocket implementation with one that doesn't auto-reconnect
-installManualWebSocketOverride();
-
-// Override console.log to block automatic reconnection messages
-// This prevents "attempting to reconnect" messages from appearing
-const originalConsoleLog = console.log;
-console.log = function(...args) {
-  // Block any automatic reconnection messages
-  if (args[0] && typeof args[0] === 'string' && 
-      (args[0].includes('attempting to reconnect') || 
-       args[0].includes('reconnect'))) {
-    // Replace with a user-friendly message about manual refresh
-    originalConsoleLog.apply(console, ["WebSocket disconnected. Manual refresh required."]);
-    return;
-  }
-  // Pass through all other messages
-  originalConsoleLog.apply(console, args);
-};
 
 // Define a global type for window with our custom properties
 declare global {

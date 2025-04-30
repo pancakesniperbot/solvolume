@@ -10,6 +10,8 @@ bucket = "./client/dist"
 
 [pages]
 pages_build_output_dir = "client/dist"
+compatibility_date = "2023-10-30"
+compatibility_flags = ["nodejs_compat"]
 
 [[redirects]]
 from = "/*"

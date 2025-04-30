@@ -6,27 +6,31 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, 'src'),
+      '@shared': path.resolve(__dirname, '../shared'),
+      '@assets': path.resolve(__dirname, '../attached_assets'),
     },
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
-    chunkSizeWarningLimit: 1000,
+    emptyOutDir: true,
+    minify: true,
+    cssMinify: true,
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-helmet'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
-          icons: ['lucide-react', 'react-icons'],
-          motion: ['framer-motion'],
-          utils: ['class-variance-authority', 'clsx', 'tailwind-merge']
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
         },
       },
     },
   },
   server: {
-    port: 3000,
-    host: true,
+    port: 5173,
+    host: '0.0.0.0',
   },
 }); 

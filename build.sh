@@ -58,3 +58,51 @@ echo "  3. Set the build command to: ./build.sh"
 echo "  4. Set the public directory to: dist/public"
 echo
 echo "Happy deploying! 🎉"
+
+echo "Starting Cloudflare Pages optimized build process..."
+
+# Set environment to production
+export NODE_ENV=production
+
+# Clean up any old builds
+rm -rf client/dist
+
+# Install dependencies in client folder only
+echo "Installing dependencies..."
+cd client
+npm install --legacy-peer-deps
+
+# Build the project
+echo "Building optimized production bundle..."
+npm run build
+
+# Optimize images
+echo "Optimizing assets..."
+find dist -type f -name "*.png" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+find dist -type f -name "*.jpg" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+find dist -type f -name "*.jpeg" -exec sh -c 'echo "Optimizing $1..." && npx -y sharp-cli --input "$1" --output "$1" --quality 80' sh {} \;
+
+# Create Cloudflare Pages configuration file
+echo "Creating Cloudflare Pages configuration..."
+cat > dist/_redirects << EOL
+/* /index.html 200
+EOL
+
+# Create headers file for Cloudflare Pages
+cat > dist/_headers << EOL
+/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Content-Security-Policy: default-src 'self' https:; font-src 'self' https: data:; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; connect-src 'self' https: wss:;
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+EOL
+
+echo "Build completed successfully! Ready for Cloudflare Pages deployment."
+cd ..
