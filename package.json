@@ -60,18 +60,32 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.23.9",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-url": "^8.0.2",
+    "@rollup/plugin-virtual": "^3.0.1",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
+    "lightningcss": "^1.24.1",
     "postcss": "^8.4.47",
     "postcss-import": "^16.0.0",
     "postcss-nesting": "^12.0.1",
+    "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "^3.4.17",
+    "terser": "^5.29.2",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^5.0.8",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-pwa": "^0.19.0",
+    "vite-tsconfig-paths": "^4.3.1"
   },
   "engines": {
     "node": ">=18.17.1"

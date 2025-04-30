@@ -1,6 +1,6 @@
 [build]
 command = "npm run build"
-pages_build_output_dir = "dist"
+pages_build_output_dir = "client/dist"
 
 # Environment variables section
 [build.environment]
@@ -8,8 +8,8 @@ NODE_VERSION = "20"
 
 # Configure output directory for Pages
 [site]
-bucket = "./dist"
-entry-point = "dist/index.html"
+bucket = "./client/dist"
+entry-point = "."
 
 # Pages-specific configuration
 [pages]
@@ -26,4 +26,13 @@ status = 200
 format = "service-worker"
 
 [env.production]
-name = "solvolume" 
+name = "solvolume"
+workers_dev = true
+route = ""
+zone_id = ""
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+[env.production.build]
+command = "npm run build" 
