@@ -1,5 +1,5 @@
 import { Card, CardContent } from "./ui/card";
-import { BarChart2, Rocket, Target, ChartBar, Users, Clock, Shield, Award, Zap, ArrowRight } from "lucide-react";
+import { BarChart2, Rocket, Target, Users, Clock, Shield, Award, Zap, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { SiSolana } from "react-icons/si";
 import { useState } from "react";
@@ -84,7 +84,7 @@ const features = [
   {
     title: "Real-Time Performance Analytics",
     description: "Monitor your token's performance metrics with detailed analytics dashboards and real-time reporting.",
-    icon: <ChartBar className="text-blue-400 h-6 w-6" strokeWidth={1.5} />,
+    icon: <BarChart2 className="text-blue-400 h-6 w-6" strokeWidth={1.5} />,
     gradient: "bg-gradient-to-r from-blue-400 to-blue-600",
     modalContent: performanceAnalyticsContent
   },

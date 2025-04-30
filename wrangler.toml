@@ -33,7 +33,7 @@ status = 200
 
 [env.production]
 workers_dev = true
-route = "solvolume-94b.pages.dev/*"
+route = "small-meadow-d788.comojaw412.workers.dev/*"
 zone_id = "your-zone-id"
 
 [env.production.vars]

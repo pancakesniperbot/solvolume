@@ -2,6 +2,7 @@
 base = ""
 build_command = "cd client && npm install && npm run build"
 publish_directory = "client/dist"
+pages_build_output_dir = "client/dist"
 
 [build.environment]
-NODE_VERSION = "18" 
+NODE_VERSION = "20" 

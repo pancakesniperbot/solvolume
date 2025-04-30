@@ -1,15 +1,16 @@
 {
   "name": "solvolume",
   "version": "1.0.0",
-  "description": "Solana Volume Bot",
-  "main": "index.js",
+  "description": "Solana Volume Bot - Real-time trading volume for Solana tokens",
+  "main": "worker.js",
   "scripts": {
+    "dev": "npm run dev:frontend",
     "build": "npm run build:frontend && npm run build:worker",
     "build:frontend": "cd client && npm install && npm run build",
-    "build:worker": "wrangler deploy",
-    "dev": "concurrently \"cd client && npm run dev\" \"npm run dev:worker\"",
+    "build:worker": "echo 'Worker build complete'",
+    "dev:frontend": "cd client && npm run dev",
     "dev:worker": "wrangler dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "wrangler publish"
   },
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.4.0",
