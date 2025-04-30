@@ -442,7 +442,6 @@ export function SimpleSolanaMascot({
     console.log("Manual refresh requested");
     
     // Show loading indicator
-    // We don't need a full loading state since the refresh is fast
     const refreshIcon = document.querySelector("[data-refresh-icon]");
     if (refreshIcon) {
       refreshIcon.classList.add("animate-spin");
@@ -451,16 +450,12 @@ export function SimpleSolanaMascot({
       }, 1000);
     }
     
-    // Connect to WebSocket to get fresh data
-    webSocketService.connect();
-    
-    // Send refresh request message
-    webSocketService.sendMessage({
-      type: 'refresh_request',
-      data: {
-        timestamp: Date.now()
-      }
-    });
+    // Request data refresh
+    if (!webSocketStore.isConnected) {
+      webSocketStore.connect();
+    } else {
+      webSocketStore.sendMessage({ type: 'refresh' });
+    }
   };
 
   // Handle AI question submission - use Perplexity API
