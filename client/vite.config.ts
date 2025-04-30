@@ -30,7 +30,7 @@ export default defineConfig({
             'clsx',
             'tailwind-merge',
           ],
-          'framer-motion': ['framer-motion', 'framer-motion-3d'],
+          'framer-motion': ['framer-motion'],
           'three': ['three', '@react-three/fiber', '@react-three/drei'],
         },
         assetFileNames: (assetInfo) => {
@@ -76,7 +76,6 @@ export default defineConfig({
       'clsx',
       'tailwind-merge',
       'framer-motion',
-      'framer-motion-3d',
       'three',
       '@react-three/fiber',
       '@react-three/drei',
