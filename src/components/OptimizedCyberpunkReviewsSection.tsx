@@ -10,6 +10,7 @@ import {
   FaStar, FaStarHalf, FaRedditAlien, FaDiscord, FaTwitter, FaTelegram
 } from "react-icons/fa";
 import { SiTrustpilot, SiG2, SiProducthunt } from "react-icons/si";
+import { SvgSkeleton } from "@/components/ui/skeleton"
 
 // Emotion icons for review sentiment
 const EmotionIcons = [
@@ -459,6 +460,7 @@ const OptimizedCyberpunkAvatar = ({
   name: string;
 }) => {
   const [imgError, setImgError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Create initials from the name
   const getInitials = (name: string) => {
@@ -478,12 +480,18 @@ const OptimizedCyberpunkAvatar = ({
         border: `2px solid ${color}`
       }}
     >
+      {isLoading && (
+        <SvgSkeleton className="w-full h-full rounded-full" />
+      )}
+      
       {!imgError ? (
         <img 
           src={avatarUrl} 
           alt={name}
           className="w-full h-full object-cover"
           onError={() => setImgError(true)}
+          onLoad={() => setIsLoading(false)}
+          style={{ display: isLoading ? 'none' : 'block' }}
         />
       ) : (
         <div

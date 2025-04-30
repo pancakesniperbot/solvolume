@@ -1,3 +1,5 @@
+import { getPlaceholderSvg } from './imageCache';
+
 // Utility function to get cryptocurrency logos from local assets
 // W3C accessibility compliant, using only local images
 
@@ -37,8 +39,7 @@ export function getCoinLogo(symbol: string, imageUrl?: string | null): string {
   }
 
   // Return the placeholder image as a last resort
-  // This ensures we always return a local file and never an external URL
-  return `/images/coins/placeholder-coin.svg`;
+  return getPlaceholderSvg();
 }
 
 /**
@@ -63,5 +64,5 @@ export function getCryptoCompareLogo(symbol: string): string {
     'BOME': '/images/coins/BOME.svg'
   };
   
-  return localLogos[symbol.toUpperCase()] || `/images/coins/placeholder-coin.svg`;
+  return localLogos[symbol.toUpperCase()] || getPlaceholderSvg();
 }

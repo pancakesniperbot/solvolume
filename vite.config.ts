@@ -1,51 +1,20 @@
-<<<<<<< HEAD
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
-import { splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
+import terser from '@rollup/plugin-terser';
+import commonjs from '@rollup/plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import url from '@rollup/plugin-url';
+import virtual from '@rollup/plugin-virtual';
 
 export default defineConfig({
   plugins: [
     react(),
-    splitVendorChunkPlugin(),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-      "@assets": path.resolve(__dirname, "src/assets"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@services": path.resolve(__dirname, "src/services"),
-    },
-  },
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    rollupOptions: {
-      input: 'index.html',
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-=======
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { splitVendorChunkPlugin } from 'vite';
-import { visualizer } from 'rollup-plugin-visualizer';
-import path from 'path';
-
-export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }],
-          ['@babel/plugin-transform-runtime', { useESModules: true }]
-        ]
-      }
-    }),
-    splitVendorChunkPlugin(),
     visualizer({
-      filename: 'dist/stats.html',
-      open: true,
+      filename: 'stats.html',
+      open: false,
       gzipSize: true,
       brotliSize: true,
     }),
@@ -53,152 +22,110 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@services': path.resolve(__dirname, './src/services'),
     },
   },
   build: {
+    outDir: '../dist',
     target: 'esnext',
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
         drop_debugger: true,
-        pure_funcs: ['console.log'],
       },
-      mangle: true,
+      format: {
+        comments: false,
+      },
     },
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
+      plugins: [
+        nodeResolve(),
+        commonjs(),
+        terser(),
+        replace({
+          preventAssignment: true,
+          values: {
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+          },
+        }),
+        url({
+          limit: 0,
+          include: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.gif', '**/*.webp'],
+          fileName: '[name][extname]',
+        }),
+        virtual({
+          'virtual:config': `export default ${JSON.stringify({
+            version: process.env.npm_package_version,
+            buildTime: new Date().toISOString(),
+          })}`,
+        }),
+      ],
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'animation-vendor': ['framer-motion'],
->>>>>>> da983d9 (fix: update build scripts and convert to ES modules)
-          'ui-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-aspect-ratio',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-collapsible',
-            '@radix-ui/react-context-menu',
+          'radix-ui': [
             '@radix-ui/react-dialog',
             '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-hover-card',
-            '@radix-ui/react-label',
-            '@radix-ui/react-menubar',
-            '@radix-ui/react-navigation-menu',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-progress',
-            '@radix-ui/react-radio-group',
-            '@radix-ui/react-scroll-area',
-            '@radix-ui/react-select',
-            '@radix-ui/react-separator',
-            '@radix-ui/react-slider',
             '@radix-ui/react-slot',
-            '@radix-ui/react-switch',
-            '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
-            '@radix-ui/react-toggle',
-            '@radix-ui/react-toggle-group',
-<<<<<<< HEAD
-            '@radix-ui/react-tooltip'
-          ],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'animation': ['framer-motion'],
-          'icons': ['lucide-react', 'react-icons'],
-          'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
-        },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
-      },
-    },
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-=======
-            '@radix-ui/react-toolbar',
             '@radix-ui/react-tooltip',
           ],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
-          'utils': [
+          'ui-components': [
+            'class-variance-authority',
             'clsx',
             'tailwind-merge',
-            'class-variance-authority',
-            'tailwindcss-animate',
           ],
-          'icons': ['lucide-react', 'react-icons'],
+          'framer-motion': ['framer-motion'],
+          'three': ['three', '@react-three/fiber', '@react-three/drei'],
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
->>>>>>> da983d9 (fix: update build scripts and convert to ES modules)
+        assetFileNames: (assetInfo) => {
+          if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
+          
+          if (/\.(png|jpe?g|gif|svg|webp|ico)$/.test(assetInfo.name)) {
+            return `assets/images/[name]-[hash][extname]`;
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
+            return `assets/fonts/[name]-[hash][extname]`;
+          }
+          return `assets/[name]-[hash][extname]`;
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
       },
     },
-    cssCodeSplit: true,
-    sourcemap: false,
-<<<<<<< HEAD
-    target: 'esnext',
+    sourcemap: true,
     assetsInlineLimit: 4096,
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei'],
-    esbuildOptions: {
-      target: 'esnext',
-    }
-  },
-});
-=======
-    assetsInlineLimit: 4096,
-  },
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'framer-motion',
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-alert-dialog',
-      '@radix-ui/react-aspect-ratio',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-checkbox',
-      '@radix-ui/react-collapsible',
-      '@radix-ui/react-context-menu',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-hover-card',
-      '@radix-ui/react-label',
-      '@radix-ui/react-menubar',
-      '@radix-ui/react-navigation-menu',
-      '@radix-ui/react-popover',
-      '@radix-ui/react-progress',
-      '@radix-ui/react-radio-group',
-      '@radix-ui/react-scroll-area',
-      '@radix-ui/react-select',
-      '@radix-ui/react-separator',
-      '@radix-ui/react-slider',
-      '@radix-ui/react-slot',
-      '@radix-ui/react-switch',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-toast',
-      '@radix-ui/react-toggle',
-      '@radix-ui/react-toggle-group',
-      '@radix-ui/react-toolbar',
-      '@radix-ui/react-tooltip',
-      'three',
-      '@react-three/fiber',
-      '@react-three/drei',
-      'three-mesh-bvh',
-    ],
-    exclude: ['@babel/runtime'],
   },
   server: {
     fs: {
       strict: true,
     },
+    headers: {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block',
+    },
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-tooltip',
+      '@radix-ui/react-icons',
+      'class-variance-authority',
+      'clsx',
+      'tailwind-merge',
+      'framer-motion',
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei',
+    ],
+    exclude: ['@solana/web3.js'],
   },
 }); 
->>>>>>> da983d9 (fix: update build scripts and convert to ES modules)

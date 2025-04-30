@@ -2,33 +2,6 @@
 command = "npm run build"
 pages_build_output_dir = "dist"
 
-<<<<<<< HEAD
-# Environment variables section
-[build.environment]
-NODE_VERSION = "20"
-
-# Configure output directory for Pages
-[site]
-bucket = "./dist"
-entry-point = "dist/index.html"
-
-# Pages-specific configuration
-[pages]
-compatibility_date = "2023-10-30"
-compatibility_flags = ["nodejs_compat"]
-
-# Route all requests to index.html for SPA routing
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
-
-[build.upload]
-format = "service-worker"
-
-[env.production]
-name = "solvolume" 
-=======
 [build.upload]
 format = "service-worker"
 
@@ -43,4 +16,3 @@ zone_id = "your-zone-id"
 
 [env.staging]
 workers_dev = true 
->>>>>>> da983d9 (fix: update build scripts and convert to ES modules)

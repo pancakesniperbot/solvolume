@@ -1,10 +1,8 @@
 export default {
   plugins: {
+    'postcss-import': {},
+    'postcss-nesting': {},
     tailwindcss: {},
     autoprefixer: {},
   },
-<<<<<<< HEAD
-}
-=======
 } 
->>>>>>> da983d9 (fix: update build scripts and convert to ES modules)

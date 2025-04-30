@@ -15,24 +15,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-<<<<<<< HEAD
     "types": ["node", "vite/client"],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./client/src/*"],
+      "@/*": ["src/*"],
       "@shared/*": ["./shared/*"],
       "@assets/*": ["./attached_assets/*"]
     }
   },
-  "include": ["client", "server", "shared"],
-  "references": [{ "path": "./tsconfig.node.json" }]
-}
-=======
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
-} 
->>>>>>> da983d9 (fix: update build scripts and convert to ES modules)
+}

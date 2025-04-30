@@ -138,7 +138,7 @@ export function RegistrationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="sm:max-w-md bg-[#02010a] border border-[#14235A] rounded-xl overflow-hidden p-0 shadow-[0_0_25px_rgba(20,89,226,0.3)]">
+      <DialogContent className="sm:max-w-md bg-[#02010a]/95 backdrop-blur-md border border-[#14235A] rounded-xl overflow-hidden p-0 shadow-[0_0_25px_rgba(20,89,226,0.3)]">
         {/* Close button in top-right corner */}
         <button 
           onClick={handleClose}
@@ -163,7 +163,7 @@ export function RegistrationModal({
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-5 p-6">
-          <div className="space-y-4">
+          <div className="space-y-4 p-6 bg-[#0C1127]/50">
             <div>
               <Label htmlFor="email" className="text-sm font-medium text-gray-200 flex items-center mb-2">
                 Email Address
