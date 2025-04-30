@@ -11,78 +11,51 @@ import virtual from '@rollup/plugin-virtual';
 import compression from 'vite-plugin-compression';
 import { VitePWA } from 'vite-plugin-pwa';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { optimize: true }],
-          ['@babel/plugin-proposal-decorators', { legacy: true }],
-        ],
-      },
-    }),
-    splitVendorChunkPlugin(),
+    react(),
     tsconfigPaths(),
-    compression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-      filter: /\.(js|mjs|json|css|html)$/i,
-    }),
-    compression({
-      algorithm: 'gzip',
-      ext: '.gz',
-    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Solana Volume Bot',
+        name: 'SolVolume',
         short_name: 'SolVolume',
-        theme_color: '#14F195',
+        description: 'Solana Volume Bot',
+        theme_color: '#ffffff',
         icons: [
           {
-            src: '/android-chrome-192x192.png',
+            src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png',
+            type: 'image/png'
           },
           {
-            src: '/android-chrome-512x512.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
+            type: 'image/png'
+          }
+        ]
       },
       workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'images-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-              },
-            },
-          },
-        ],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        globDirectory: 'dist',
+        cleanupOutdatedCaches: true,
+        sourcemap: true
       },
+      devOptions: {
+        enabled: true
+      }
+    }),
+    compression({
+      algorithm: 'gzip',
+      ext: '.gz'
+    }),
+    compression({
+      algorithm: 'brotliCompress',
+      ext: '.br'
     }),
     visualizer({
       filename: 'stats.html',
@@ -97,7 +70,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../dist',
+    outDir: 'dist',
     target: 'esnext',
     minify: 'terser',
     terserOptions: {
@@ -120,6 +93,9 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html')
+      },
       plugins: [
         nodeResolve({
           preferBuiltins: true,
@@ -151,25 +127,37 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'radix-ui': [
+          'ui-vendor': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-aspect-ratio',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-collapsible',
+            '@radix-ui/react-context-menu',
             '@radix-ui/react-dialog',
             '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-hover-card',
+            '@radix-ui/react-label',
+            '@radix-ui/react-menubar',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-select',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
             '@radix-ui/react-slot',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
-            '@radix-ui/react-tooltip',
+            '@radix-ui/react-toggle',
+            '@radix-ui/react-toggle-group',
+            '@radix-ui/react-tooltip'
           ],
-          'ui-components': [
-            'class-variance-authority',
-            'clsx',
-            'tailwind-merge',
-          ],
-          'framer-motion': ['framer-motion'],
-          'three': ['three', '@react-three/fiber', '@react-three/drei'],
-          'utils': [
-            '@hookform/resolvers',
-            'axios',
-            'zod',
-          ],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
+          'utils-vendor': ['axios', 'zod', 'clsx', 'tailwind-merge', 'class-variance-authority']
         },
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
@@ -206,6 +194,7 @@ export default defineConfig({
   },
   preview: {
     port: 3000,
+    host: true,
     strictPort: true,
     headers: {
       'Cache-Control': 'public, max-age=31536000, immutable',
@@ -229,27 +218,54 @@ export default defineConfig({
       'X-Frame-Options': 'DENY',
       'X-XSS-Protection': '1; mode=block',
     },
+    port: 3000,
+    host: true,
+    strictPort: true,
+    watch: {
+      usePolling: true
+    }
   },
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
+      'react-router-dom',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-aspect-ratio',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-collapsible',
+      '@radix-ui/react-context-menu',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-hover-card',
+      '@radix-ui/react-label',
+      '@radix-ui/react-menubar',
+      '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slider',
       '@radix-ui/react-slot',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
       '@radix-ui/react-toast',
+      '@radix-ui/react-toggle',
+      '@radix-ui/react-toggle-group',
       '@radix-ui/react-tooltip',
-      '@radix-ui/react-icons',
-      'class-variance-authority',
-      'clsx',
-      'tailwind-merge',
-      'framer-motion',
       'three',
       '@react-three/fiber',
       '@react-three/drei',
-      '@hookform/resolvers/zod',
+      'three-mesh-bvh',
       'axios',
       'zod',
+      'clsx',
+      'tailwind-merge',
+      'class-variance-authority'
     ],
     exclude: ['@solana/web3.js'],
     esbuildOptions: {
