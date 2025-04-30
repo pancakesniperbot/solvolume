@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { useLicense } from "@/components/LicenseProvider";
-import { webSocketService, GameMessage } from "@/services/WebSocketService";
+import { useWebSocket } from "@/services/WebSocketService";
 import { perplexityService } from "@/services/PerplexityService";
 import { AIResponse } from "@/components/AIResponse";
 import { SuggestedQuestions } from "@/components/SuggestedQuestions";
@@ -164,6 +164,7 @@ export function SimpleSolanaMascot({
   const controls = useAnimation();
   const [location, setLocation] = useLocation();
   const { openRegistrationModal } = useLicense();
+  const webSocketStore = useWebSocket();
 
   // Select messages based on market sentiment
   const sentimentMessages = MARKET_MESSAGES[marketSentiment];
@@ -215,91 +216,68 @@ export function SimpleSolanaMascot({
 
   // Set up WebSocket listener and automatically connect on component mount
   useEffect(() => {
-    const handleMessage = (message: GameMessage) => {
-      if (message.type === "price_update" && message.data) {
+    // Connect to WebSocket automatically if not connected
+    if (!webSocketStore.isConnected) {
+      webSocketStore.connect();
+    }
+    
+    // Process messages when lastMessage changes
+    if (webSocketStore.lastMessage) {
+      const message = webSocketStore.lastMessage;
+      
+      if (message.type === 'prices' && message.data) {
         console.log("Received market data update", message.data);
-
+        
         // Process price updates
-        if (message.data.prices) {
-          const prices = message.data.prices;
-          const solanaData = prices.find((p: any) => p.symbol === "SOL");
-
-          // Update Solana price
-          if (solanaData) {
-            setSolanaPriceData({
-              symbol: solanaData.symbol,
-              name: solanaData.name,
-              price: solanaData.price,
-              change: solanaData.change,
-              volume: solanaData.volume,
-              trending: solanaData.trending,
-              lastUpdate: Date.now(),
-            });
-          }
-
-          // Get additional token data (JUP, RAY, etc.)
-          const otherTokens = prices.filter(
-            (p: any) =>
-              p.symbol !== "SOL" &&
-              ["JUP", "RAY", "BONK", "WIF"].includes(p.symbol),
-          );
-
-          if (otherTokens.length > 0) {
-            setAdditionalTokens(otherTokens);
-          }
+        const prices = message.data;
+        const solanaData = prices.find((p: any) => p.symbol === "SOL");
+        
+        // Update Solana price
+        if (solanaData) {
+          setSolanaPriceData({
+            symbol: solanaData.symbol,
+            name: solanaData.name,
+            price: solanaData.price,
+            change: solanaData.price_change_24h,
+            volume: solanaData.volume_24h,
+            trending: solanaData.price_change_24h > 5,
+            lastUpdate: Date.now(),
+          });
         }
-
-        // Process market sentiment data
-        if (message.data.marketSentiment) {
-          console.log(
-            "Updating market sentiment:",
-            message.data.marketSentiment,
-          );
-          setMarketSentimentData(message.data.marketSentiment);
-        }
-
-        // Process market insight
-        if (message.data.marketInsight) {
-          console.log("Updating market insight:", message.data.marketInsight);
-          setMarketInsight(message.data.marketInsight);
-        }
-
-        // Process market data for volume insights
-        if (message.data.marketData) {
-          console.log("Updating volume market data:", message.data.marketData);
-          setVolumeMarketData(message.data.marketData);
+        
+        // Get additional token data
+        const otherTokens = prices.filter(
+          (p: any) => p.symbol !== "SOL" && ["JUP", "RAY", "BONK", "WIF"].includes(p.symbol)
+        );
+        
+        if (otherTokens.length > 0) {
+          const formattedTokens = otherTokens.map((token: any) => ({
+            symbol: token.symbol,
+            name: token.name,
+            price: token.price,
+            change: token.price_change_24h,
+            volume: token.volume_24h,
+            trending: token.price_change_24h > 5,
+            lastUpdate: Date.now(),
+            imageUrl: token.image
+          }));
+          
+          setAdditionalTokens(formattedTokens);
         }
       }
-    };
-
-    // Register for WebSocket updates
-    webSocketService.addMessageListener(handleMessage);
-    
-    // Auto-connect and fetch initial data
-    if (!webSocketService.isConnected()) {
-      webSocketService.connect();
-      
-      // Request fresh data after a short delay to ensure connection is established
-      const initialDataTimer = setTimeout(() => {
-        webSocketService.sendMessage({
-          type: 'refresh_request',
-          data: {
-            timestamp: Date.now()
-          }
-        });
-      }, 500);
-      
-      return () => {
-        clearTimeout(initialDataTimer);
-        webSocketService.removeMessageListener(handleMessage);
-      };
     }
+  }, [webSocketStore.isConnected, webSocketStore.lastMessage]);
 
-    return () => {
-      // Clean up
-      webSocketService.removeMessageListener(handleMessage);
-    };
-  }, []);
+  // Request refresh periodically
+  useEffect(() => {
+    if (webSocketStore.isConnected) {
+      const refreshInterval = setInterval(() => {
+        webSocketStore.sendMessage({ type: 'refresh' });
+      }, 30000); // Refresh every 30 seconds
+      
+      return () => clearInterval(refreshInterval);
+    }
+  }, [webSocketStore.isConnected]);
 
   // Random movement animation
   useEffect(() => {
@@ -941,6 +919,8 @@ export function SimpleSolanaMascot({
                       ? "bg-gray-800/50 border-gray-700/50 cursor-not-allowed"
                       : "bg-[#14F195]/20 hover:bg-[#14F195]/30 cursor-pointer"
                   }`}
+                  title="Send message"
+                  aria-label="Send message"
                 >
                   <Send className="h-3 w-3" />
                 </button>
