@@ -1,5 +1,18 @@
-// Mock data for crypto coins
-const mockCoinData = [
+// Coin data type definition
+interface CoinData {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  price_change_24h: number;
+  market_cap: number;
+  volume_24h: number;
+  sentiment: number;
+  image: string;
+}
+
+// Fallback data - used when API calls fail
+const fallbackCoinData: CoinData[] = [
   {
     id: "solana",
     name: "Solana",
@@ -12,7 +25,7 @@ const mockCoinData = [
     image: "https://assets.coingecko.com/coins/images/4128/large/solana.png"
   },
   {
-    id: "dogwifhat",
+    id: "dogwifhat", 
     name: "dogwifhat",
     symbol: "WIF",
     price: 2.73,
@@ -34,7 +47,7 @@ const mockCoinData = [
     image: "https://assets.coingecko.com/coins/images/28600/large/bonk.jpg"
   },
   {
-    id: "jup",
+    id: "jupiter",
     name: "Jupiter",
     symbol: "JUP",
     price: 0.72,
@@ -45,7 +58,7 @@ const mockCoinData = [
     image: "https://assets.coingecko.com/coins/images/34417/large/jup.png"
   },
   {
-    id: "pyth",
+    id: "pyth-network",
     name: "Pyth Network",
     symbol: "PYTH",
     price: 0.48,
@@ -57,44 +70,156 @@ const mockCoinData = [
   }
 ];
 
-// Add random price fluctuations to make it look dynamic
-function addRandomFluctuation(price: number) {
-  const fluctuation = (Math.random() - 0.5) * 0.02; // -1% to +1%
-  return price * (1 + fluctuation);
+// Fetch data from CryptoCompare
+async function fetchCryptoCompareData() {
+  try {
+    // API call - no API key required
+    const response = await fetch('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=SOL,WIF,BONK,JUP,PYTH&tsyms=USD');
+    if (!response.ok) {
+      throw new Error('CryptoCompare API response error');
+    }
+    
+    const data = await response.json();
+    
+    // Format data
+    if (data && data.RAW) {
+      return formatCryptoCompareData(data);
+    }
+    
+    throw new Error('Invalid CryptoCompare data format');
+  } catch (error) {
+    console.error('Error fetching from CryptoCompare:', error);
+    return null;
+  }
 }
 
-// Update price data with small random changes
-function getUpdatedData() {
-  return mockCoinData.map(coin => ({
-    ...coin,
-    price: addRandomFluctuation(coin.price),
-    price_change_24h: coin.price_change_24h + (Math.random() - 0.5) * 0.5,
-    sentiment: Math.min(100, Math.max(0, coin.sentiment + (Math.random() - 0.5) * 3))
+// Fetch data from CoinGecko (as backup)
+async function fetchCoinGeckoData() {
+  try {
+    // API call - no API key required
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=solana,dogwifhat,bonk,jupiter-exchange,pyth-network&order=market_cap_desc');
+    if (!response.ok) {
+      throw new Error('CoinGecko API response error');
+    }
+    
+    const data = await response.json();
+    
+    // Format data
+    if (data && data.length > 0) {
+      return formatCoinGeckoData(data);
+    }
+    
+    throw new Error('Invalid CoinGecko data format');
+  } catch (error) {
+    console.error('Error fetching from CoinGecko:', error);
+    return null;
+  }
+}
+
+// Format CryptoCompare data
+function formatCryptoCompareData(data: any) {
+  const formattedData = [];
+  const coins = {
+    SOL: { id: "solana", name: "Solana", image: "https://assets.coingecko.com/coins/images/4128/large/solana.png" },
+    WIF: { id: "dogwifhat", name: "dogwifhat", image: "https://assets.coingecko.com/coins/images/33085/large/wif.png" },
+    BONK: { id: "bonk", name: "Bonk", image: "https://assets.coingecko.com/coins/images/28600/large/bonk.jpg" },
+    JUP: { id: "jupiter", name: "Jupiter", image: "https://assets.coingecko.com/coins/images/34417/large/jup.png" },
+    PYTH: { id: "pyth-network", name: "Pyth Network", image: "https://assets.coingecko.com/coins/images/28514/large/pyth.png" }
+  };
+  
+  for (const symbol in data.RAW) {
+    if (data.RAW[symbol] && data.RAW[symbol].USD) {
+      const coinInfo = data.RAW[symbol].USD;
+      const coinMetadata = coins[symbol as keyof typeof coins];
+      
+      formattedData.push({
+        id: coinMetadata.id,
+        name: coinMetadata.name,
+        symbol: symbol,
+        price: coinInfo.PRICE || 0,
+        price_change_24h: coinInfo.CHANGEPCT24HOUR || 0,
+        market_cap: coinInfo.MKTCAP || 0,
+        volume_24h: coinInfo.VOLUME24HOUR || 0,
+        // Random sentiment value (50-100 range)
+        sentiment: Math.floor(Math.random() * 50) + 50,
+        image: coinMetadata.image
+      });
+    }
+  }
+  
+  return formattedData;
+}
+
+// Format CoinGecko data
+function formatCoinGeckoData(data: any[]) {
+  return data.map(coin => ({
+    id: coin.id,
+    name: coin.name,
+    symbol: coin.symbol.toUpperCase(),
+    price: coin.current_price,
+    price_change_24h: coin.price_change_percentage_24h || 0,
+    market_cap: coin.market_cap || 0,
+    volume_24h: coin.total_volume || 0,
+    // Random sentiment value (50-100 range)
+    sentiment: Math.floor(Math.random() * 50) + 50,
+    image: coin.image
   }));
 }
 
+// Main function to fetch crypto data - tries multiple APIs sequentially
 export async function fetchCryptoData() {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return getUpdatedData();
+  try {
+    // Try CryptoCompare first
+    const cryptoCompareData = await fetchCryptoCompareData();
+    if (cryptoCompareData && cryptoCompareData.length > 0) {
+      return cryptoCompareData;
+    }
+    
+    // Try CoinGecko if CryptoCompare fails
+    const coinGeckoData = await fetchCoinGeckoData();
+    if (coinGeckoData && coinGeckoData.length > 0) {
+      return coinGeckoData;
+    }
+    
+    // Use fallback data if both APIs fail
+    console.warn('Using fallback data as API calls failed');
+    return fallbackCoinData;
+  } catch (error) {
+    console.error('Error fetching crypto data:', error);
+    return fallbackCoinData;
+  }
 }
 
-// Create a function that mimics WebSocket behavior by using intervals
+// In-memory cache for data within time range
+let cachedData: CoinData[] | null = null;
+let lastFetched = 0;
+const CACHE_DURATION = 60000; // 1 minute
+
+// Function that mimics WebSocket behavior
 export function subscribeToUpdates(callback: (data: any) => void) {
-  // Initial data
-  callback({
-    type: 'prices',
-    data: getUpdatedData()
-  });
-  
-  // Send updates every 5 seconds
-  const intervalId = setInterval(() => {
+  // Initial data flow
+  const fetchAndUpdate = async () => {
+    const now = Date.now();
+    
+    // Get new data if cache has expired
+    if (!cachedData || now - lastFetched > CACHE_DURATION) {
+      const freshData = await fetchCryptoData();
+      cachedData = freshData;
+      lastFetched = now;
+    }
+    
     callback({
       type: 'prices',
-      data: getUpdatedData()
+      data: cachedData
     });
-  }, 5000);
+  };
   
-  // Return a function to unsubscribe
+  // Get initial data immediately
+  fetchAndUpdate();
+  
+  // Regular update interval (every 5 seconds)
+  const intervalId = setInterval(fetchAndUpdate, 5000);
+  
+  // Return function to unsubscribe
   return () => clearInterval(intervalId);
 } 

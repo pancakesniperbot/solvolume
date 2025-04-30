@@ -1,12 +1,27 @@
+name = "solvolume"
+main = "worker.js"
+compatibility_date = "2023-08-01"
+
+# For connecting the Worker to Cloudflare Pages
+[site]
+bucket = "./client/dist"
+
+# KV storage configuration (optional)
+# [[kv_namespaces]]
+# binding = "CRYPTO_KV"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# For scheduled tasks
+[triggers]
+crons = ["*/1 * * * *"] # Runs every minute
+
 [build]
 command = "cd client && npm install && npm run build"
 publish = "client/dist"
 
 [build.environment]
 NODE_VERSION = "20"
-
-[site]
-bucket = "client/dist"
 
 [pages]
 pages_build_output_dir = "client/dist"
