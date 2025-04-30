@@ -905,11 +905,12 @@ export function ThreeDHeroSection() {
               <div className="flex justify-center max-w-xl w-full mx-auto">
                 <CtaButton 
                   size="lg" 
-                  className="cyberpunk-btn bg-gradient-to-r from-[#9945FF] to-[#14F195] text-black font-semibold text-lg px-10 py-6 relative z-20 w-full"
+                  variant="primary"
+                  className="text-lg px-10 py-6 relative z-20 w-full"
                   icon={<ArrowRight className="ml-2 h-5 w-5" />}
                   aria-label="Start using Solana Volume Bot to enhance token visibility"
                 >
-                  Boost Token Visibility
+                  Click here to start your 7-day free trial.
                 </CtaButton>
               </div>
             </div>

@@ -163,7 +163,9 @@ export default function FreeTrial() {
               </Button>
             ) : (
               <CtaButton 
-                className="w-full h-12 mt-6 bg-gradient-to-r from-[#9945FF] to-[#14F195] text-white font-medium rounded-lg"
+                variant="primary"
+                size="lg"
+                className="w-full h-12 mt-6"
                 icon={<ArrowRight className="ml-2 h-5 w-5" />}
               >
                 Start Free Trial

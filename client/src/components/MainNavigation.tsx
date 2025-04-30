@@ -196,7 +196,7 @@ export function MainNavigation() {
                 className="hidden sm:flex"
                 icon={<ChevronRight className="h-4 w-4 ml-1" />}
               >
-                Get Your Token Trending
+                Start Free Trial
               </CtaButton>
               
               {/* Theme Toggle */}
@@ -335,7 +335,7 @@ export function MainNavigation() {
             className="w-full mt-4 py-4"
             icon={<ChevronRight className="ml-2 h-5 w-5" />}
           >
-            Get Your Token Trending
+            Start Free Trial
           </CtaButton>
         </div>
       </AnimateMobileMenu>

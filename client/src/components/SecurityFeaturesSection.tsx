@@ -113,10 +113,11 @@ export function SecurityFeaturesSection() {
         >
           <CtaButton 
             size="lg" 
-            className="bg-gradient-to-r from-[#9945FF] to-[#14F195] text-black font-semibold hover:from-[#8035E5] hover:to-[#05E286]"
+            variant="primary"
+            className="px-6 py-3"
             icon={<ArrowRight className="ml-2 h-5 w-5" />}
           >
-            Get Started Securely
+            Start Free Trial
           </CtaButton>
         </motion.div>
       </div>
