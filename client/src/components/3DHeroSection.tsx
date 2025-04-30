@@ -15,6 +15,7 @@ import THREE from "@/lib/three";
 import { CyberpunkHeroBackground } from "@/components/CyberpunkHeroBackground";
 // Import Solana mascot image directly
 import solanaMascotImage from "../assets/SOLANA-VOLUME-BOT-MASCOTTE.png";
+import { CtaButton } from "@/components/CtaButton";
 
 // Token bubble floating component with sentiment
 const TokenBubble = ({ 
@@ -902,15 +903,14 @@ export function ThreeDHeroSection() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
               <div className="flex justify-center max-w-xl w-full mx-auto">
-                <Button 
-                  id="cta-button"
+                <CtaButton 
                   size="lg" 
                   className="cyberpunk-btn bg-gradient-to-r from-[#9945FF] to-[#14F195] text-black font-semibold text-lg px-10 py-6 relative z-20 w-full"
-                  onClick={() => setHasStarted(true)}
+                  icon={<ArrowRight className="ml-2 h-5 w-5" />}
                   aria-label="Start using Solana Volume Bot to enhance token visibility"
                 >
-                  Boost Token Visibility <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                  Boost Token Visibility
+                </CtaButton>
               </div>
             </div>
             

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CyberpunkBackground } from "./CyberpunkBackground";
+import { CtaButton } from "@/components/CtaButton";
 
 export function SecurityFeaturesSection() {
   const securityFeatures = [
@@ -110,13 +111,13 @@ export function SecurityFeaturesSection() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center"
         >
-          <Button 
+          <CtaButton 
             size="lg" 
             className="bg-gradient-to-r from-[#9945FF] to-[#14F195] text-black font-semibold hover:from-[#8035E5] hover:to-[#05E286]"
+            icon={<ArrowRight className="ml-2 h-5 w-5" />}
           >
             Get Started Securely
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          </CtaButton>
         </motion.div>
       </div>
     </section>

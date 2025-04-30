@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
 import { ThreeDBackground } from '@/components/3DParticleBackground';
 import { Rocket, CheckCircle2, ArrowRight, Zap } from 'lucide-react';
+import { CtaButton } from '@/components/CtaButton';
 
 export default function FreeTrial() {
   const [formState, setFormState] = useState({
@@ -146,12 +147,12 @@ export default function FreeTrial() {
               />
             </div>
             
-            <Button 
-              type="submit" 
-              disabled={loading}
-              className="w-full h-12 mt-6 bg-gradient-to-r from-[#9945FF] to-[#14F195] text-white font-medium rounded-lg"
-            >
-              {loading ? (
+            {loading ? (
+              <Button 
+                type="button"
+                disabled
+                className="w-full h-12 mt-6 bg-gradient-to-r from-[#9945FF]/70 to-[#14F195]/70 text-white font-medium rounded-lg"
+              >
                 <span className="flex items-center justify-center">
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -159,12 +160,15 @@ export default function FreeTrial() {
                   </svg>
                   Processing...
                 </span>
-              ) : (
-                <span className="flex items-center justify-center">
-                  Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
-                </span>
-              )}
-            </Button>
+              </Button>
+            ) : (
+              <CtaButton 
+                className="w-full h-12 mt-6 bg-gradient-to-r from-[#9945FF] to-[#14F195] text-white font-medium rounded-lg"
+                icon={<ArrowRight className="ml-2 h-5 w-5" />}
+              >
+                Start Free Trial
+              </CtaButton>
+            )}
             
             <p className="text-xs text-gray-500 text-center mt-4">
               By signing up, you agree to our <a href="#" className="text-[#14F195] hover:underline">Terms of Service</a> and 

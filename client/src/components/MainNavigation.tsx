@@ -120,14 +120,14 @@ export function MainNavigation() {
               >
                 <Home className="mr-1 h-4 w-4" /> Home
               </Button>
-              <Button 
+              <CtaButton 
                 variant="ghost" 
                 size="sm" 
                 className="text-gray-300 hover:text-white hover:bg-[#1e2035] px-2.5"
-                onClick={() => scrollToSection("demo")}
+                icon={<LineChart className="mr-1 h-4 w-4" />}
               >
-                <LineChart className="mr-1 h-4 w-4" /> Try Now
-              </Button>
+                Try Now
+              </CtaButton>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -243,14 +243,13 @@ export function MainNavigation() {
             <span className="text-base font-medium">Home</span>
           </button>
           
-          <button 
+          <CtaButton 
             className="w-full flex items-center justify-start text-white hover:bg-[#1e2035] p-3 rounded-md active:bg-[#2a2c48] touch-manipulation"
-            onClick={() => scrollToSection("demo")}
-            aria-label="Navigate to Try Now section"
+            icon={<LineChart className="mr-3 h-5 w-5 text-[#14F195]" />}
+            variant="ghost"
           >
-            <LineChart className="mr-3 h-5 w-5 text-[#14F195]" />
             <span className="text-base font-medium">Try Now</span>
-          </button>
+          </CtaButton>
           
           <button 
             className="w-full flex items-center justify-start text-white hover:bg-[#1e2035] p-3 rounded-md active:bg-[#2a2c48] touch-manipulation"
