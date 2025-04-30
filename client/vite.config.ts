@@ -43,9 +43,6 @@ export default defineConfig({
           if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
             return `assets/fonts/[name]-[hash][extname]`;
           }
-          if (/\.css$/.test(assetInfo.name)) {
-            return `assets/css/[name]-[hash][extname]`;
-          }
           return `assets/[name]-[hash][extname]`;
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -54,16 +51,6 @@ export default defineConfig({
     },
     sourcemap: true,
     assetsInlineLimit: 4096,
-  },
-  css: {
-    modules: {
-      localsConvention: 'camelCase',
-    },
-    preprocessorOptions: {
-      css: {
-        charset: false,
-      },
-    },
   },
   server: {
     fs: {
