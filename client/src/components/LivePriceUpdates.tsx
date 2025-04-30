@@ -3,7 +3,7 @@ import { TrendingUp, TrendingDown, BarChart3, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCrypto } from '@/state/CryptoContext';
 import { getCoinLogo } from '@/utils/getCoinLogo';
-import websocketService from '@/lib/websocketService';
+import { useWebSocket } from '@/services/WebSocketService';
 
 interface TokenPrice {
   symbol: string;
@@ -26,32 +26,30 @@ export function LivePriceUpdates() {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [manuallyConnected, setManuallyConnected] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('disconnected');
   
   // Use the centralized crypto context
   const { state, dispatch } = useCrypto();
   const { coins, isConnected, lastUpdated: contextLastUpdated } = state;
+  
+  // Get WebSocket store
+  const webSocketStore = useWebSocket();
+  const connectionStatus = webSocketStore.isConnected ? 'connected' : 
+                          webSocketStore.error ? 'disconnected' : 'connecting';
 
   // Manual refresh function
   const handleRefresh = () => {
     setIsRefreshing(true);
     
     // Connect to WebSocket if not already connected
-    if (!websocketService.isConnected()) {
-      console.log("[LivePriceUpdates] Initiating WebSocket connection...");
-      websocketService.connect();
+    if (!webSocketStore.isConnected) {
+      console.log("[LivePriceUpdates] Initializing WebSocket connection...");
+      webSocketStore.connect();
       setManuallyConnected(true);
-      setConnectionStatus('connecting');
     }
     
     // Send refresh request to get fresh data
     console.log("[LivePriceUpdates] Sending refresh request...");
-    websocketService.sendMessage({
-      type: 'refresh_request',
-      data: {
-        timestamp: Date.now()
-      }
-    });
+    webSocketStore.sendMessage({ type: 'refresh' });
     
     // Set a timeout to simulate loading and to ensure we have enough time to get fresh data
     setTimeout(() => {
@@ -88,53 +86,40 @@ export function LivePriceUpdates() {
     }
   }, [coins, contextLastUpdated]);
 
-  // Set up WebSocket connection and message handling
+  // Connect to WebSocket if not already connected
   useEffect(() => {
-    const handleConnect = () => {
-      console.log("[LivePriceUpdates] WebSocket connected");
-      setConnectionStatus('connected');
-    };
-
-    const handleDisconnect = () => {
-      console.log("[LivePriceUpdates] WebSocket disconnected");
-      setConnectionStatus('disconnected');
-    };
-
-    const handleMessage = (message: any) => {
-      if (message.type === 'price_update' && message.data) {
-        console.log("[LivePriceUpdates] Received price update:", message.data);
-        // Update the context with new data
-        dispatch({
-          type: 'UPDATE_ALL',
-          payload: {
-            prices: message.data.prices,
-            marketSentiment: message.data.marketSentiment,
-            marketInsight: message.data.marketInsight,
-            marketData: message.data.marketData
-          }
-        });
-      }
-    };
-
-    // Register event listeners
-    websocketService.addConnectListener(handleConnect);
-    websocketService.addDisconnectListener(handleDisconnect);
-    websocketService.addMessageListener(handleMessage);
-
-    // Connect to WebSocket if not already connected
-    if (!websocketService.isConnected()) {
+    if (!webSocketStore.isConnected && !webSocketStore.error) {
       console.log("[LivePriceUpdates] Initializing WebSocket connection...");
-      websocketService.connect();
-      setConnectionStatus('connecting');
+      webSocketStore.connect();
     }
-
-    // Cleanup
-    return () => {
-      websocketService.removeConnectListener(handleConnect);
-      websocketService.removeDisconnectListener(handleDisconnect);
-      websocketService.removeMessageListener(handleMessage);
-    };
-  }, [dispatch]);
+  }, [webSocketStore]);
+  
+  // Process WebSocket messages
+  useEffect(() => {
+    if (webSocketStore.lastMessage && webSocketStore.lastMessage.type === 'prices') {
+      console.log("[LivePriceUpdates] Received price update:", webSocketStore.lastMessage.data);
+      
+      // Map the data to the format the CryptoContext expects
+      const prices = webSocketStore.lastMessage.data.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        symbol: item.symbol,
+        price: item.price,
+        change24h: item.price_change_24h,
+        sentiment: item.sentiment,
+        volume24h: item.volume_24h,
+        icon: item.image,
+        color: item.price_change_24h >= 0 ? '#14F195' : '#FB7185',
+        trending: item.price_change_24h > 5
+      }));
+      
+      // Update the context with new data
+      dispatch({
+        type: 'SET_PRICES',
+        payload: prices
+      });
+    }
+  }, [webSocketStore.lastMessage, dispatch]);
 
   return (
     <div className="space-y-4">
@@ -148,6 +133,8 @@ export function LivePriceUpdates() {
             onClick={handleRefresh}
             disabled={isRefreshing}
             className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+            aria-label="Refresh price data"
+            title="Refresh price data"
           >
             {isRefreshing ? 'Refreshing...' : 'Refresh'}
           </button>

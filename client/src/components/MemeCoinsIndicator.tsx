@@ -7,7 +7,7 @@ import {
   LineChart, BarChart, BarChart3, Zap, ArrowRight, 
   Search, Sparkles, RefreshCw, Loader2, Clock
 } from "lucide-react";
-import webSocketService from "../services/WebSocketService";
+import { useWebSocket } from "../services/WebSocketService";
 import { FullSentimentAnalysis } from "./FullSentimentAnalysis";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -393,6 +393,9 @@ export function MemeCoinsIndicator() {
   const { state } = useCrypto();
   const { coins: contextCoins, isConnected, lastUpdated } = state;
   
+  // Get WebSocket store
+  const webSocketStore = useWebSocket();
+  
   // Local state for UI purposes - forcing false to prevent loading spinner
   const [loading, setLoading] = useState(false);
   const [refreshTime, setRefreshTime] = useState<Date>(new Date());
@@ -416,38 +419,21 @@ export function MemeCoinsIndicator() {
     // Only do the initial fetch if we don't have data already
     if (!isConnected && (!contextCoins || contextCoins.length === 0)) {
       // Connect to WebSocket and request data on first load
-      webSocketService.connect();
-      
-      // Request fresh data after a short delay to ensure connection is established
-      const initialDataTimer = setTimeout(() => {
-        webSocketService.sendMessage({
-          type: 'refresh_request',
-          data: {
-            timestamp: Date.now()
-          }
-        });
-      }, 500);
-      
-      return () => clearTimeout(initialDataTimer);
+      webSocketStore.connect();
     }
-  }, [isConnected, contextCoins]);
+  }, [isConnected, contextCoins, webSocketStore]);
   
   // Function to manually refresh data
   const refreshData = () => {
     setLoading(true);
     
     // Connect to WebSocket if not already connected
-    if (!isConnected) {
-      webSocketService.connect();
+    if (!webSocketStore.isConnected) {
+      webSocketStore.connect();
     }
     
     // Request fresh data
-    webSocketService.sendMessage({
-      type: 'refresh_request',
-      data: {
-        timestamp: Date.now()
-      }
-    });
+    webSocketStore.sendMessage({ type: 'refresh' });
     
     // Set loading state to false after a short delay to prevent long spinner
     setTimeout(() => {
