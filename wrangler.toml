@@ -1,5 +1,6 @@
 [build]
 command = "npm run build"
+pages_build_output_dir = "client/dist"
 
 # Environment variables section
 [build.environment]
@@ -7,7 +8,7 @@ NODE_VERSION = "20"
 
 # Configure output directory for Pages
 [site]
-bucket = "dist"
+bucket = "./client/dist"
 
 # Pages-specific configuration
 [pages]
