@@ -65,6 +65,26 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 
+# Platform specific
+vercel.json
+railway.toml
+railway-build.sh
+vercel-build.sh
+netlify.toml
+netlify-build.sh
+heroku.yml
+heroku-build.sh
+fly.toml
+fly-build.sh
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+
+# Server
 server/public
 vite.config.ts.*
 *.tar.gz
