@@ -48,6 +48,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        purple: {
+          DEFAULT: '#9945FF',
+          light: 'rgba(153, 69, 255, 0.1)',
+          border: 'rgba(153, 69, 255, 0.3)',
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
