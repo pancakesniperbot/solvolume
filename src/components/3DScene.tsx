@@ -170,4 +170,4 @@ const ThreeDScene: React.FC<ThreeDSceneProps> = ({ coinData }) => {
   );
 };
 
-export default ThreeDScene; 
+export { ThreeDScene }; 

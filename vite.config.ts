@@ -55,7 +55,7 @@ export default defineConfig({
             '@radix-ui/react-toggle-group',
             '@radix-ui/react-tooltip'
           ],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
           'animation': ['framer-motion', 'framer-motion-3d'],
           'icons': ['lucide-react', 'react-icons'],
           'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
@@ -73,7 +73,8 @@ export default defineConfig({
           }
           return `assets/[name].[hash][extname]`;
         }
-      }
+      },
+      external: ['three-mesh-bvh']
     },
     sourcemap: false,
     assetsInlineLimit: 4096,
@@ -93,8 +94,7 @@ export default defineConfig({
       'framer-motion-3d',
       'three',
       '@react-three/fiber',
-      '@react-three/drei',
-      'three-mesh-bvh'
+      '@react-three/drei'
     ],
     exclude: ['@babel/runtime'],
     esbuildOptions: {
