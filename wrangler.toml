@@ -1,7 +1,6 @@
 # Cloudflare Pages configuration
 [build]
 command = "cd client && npm run build"
-pages_build_output_dir = "dist"
 
 # Environment variables section
 [build.environment]
