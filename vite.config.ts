@@ -1,16 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { splitVendorChunkPlugin } from 'vite';
 import { compression } from 'vite-plugin-compression2';
 
 export default defineConfig({
   plugins: [
     react(),
-    runtimeErrorOverlay(),
-    themePlugin(),
     splitVendorChunkPlugin(),
     compression({
       algorithm: 'brotliCompress',
@@ -20,35 +16,55 @@ export default defineConfig({
       algorithm: 'gzip',
       exclude: [/\.(br)$/, /\.(gz)$/],
     }),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-        ]
-      : []),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      "@": path.resolve(__dirname, "./src"),
+      "@assets": path.resolve(__dirname, "./src/assets"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@services": path.resolve(__dirname, "./src/services"),
     },
   },
-  root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist"),
+    outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        main: path.resolve(import.meta.dirname, "client", "index.html"),
-      },
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'ui-vendor': ['@radix-ui/react-*'],
+          'ui-vendor': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-aspect-ratio',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-collapsible',
+            '@radix-ui/react-context-menu',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-hover-card',
+            '@radix-ui/react-label',
+            '@radix-ui/react-menubar',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-select',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-toggle',
+            '@radix-ui/react-toggle-group',
+            '@radix-ui/react-tooltip'
+          ],
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+          'animation': ['framer-motion'],
+          'icons': ['lucide-react', 'react-icons'],
+          'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
@@ -60,43 +76,17 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
-      },
-      format: {
-        comments: false,
       },
     },
     cssCodeSplit: true,
     sourcemap: false,
     target: 'esnext',
     assetsInlineLimit: 4096,
-    modulePreload: {
-      polyfill: true,
-    },
-  },
-  server: {
-    port: 5173,
-    host: '0.0.0.0',
-    proxy: {
-      '/api': {
-        target: 'https://solvolume-production-9082.up.railway.app',
-        changeOrigin: true,
-        secure: true
-      },
-      '/socket.io': {
-        target: 'https://solvolume-production-9082.up.railway.app',
-        ws: true,
-        changeOrigin: true,
-        secure: true
-      }
-    }
   },
   optimizeDeps: {
-    exclude: ["@cloudflare/kv-asset-handler"],
     include: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei'],
     esbuildOptions: {
       target: 'esnext',
-      treeShaking: true,
     }
   },
 });
