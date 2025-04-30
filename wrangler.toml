@@ -2,6 +2,7 @@
 command = "npm run build"
 pages_build_output_dir = "dist"
 
+<<<<<<< HEAD
 # Environment variables section
 [build.environment]
 NODE_VERSION = "20"
@@ -27,3 +28,19 @@ format = "service-worker"
 
 [env.production]
 name = "solvolume" 
+=======
+[build.upload]
+format = "service-worker"
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"
+
+[env.production]
+workers_dev = false
+route = "solanavolumebot.io/*"
+zone_id = "your-zone-id"
+
+[env.staging]
+workers_dev = true 
+>>>>>>> da983d9 (fix: update build scripts and convert to ES modules)

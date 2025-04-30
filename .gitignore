@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules
 .pnp
@@ -26,15 +27,42 @@ yarn-error.log*
 # Editor directories and files
 .idea
 .vscode
+=======
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+>>>>>>> da983d9 (fix: update build scripts and convert to ES modules)
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
+<<<<<<< HEAD
 # TypeScript
 *.tsbuildinfo
 
 server/public
 vite.config.ts.*
 *.tar.gz
+=======
+# Environment variables
+.env
+.env.* 
+>>>>>>> da983d9 (fix: update build scripts and convert to ES modules)

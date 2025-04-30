@@ -1,0 +1,42 @@
+{
+  "name": "Solana Volume Bot - Professional Token Analytics Platform",
+  "short_name": "Solana Analytics",
+  "description": "Professional analytics platform for Solana token visibility with comprehensive market data insights",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0c15",
+  "theme_color": "#14F195",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "48x48 72x72 96x96 128x128 192x192 256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["finance", "productivity", "business", "analytics"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "iarc_rating_id": "10+",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Features",
+      "url": "/#features",
+      "description": "View platform features"
+    },
+    {
+      "name": "Tools",
+      "url": "/#tools", 
+      "description": "Explore analytics tools"
+    },
+    {
+      "name": "API",
+      "url": "/#api",
+      "description": "API documentation"
+    }
+  ]
+}
