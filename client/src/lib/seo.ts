@@ -4,11 +4,11 @@
  * Follows W3C standards for HTML and structured data
  */
 const defaultTitle = "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot";
-const defaultDescription = "Professional Solana Volume Bot Platform. Enhance your token's visibility with strategic transaction distribution. Features include real-time analytics, multi-wallet support, and compliance.";
+const defaultDescription = "Solana Volume Bot Built to Boost Visibility. Enhance your token's visibility with strategic transaction distribution. Features include real-time analytics, multi-wallet support, and compliance.";
 
 export const defaultSEO = {
   title: "Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot",
-  description: "Professional Solana Volume Bot Platform. Enhance your token's visibility with strategic transaction distribution. Features include real-time analytics, multi-wallet support, and compliance.",
+  description: "Solana Volume Bot Built to Boost Visibility. Enhance your token's visibility with strategic transaction distribution. Features include real-time analytics, multi-wallet support, and compliance.",
   keywords: "Solana volume bot, token visibility enhancement, professional DEX visibility, volume distribution, token visibility strategies, DEX ranking optimization, compliant volume distribution, Solana trading volume, DEX visibility platform, volume bot service",
   ogImage: "/logo.svg",
   ogUrl: "https://solanavolumebot.io",
@@ -20,7 +20,7 @@ export const defaultSEO = {
       "name": defaultTitle,
       "url": "https://solanavolumebot.io",
       "logo": "https://solanavolumebot.io/logo.svg",
-      "description": "Professional token visibility enhancement platform providing Solana volume distribution services with transparent methodology and compliant strategies for maximum DEX presence.",
+      "description": "Solana Volume Bot Built to Boost Visibility. Providing token visibility enhancement through strategic transaction distribution and compliant strategies for maximum DEX presence.",
       "sameAs": [
         "https://twitter.com/solanavolumebot",
         "https://discord.gg/solanavolumebot", 
@@ -98,7 +98,7 @@ export const defaultSEO = {
       "@type": "WebSite",
       "name": defaultTitle,
       "url": "https://solanavolumebot.io",
-      "description": "Professional Solana Volume Bot platform providing token visibility enhancement through strategic transaction distribution. Boost DEX rankings with compliant, natural-looking volume patterns and real-time performance monitoring.",
+      "description": "Solana Volume Bot Built to Boost Visibility. Providing token visibility enhancement through strategic transaction distribution. Boost DEX rankings with compliant, natural-looking volume patterns and real-time analytics.",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://solanavolumebot.io/search?q={search_term_string}",
@@ -342,7 +342,7 @@ export const termsSEO = {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "name": "Terms of Service - Solana Volume Bot Platform",
-      "description": "Complete legal terms and conditions for using our professional Solana Volume Bot platform. Includes all rights, responsibilities, and warranty information.",
+      "description": "Complete legal terms and conditions for using our Solana Volume Bot Built to Boost Visibility platform. Includes all rights, responsibilities, and warranty information.",
       "publisher": {
         "@type": "Organization",
         "name": "Solana Volume Bot",

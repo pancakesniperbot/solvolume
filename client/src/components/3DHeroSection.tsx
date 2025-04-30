@@ -894,7 +894,7 @@ export function ThreeDHeroSection() {
                 <div className="bg-gradient-to-r from-[#9945FF] to-[#14F195] p-2 rounded-lg">
                   <Zap size={24} className="text-black" />
                 </div>
-                <h3 className="text-xl font-semibold text-white">Strategic Solana Token Volume Bot</h3>
+                <h3 className="text-xl font-semibold text-white">Strategic Solana Token Volume Bot to Boost SOL Volume</h3>
               </div>
               <p className="text-gray-300 ml-12">
                 Enhance token visibility through strategic volume generation with compliant, natural-looking transaction patterns

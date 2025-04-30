@@ -348,30 +348,9 @@ export function SimpleSolanaMascot({
     setIsSpeechBubbleVisible((prev) => !prev);
   };
   
-  // Handle manual refresh button click
+  // Handle manual refresh button click (no-op, since WebSocket is removed)
   const handleRefreshData = () => {
-    console.log("Manual refresh requested");
-    
-    // Show loading indicator
-    // We don't need a full loading state since the refresh is fast
-    const refreshIcon = document.querySelector("[data-refresh-icon]");
-    if (refreshIcon) {
-      refreshIcon.classList.add("animate-spin");
-      setTimeout(() => {
-        refreshIcon.classList.remove("animate-spin");
-      }, 1000);
-    }
-    
-    // Connect to WebSocket to get fresh data
-    webSocketService.connect();
-    
-    // Send refresh request message
-    webSocketService.sendMessage({
-      type: 'refresh_request',
-      data: {
-        timestamp: Date.now()
-      }
-    });
+    // No operation
   };
 
   // Handle AI question submission - use Perplexity API
@@ -490,6 +469,86 @@ export function SimpleSolanaMascot({
           <p className="text-xs sm:text-sm mb-2 break-words">
             {combinedMessages[currentMessageIndex]}
           </p>
+
+          {/* View selectors - market data and stats buttons */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            <button
+              onClick={() => setShowMarketData((prev) => !prev)}
+              className={`text-xs sm:text-sm py-2 px-3 sm:px-2 rounded-lg transition-colors flex items-center justify-center ${showMarketData ? "bg-[#14F195]/20 border border-[#14F195]/40" : "bg-[#1A1D2E] border border-[#14F195]/5"}`}
+              title="Statistics"
+            >
+              <TrendingUp className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span className="hidden sm:inline sm:ml-1.5">Statistics</span>
+            </button>
+            <button
+              onClick={() => setShowStats((prev) => !prev)}
+              className={`text-xs sm:text-sm py-2 px-3 sm:px-2 rounded-lg transition-colors flex items-center justify-center ${showStats ? "bg-[#14F195]/20 border border-[#14F195]/40" : "bg-[#1A1D2E] border border-[#14F195]/5"}`}
+              title="Requirements"
+            >
+              <BarChart3 className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span className="hidden sm:inline sm:ml-1.5">Requirements</span>
+            </button>
+          </div>
+
+          {/* Market Data Panel */}
+          {showMarketData && (
+            <div className="mb-2 bg-[#131720] rounded-md p-2 text-xs border border-[#14F195]/20">
+              <div className="flex items-center text-[#14F195] mb-1">
+                <TrendingUp className="h-3 w-3 mr-1" />
+                <span className="font-medium">Market Data (Sample)</span>
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span>Top Platforms:</span>
+                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].topPlatforms.join(", ")}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Volume Needed:</span>
+                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].volumeNeeded}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Best Strategy:</span>
+                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].bestStrategy}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Success Rate:</span>
+                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].successRate}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>SOL Prediction:</span>
+                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].pricePrediction}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Stats Panel */}
+          {showStats && (
+            <div className="mb-2 bg-[#131720] rounded-md p-2 text-xs border border-[#14F195]/20">
+              <div className="flex items-center mb-1 text-[#14F195]">
+                <Target className="h-3 w-3 mr-1" />
+                <span className="font-medium">Trending Requirements</span>
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span>DEXScreener:</span>
+                  <span className="text-white">~$80K vol/24h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Jupiter:</span>
+                  <span className="text-white">~$120K vol/24h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Pump.Fun:</span>
+                  <span className="text-white">~6,500 txs/24h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Birdeye:</span>
+                  <span className="text-white">~$60K vol/24h</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div>
             <button
