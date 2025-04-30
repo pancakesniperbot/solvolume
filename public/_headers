@@ -1,0 +1,6 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-XSS-Protection: 1; mode=block
+  Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' *.cloudflareinsights.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; 
