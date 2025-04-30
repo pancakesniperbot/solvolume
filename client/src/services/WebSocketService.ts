@@ -1,278 +1,189 @@
-// WebSocketService.ts - Central WebSocket management for optimal performance
-// Singleton pattern to ensure only one WebSocket connection for the entire app
-let socket: WebSocket | null = null;
-let reconnectTimeout: number | null = null;
-const RECONNECT_DELAY = 3000; // 3 seconds
-const RECONNECT_MAX_ATTEMPTS = 10; // Maximum number of reconnection attempts
-let reconnectAttempts = 0;
-let lastMessageReceived = Date.now();
-const HEARTBEAT_INTERVAL = 30000; // 30 seconds
-let heartbeatInterval: number | null = null;
+import { create } from 'zustand';
+import { WS_URL, CONFIG } from '../config';
 
-// Message types for our application
-export interface GameMessage {
-  type: 'rocket_fired' | 'mascot_clicked' | 'game_trigger' | 'cta_highlight' | 'moon_hit' | 'price_update' | 'connected' | 'heartbeat' | 'refresh_request' | 'error';
-  data?: any;
+interface WebSocketState {
+  isConnected: boolean;
+  error: string | null;
+  lastMessage: any;
+  connect: () => void;
+  disconnect: () => void;
+  sendMessage: (message: any) => void;
+  manualReconnect: () => void;
 }
 
-// Create callback collections with weak references to allow garbage collection
-type MessageCallback = (message: GameMessage) => void;
-const messageCallbacks: Set<MessageCallback> = new Set();
+// Use the values from config
+const MAX_RETRIES = CONFIG.ws.maxReconnectAttempts;
+const RETRY_DELAY = CONFIG.ws.reconnectInterval;
+const HEARTBEAT_INTERVAL = CONFIG.ws.heartbeatInterval;
 
-// Connection state callbacks
-type ConnectionCallback = () => void;
-const connectCallbacks: Set<ConnectionCallback> = new Set();
-const disconnectCallbacks: Set<ConnectionCallback> = new Set();
+export const useWebSocket = create<WebSocketState>((set, get) => {
+  let ws: WebSocket | null = null;
+  let retryCount = 0;
+  let isReconnecting = false;
+  let reconnectTimeout: number | null = null;
+  let heartbeatInterval: number | null = null;
 
-/**
- * Initialize the WebSocket connection
- */
-export function initWebSocket(): WebSocket | null {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    console.log("WebSocket connection already established");
-    return socket;
-  }
-
-  try {
-    // Close existing socket if any
-    if (socket) {
-      socket.close();
+  // Function to send heartbeat
+  const sendHeartbeat = () => {
+    if (ws?.readyState === WebSocket.OPEN) {
+      try {
+        ws.send(JSON.stringify({ type: 'heartbeat' }));
+        console.log('Heartbeat sent');
+      } catch (error) {
+        console.error('Error sending heartbeat:', error);
+      }
     }
+  };
 
-    // Clear any pending reconnect timeouts
-    if (reconnectTimeout !== null) {
-      window.clearTimeout(reconnectTimeout);
-      reconnectTimeout = null;
-    }
+  const manualReconnect = () => {
+    console.log('Manual reconnect requested');
+    disconnect();
+    retryCount = 0; // Reset retry count for manual reconnection
+    setTimeout(connect, 500);
+  };
 
-    // Create WebSocket with the appropriate protocol
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = "small-meadow-d788.comojaw412.workers.dev";
-    
-    // Use the root path for WebSocket connection
-    const wsUrl = `${protocol}//${host}`;
-    
-    console.log(`Connecting to WebSocket at ${wsUrl}`);
-    
-    // Show WebSocket connection errors to the user
-    document.dispatchEvent(new CustomEvent('websocket-connecting', { 
-      detail: { url: wsUrl } 
-    }));
-    
-    socket = new WebSocket(wsUrl);
-
-    // Set up event handlers
-    socket.onopen = handleSocketOpen;
-    socket.onclose = handleSocketClose;
-    socket.onerror = handleSocketError;
-    socket.onmessage = handleSocketMessage;
-
-    return socket;
-  } catch (error) {
-    console.error("Error initializing WebSocket:", error);
-    return null;
-  }
-}
-
-/**
- * Handle socket open event
- */
-function handleSocketOpen(): void {
-  console.log("WebSocket connection established");
-  
-  // Reset reconnection attempts
-  reconnectAttempts = 0;
-  
-  // Start heartbeat to keep connection alive
-  startHeartbeat();
-  
-  // Notify application of successful connection
-  document.dispatchEvent(new CustomEvent('websocket-connected'));
-  
-  // Notify all connection listeners
-  connectCallbacks.forEach(callback => callback());
-}
-
-/**
- * Handle socket close event
- */
-function handleSocketClose(event: CloseEvent): void {
-  console.log("WebSocket connection closed", event.code, event.reason);
-  
-  // Clear heartbeat interval
-  if (heartbeatInterval !== null) {
-    window.clearInterval(heartbeatInterval);
-    heartbeatInterval = null;
-  }
-  
-  // Notify application of disconnection
-  document.dispatchEvent(new CustomEvent('websocket-disconnected', {
-    detail: { code: event.code, reason: event.reason }
-  }));
-  
-  // Notify all disconnection listeners
-  disconnectCallbacks.forEach(callback => callback());
-  
-  // Attempt to reconnect if not closed cleanly
-  if (event.code !== 1000 && reconnectAttempts < RECONNECT_MAX_ATTEMPTS) {
-    scheduleReconnect();
-  }
-}
-
-/**
- * Handle socket error event
- */
-function handleSocketError(error: Event): void {
-  console.error("WebSocket error:", error);
-  // Note: Let onclose handle reconnection, as it's always called after onerror
-}
-
-/**
- * Handle incoming messages
- */
-function handleSocketMessage(event: MessageEvent): void {
-  try {
-    const message = JSON.parse(event.data) as GameMessage;
-    lastMessageReceived = Date.now();
-    
-    // Handle error messages
-    if (message.type === 'error') {
-      console.error('WebSocket error message:', message.data);
+  const connect = () => {
+    if (ws?.readyState === WebSocket.OPEN) {
+      console.log('WebSocket connection already established');
       return;
     }
-    
-    // Handle heartbeat responses
-    if (message.type === 'heartbeat') {
+
+    if (isReconnecting) {
+      console.log('WebSocket reconnection in progress');
       return;
     }
-    
-    // Dispatch message to all listeners
-    document.dispatchEvent(new CustomEvent('websocket-message', {
-      detail: message
-    }));
-  } catch (error) {
-    console.error("Error parsing WebSocket message:", error);
-  }
-}
 
-/**
- * Start sending heartbeat messages
- */
-function startHeartbeat(): void {
-  if (heartbeatInterval !== null) {
-    window.clearInterval(heartbeatInterval);
-  }
-  
-  heartbeatInterval = window.setInterval(() => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
-        type: 'heartbeat',
-        data: { timestamp: Date.now() }
-      }));
+    try {
+      console.log('[WebSocket] Connecting to', WS_URL);
+      console.log('Manual WebSocket created - NO AUTO RECONNECT');
+      
+      // Close any existing connection
+      if (ws) {
+        try {
+          ws.close();
+        } catch (e) {
+          // Ignore errors on close
+        }
+      }
+      
+      ws = new WebSocket(WS_URL);
+
+      ws.onopen = () => {
+        console.log('[WebSocket] Connection established');
+        set({ isConnected: true, error: null });
+        retryCount = 0;
+        isReconnecting = false;
+        
+        // Clear any existing heartbeat interval
+        if (heartbeatInterval) {
+          clearInterval(heartbeatInterval);
+        }
+        
+        // Start heartbeat interval
+        heartbeatInterval = window.setInterval(sendHeartbeat, HEARTBEAT_INTERVAL);
+        
+        // Send initial refresh request
+        sendMessage({ type: 'refresh' });
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log('[WebSocket] Received message:', data.type, data.data ? data.data : '');
+          set({ lastMessage: data });
+        } catch (error) {
+          console.error('Error parsing WebSocket message:', error);
+        }
+      };
+
+      ws.onerror = (event) => {
+        console.error('WebSocket error:', event);
+        set({ error: 'Connection error occurred' });
+      };
+
+      ws.onclose = (event) => {
+        console.log('WebSocket connection closed', event.code, event.reason);
+        set({ isConnected: false });
+        
+        // Clear heartbeat interval
+        if (heartbeatInterval) {
+          clearInterval(heartbeatInterval);
+          heartbeatInterval = null;
+        }
+        
+        if (retryCount < MAX_RETRIES) {
+          isReconnecting = true;
+          retryCount++;
+          console.log(`Attempting to reconnect (${retryCount}/${MAX_RETRIES})...`);
+          
+          // Clear any existing reconnect timeout
+          if (reconnectTimeout) {
+            clearTimeout(reconnectTimeout);
+          }
+          
+          // Set new reconnect timeout
+          reconnectTimeout = window.setTimeout(() => {
+            isReconnecting = false;
+            connect();
+          }, RETRY_DELAY);
+        } else {
+          console.log('WebSocket disconnected. Manual refresh required.');
+          set({ error: 'Connection lost. Please refresh the page.' });
+        }
+      };
+    } catch (error) {
+      console.error('Error initializing WebSocket:', error);
+      set({ error: 'Failed to establish connection' });
     }
-  }, HEARTBEAT_INTERVAL);
-}
+  };
 
-/**
- * Schedule a reconnection attempt
- */
-function scheduleReconnect(): void {
-  if (reconnectTimeout !== null) {
-    window.clearTimeout(reconnectTimeout);
-  }
-  
-  reconnectAttempts++;
-  const delay = Math.min(RECONNECT_DELAY * Math.pow(2, reconnectAttempts - 1), 30000);
-  
-  console.log(`Scheduling reconnection attempt ${reconnectAttempts} in ${delay}ms`);
-  
-  reconnectTimeout = window.setTimeout(() => {
-    initWebSocket();
-  }, delay);
-}
+  const disconnect = () => {
+    if (ws) {
+      try {
+        ws.close();
+      } catch (e) {
+        // Ignore errors on close
+      }
+      
+      ws = null;
+      set({ isConnected: false, error: null });
+      
+      // Clear any existing reconnect timeout
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+        reconnectTimeout = null;
+      }
+      
+      // Clear heartbeat interval
+      if (heartbeatInterval) {
+        clearInterval(heartbeatInterval);
+        heartbeatInterval = null;
+      }
+    }
+  };
 
-/**
- * Send a message through the WebSocket
- */
-export function sendMessage(message: GameMessage): void {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify(message));
-  } else {
-    console.error("Cannot send message - WebSocket is not connected");
-  }
-}
+  const sendMessage = (message: any) => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      console.error('Cannot send message - WebSocket is not connected');
+      return;
+    }
 
-/**
- * Add a connection callback
- */
-export function onConnect(callback: ConnectionCallback): void {
-  connectCallbacks.add(callback);
-}
+    try {
+      console.log('Sending message:', message.type);
+      ws.send(JSON.stringify(message));
+    } catch (error) {
+      console.error('Error sending message:', error);
+      set({ error: 'Failed to send message' });
+    }
+  };
 
-/**
- * Add a disconnection callback
- */
-export function onDisconnect(callback: ConnectionCallback): void {
-  disconnectCallbacks.add(callback);
-}
-
-/**
- * Remove a connection callback
- */
-export function offConnect(callback: ConnectionCallback): void {
-  connectCallbacks.delete(callback);
-}
-
-/**
- * Remove a disconnection callback
- */
-export function offDisconnect(callback: ConnectionCallback): void {
-  disconnectCallbacks.delete(callback);
-}
-
-/**
- * Close the WebSocket connection
- */
-export function closeWebSocket(): void {
-  if (socket) {
-    socket.close(1000, 'User initiated close');
-  }
-}
-
-/**
- * Add a message event listener
- */
-export function addMessageListener(callback: MessageCallback): void {
-  messageCallbacks.add(callback);
-}
-
-/**
- * Remove a message event listener
- */
-export function removeMessageListener(callback: MessageCallback): void {
-  messageCallbacks.delete(callback);
-}
-
-/**
- * Check if the WebSocket is connected
- */
-export function isConnected(): boolean {
-  return socket !== null && socket.readyState === WebSocket.OPEN;
-}
-
-// Create a named export object for components that import by name
-export const webSocketService = {
-  connect: initWebSocket,
-  disconnect: closeWebSocket,
-  sendMessage,
-  addMessageListener,
-  removeMessageListener,
-  addConnectListener: onConnect,
-  removeConnectListener: offConnect,
-  addDisconnectListener: onDisconnect,
-  removeDisconnectListener: offDisconnect,
-  isConnected
-};
-
-// Also export as default for components that prefer default imports
-export default webSocketService;
+  return {
+    isConnected: false,
+    error: null,
+    lastMessage: null,
+    connect,
+    disconnect,
+    sendMessage,
+    manualReconnect
+  };
+}); 
