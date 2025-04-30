@@ -2,20 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { splitVendorChunkPlugin } from 'vite';
-import { compression } from 'vite-plugin-compression2';
 
 export default defineConfig({
   plugins: [
     react(),
     splitVendorChunkPlugin(),
-    compression({
-      algorithm: 'brotliCompress',
-      exclude: [/\.(br)$/, /\.(gz)$/],
-    }),
-    compression({
-      algorithm: 'gzip',
-      exclude: [/\.(br)$/, /\.(gz)$/],
-    }),
   ],
   resolve: {
     alias: {
