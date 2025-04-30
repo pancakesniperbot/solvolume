@@ -5,17 +5,10 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }],
-          ['@babel/plugin-transform-runtime', { useESModules: true }]
-        ]
-      }
-    }),
+    react(),
     visualizer({
       filename: 'dist/stats.html',
-      open: true,
+      open: false,
       gzipSize: true,
       brotliSize: true,
     }),
@@ -29,78 +22,71 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext',
-    minify: 'terser',
-    chunkSizeWarningLimit: 600,
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log'],
-      },
-      mangle: true,
-    },
+    target: 'es2020',
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 1000,
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'react-vendor';
-            if (id.includes('framer-motion')) return 'animation-vendor';
-            if (id.includes('@radix-ui')) return 'ui-vendor';
-            if (id.includes('three') || id.includes('@react-three')) return 'three-vendor';
-            if (id.includes('lucide-react') || id.includes('react-icons')) return 'icons';
-            if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority')) return 'utils';
-            return 'vendor';
-          }
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'ui-vendor': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-aspect-ratio',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-collapsible',
+            '@radix-ui/react-context-menu',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-hover-card',
+            '@radix-ui/react-label',
+            '@radix-ui/react-menubar',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-select',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-toggle',
+            '@radix-ui/react-toggle-group',
+            '@radix-ui/react-tooltip'
+          ],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
+          'animation': ['framer-motion'],
+          'icons': ['lucide-react', 'react-icons'],
+          'utils': ['clsx', 'tailwind-merge', 'class-variance-authority']
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-      },
+        inlineDynamicImports: false,
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]'
+      }
     },
-    cssCodeSplit: true,
-    sourcemap: false,
-    assetsInlineLimit: 4096,
+    sourcemap: true,
+    assetsInlineLimit: 8192,
+  },
+  css: {
+    devSourcemap: true,
   },
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'framer-motion',
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-alert-dialog',
-      '@radix-ui/react-aspect-ratio',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-checkbox',
-      '@radix-ui/react-collapsible',
-      '@radix-ui/react-context-menu',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-hover-card',
-      '@radix-ui/react-label',
-      '@radix-ui/react-menubar',
-      '@radix-ui/react-navigation-menu',
-      '@radix-ui/react-popover',
-      '@radix-ui/react-progress',
-      '@radix-ui/react-radio-group',
-      '@radix-ui/react-scroll-area',
-      '@radix-ui/react-select',
-      '@radix-ui/react-separator',
-      '@radix-ui/react-slider',
-      '@radix-ui/react-slot',
-      '@radix-ui/react-switch',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-toast',
-      '@radix-ui/react-toggle',
-      '@radix-ui/react-toggle-group',
-      '@radix-ui/react-toolbar',
-      '@radix-ui/react-tooltip',
       'three',
       '@react-three/fiber',
       '@react-three/drei',
-      'three-mesh-bvh',
+      'three-mesh-bvh'
     ],
-    exclude: ['@babel/runtime'],
+    exclude: ['@babel/runtime']
   },
   server: {
     fs: {
