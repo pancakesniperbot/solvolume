@@ -882,11 +882,11 @@ export function ThreeDHeroSection() {
             </Badge>
             
             <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-[#14F195] to-[#9945FF]" id="main-headline">
-              Professional Solana <span className="text-[#14F195]">Volume Bot</span> Platform
+              Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot
             </h1>
             
             <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              Boost your token's visibility and ranking on <span className="font-bold text-[#9945FF]">DEXScreener</span>, <span className="font-bold text-[#14F195]">Pump.Fun</span>, and <span className="font-bold text-[#03E1FF]">DEXTools</span> through strategic volume distribution and natural transaction patterns
+              Solana Volume Bot is the #1 platform for boosting your token's visibility and ranking on DEXSCREENER, PUMP.FUN, and DEXTOOLS through strategic volume distribution and natural transaction patterns.
             </p>
             
             <div className="bg-[#0c0c15]/80 backdrop-blur-md rounded-xl p-5 mb-8 max-w-2xl mx-auto">
