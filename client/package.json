@@ -8,7 +8,10 @@
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "optimize-images": "node scripts/optimize-images.js"
+    "optimize-images": "node scripts/optimize-images.js",
+    "extract-critical": "node scripts/extract-critical-css.js",
+    "update-refs": "node scripts/update-image-references.js",
+    "postbuild": "npm run update-refs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -46,7 +49,7 @@
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "framer-motion": "^11.0.3",
+    "framer-motion": "^10.16.4",
     "lucide-react": "^0.323.0",
     "next-themes": "^0.4.6",
     "react": "^18.2.0",
@@ -62,27 +65,33 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/plugin-transform-react-jsx": "^7.27.1",
+    "@babel/plugin-transform-runtime": "^7.27.1",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20.17.32",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/react-helmet": "^6.1.11",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.17",
-    "eslint": "^8.55.0",
+    "critical": "^5.1.1",
+    "eslint": "^8.57.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.33",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.4.19",
-    "sharp": "^0.32.6",
     "glob": "^10.3.10",
+    "postcss": "^8.4.33",
+    "rimraf": "^5.0.5",
     "rollup-plugin-visualizer": "^5.12.0",
-    "terser": "^5.29.2"
+    "sharp": "^0.32.6",
+    "tailwindcss": "^3.4.1",
+    "terser": "^5.29.2",
+    "typescript": "^5.2.2",
+    "vite": "^5.4.19"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=18.18.0"
   }
 }

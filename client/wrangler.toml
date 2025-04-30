@@ -1,0 +1,18 @@
+[build]
+command = "npm run build"
+pages_build_output_dir = "dist"
+
+[build.upload]
+format = "service-worker"
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"
+
+[env.production]
+workers_dev = false
+route = "solanavolumebot.io/*"
+zone_id = "your-zone-id"
+
+[env.staging]
+workers_dev = true 

@@ -6,17 +6,147 @@
     <title>Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot</title>
     <meta name="description" content="Professional SOL Volume Bot for DEX visibility and trending. Enhance your token's presence on DEXTools, Pump.Fun & Dexscreener with our Pump Fun Volume Bot.">
     
-    <!-- Core Meta Tags -->
+    <!-- Critical CSS -->
+    <style>
+      /* Base styles */
+      :root {
+        --background: 240 10% 3.9%;
+        --foreground: 0 0% 98%;
+        --primary: 142 89% 50%;
+        --secondary: 270 100% 63%;
+        --card: 240 10% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 240 10% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --muted: 240 5% 64.9%;
+        --accent: 240 5% 64.9%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+      }
+
+      /* Critical layout styles */
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Typography */
+      .text-4xl {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+        font-weight: 700;
+      }
+
+      .text-xl {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+      }
+
+      .text-gray-300 {
+        color: rgb(209 213 219);
+      }
+
+      /* Layout utilities */
+      .mb-8 {
+        margin-bottom: 2rem;
+      }
+
+      .mb-4 {
+        margin-bottom: 1rem;
+      }
+
+      .max-w-3xl {
+        max-width: 48rem;
+      }
+
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      /* Hero section styles */
+      .hero-content {
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+        background: linear-gradient(
+          to bottom right,
+          hsl(var(--background)),
+          hsl(var(--card))
+        );
+      }
+
+      /* Loading states */
+      .content-placeholder {
+        background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        min-height: 24px;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        width: 100%;
+        max-width: 48rem;
+      }
+
+      @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      /* Button styles */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s;
+        background-color: hsl(var(--primary));
+        color: hsl(var(--background));
+      }
+
+      .btn:hover {
+        opacity: 0.9;
+      }
+    </style>
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
+    
+    <!-- Defer non-critical CSS -->
+    <link rel="stylesheet" href="/assets/main-DD0t8dmf.css" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="/assets/main-DD0t8dmf.css">
+    </noscript>
+
+    <!-- Preload critical assets -->
+    <link rel="modulepreload" href="/assets/react-vendor-l0sNRNKZ.js">
+    <link rel="modulepreload" href="/assets/main-Cekyuh3Z.js">
+    
+    <!-- Meta tags -->
     <meta name="author" content="Solana Volume Bot Analytics Team">
     <meta name="robots" content="index, follow">
     <meta http-equiv="content-language" content="en-US">
     <meta name="theme-color" content="#14F195">
     
-    <!-- Security Headers -->
+    <!-- Security headers -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https: wss://small-meadow-d788.comojaw412.workers.dev">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-    
+
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Solana Volume Bot: SOL Volume Bot - Pump Fun Volume Bot">
     <meta property="og:description" content="Professional SOL Volume Bot for DEX visibility and trending. Enhance your token's presence on DEXTools, Pump.Fun & Dexscreener with our Pump Fun Volume Bot.">
@@ -27,88 +157,19 @@
     <!-- Resource Links -->
     <link rel="canonical" href="https://solanavolumebot.io">
     <link rel="icon" type="image/svg+xml" href="/logo.svg">
-    
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml">
-    <link rel="preload" href="/src/main.tsx" as="script" type="module">
-    
-    <!-- Preconnect to External Domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Preload Critical Fonts -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    
-    <!-- Inline Critical CSS -->
-    <style>
-      /* Critical CSS */
-      :root {
-        --background: 240 10% 3.9%;
-        --foreground: 0 0% 98%;
-        --primary: 142 89% 50%;
-        --secondary: 270 100% 63%;
-      }
-      body {
-        margin: 0;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        background-color: hsl(var(--background));
-        color: hsl(var(--foreground));
-        -webkit-font-smoothing: antialiased;
-      }
-      #root {
-        min-height: 100vh;
-      }
-      .loading {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background-color: hsl(var(--background));
-      }
-      .loading-spinner {
-        width: 4rem;
-        height: 4rem;
-        border: 4px solid hsl(var(--primary));
-        border-top-color: transparent;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-      /* Add critical above-the-fold styles here */
-      .text-xl {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-      }
-      .text-gray-300 {
-        color: rgb(209 213 219);
-      }
-      .mb-8 {
-        margin-bottom: 2rem;
-      }
-      .max-w-3xl {
-        max-width: 48rem;
-      }
-      .mx-auto {
-        margin-left: auto;
-        margin-right: auto;
-      }
-    </style>
-    
-    <!-- Defer non-critical CSS -->
-    <link rel="stylesheet" href="/assets/main-Ui7SNZXO.css" media="print" onload="this.media='all'">
-    <noscript>
-      <link rel="stylesheet" href="/assets/main-Ui7SNZXO.css">
-    </noscript>
   </head>
   <body>
     <div id="root">
-      <div class="loading">
-        <div class="loading-spinner"></div>
+      <!-- Initial content shell -->
+      <div class="hero-content">
+        <h1 class="text-4xl font-bold text-center mb-4">Solana Volume Bot</h1>
+        <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          Solana Volume Bot is the #1 platform for boosting your token's visibility and ranking on DEXSCREENER, PUMP.FUN, and DEXTOOLS through strategic volume distribution and natural transaction patterns.
+        </p>
+        <div class="content-placeholder"></div>
+        <button class="btn">Get Started</button>
       </div>
     </div>
-    <script type="module" src="/src/main.tsx" defer></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

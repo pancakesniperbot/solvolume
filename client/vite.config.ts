@@ -1,49 +1,142 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { splitVendorChunkPlugin } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path';
 
-export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '');
-
-  return {
-    plugins: [react()],
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
-        '@shared': path.resolve(__dirname, '../shared'),
-        '@assets': path.resolve(__dirname, '../attached_assets'),
-      },
-    },
-    build: {
-      outDir: 'dist',
-      emptyOutDir: true,
-      minify: true,
-      cssMinify: true,
-      chunkSizeWarningLimit: 1000,
-      rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, 'index.html'),
-        },
-        output: {
-          manualChunks: {
-            react: ['react', 'react-dom'],
-            'react-libs': ['react-helmet', 'wouter', 'framer-motion'],
-            radix: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
-            utils: ['class-variance-authority', 'clsx', 'tailwind-merge', 'tailwindcss-animate'],
-            icons: ['lucide-react', 'react-icons'],
-            vendor: ['axios', 'date-fns']
-          }
-        },
-      },
-    },
-    server: {
-      port: 5173,
-      host: '0.0.0.0',
-      headers: {
-        'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https: wss: ws:;"
+export default defineConfig({
+  plugins: [
+    react({
+      babel: {
+        plugins: [
+          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }],
+          ['@babel/plugin-transform-runtime', { useESModules: true }]
+        ]
       }
+    }),
+    splitVendorChunkPlugin(),
+    visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@services': path.resolve(__dirname, './src/services'),
     },
-  };
+  },
+  build: {
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log'],
+      },
+      mangle: true,
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'animation-vendor': ['framer-motion'],
+          'ui-vendor': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-aspect-ratio',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-collapsible',
+            '@radix-ui/react-context-menu',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-hover-card',
+            '@radix-ui/react-label',
+            '@radix-ui/react-menubar',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-select',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-toggle',
+            '@radix-ui/react-toggle-group',
+            '@radix-ui/react-toolbar',
+            '@radix-ui/react-tooltip',
+          ],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
+          'utils': [
+            'clsx',
+            'tailwind-merge',
+            'class-variance-authority',
+            'tailwindcss-animate',
+          ],
+          'icons': ['lucide-react', 'react-icons'],
+        },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
+    cssCodeSplit: true,
+    sourcemap: false,
+    assetsInlineLimit: 4096,
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'framer-motion',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-aspect-ratio',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-collapsible',
+      '@radix-ui/react-context-menu',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-hover-card',
+      '@radix-ui/react-label',
+      '@radix-ui/react-menubar',
+      '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slider',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-toggle',
+      '@radix-ui/react-toggle-group',
+      '@radix-ui/react-toolbar',
+      '@radix-ui/react-tooltip',
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei',
+      'three-mesh-bvh',
+    ],
+    exclude: ['@babel/runtime'],
+  },
+  server: {
+    fs: {
+      strict: true,
+    },
+  },
 }); 

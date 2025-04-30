@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { SolanaCustomLogo } from "./SolanaCustomLogo";
 import {
@@ -130,6 +130,34 @@ const MARKET_INSIGHTS = {
   },
 };
 
+interface UIState {
+  isVisible: boolean;
+  isHidden: boolean;
+  isHovered: boolean;
+  isSpeechBubbleVisible: boolean;
+  showMarketData: boolean;
+  showStats: boolean;
+  currentMessageIndex: number;
+  isMobile: boolean;
+}
+
+interface MarketState {
+  sentiment: {
+    current: "bullish" | "bearish" | "neutral";
+    trend: string;
+    strength: number;
+    lastUpdate: number;
+  };
+  insight: string;
+  data: {
+    topPlatforms: string[];
+    volumeNeeded: string;
+    bestStrategy: string;
+    successRate: string;
+    pricePrediction: string;
+  };
+}
+
 export function SimpleSolanaMascot({
   messages = DEFAULT_MESSAGES,
   position = "bottom-right",
@@ -141,150 +169,49 @@ export function SimpleSolanaMascot({
   marketSentiment = "neutral",
   hideHamburgerButton = false,
 }: SolanaMascotProps) {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isHidden, setIsHidden] = useState(false); // New state for scroll-based hiding
-  const [isHovered, setIsHovered] = useState(false);
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-  // Closed on mobile devices, open on desktop
-  const [isSpeechBubbleVisible, setIsSpeechBubbleVisible] = useState(window.innerWidth >= 640); // Open above 640px (sm), closed below
-  const [showSolanaPrice, setShowSolanaPrice] = useState(true); // SOL price always visible
-  const [showStats, setShowStats] = useState(false); // Stats initially closed
-  const [showAssistant, setShowAssistant] = useState(false); // AI Assistant initially closed
-  const [showMarketData, setShowMarketData] = useState(false); // Market data initially closed
-  const [userQuestion, setUserQuestion] = useState("");
-  const [aiResponses, setAiResponses] = useState<string[]>([]);
-  const [solanaPriceData, setSolanaPriceData] = useState<TokenPrice>({
-    symbol: "SOL",
-    name: "Solana",
-    price: 145.82,
-    change: 2.4,
-    lastUpdate: Date.now(),
+  // Combined UI state
+  const [uiState, setUiState] = useState<UIState>({
+    isVisible: true,
+    isHidden: false,
+    isHovered: false,
+    isSpeechBubbleVisible: window.innerWidth >= 640,
+    showMarketData: false,
+    showStats: false,
+    currentMessageIndex: 0,
+    isMobile: window.innerWidth < 640
   });
+
+  // Combined market state
+  const [marketState, setMarketState] = useState<MarketState>({
+    sentiment: {
+      current: marketSentiment,
+      trend: "stable",
+      strength: 0.5,
+      lastUpdate: Date.now()
+    },
+    insight: "",
+    data: MARKET_INSIGHTS[marketSentiment]
+  });
+
   const controls = useAnimation();
   const [location, setLocation] = useLocation();
   const { openRegistrationModal } = useLicense();
 
-  // Select messages based on market sentiment
-  const sentimentMessages = MARKET_MESSAGES[marketSentiment];
-  const strategyMessages = STRATEGY_MESSAGES;
-  const combinedMessages = [
-    ...messages,
-    ...sentimentMessages,
-    ...strategyMessages,
-  ];
-
-  // CSS classes for positioning - Fixed positions for each screen size
-  const positionClasses = {
+  // Memoized values
+  const positionClasses = useMemo(() => ({
     "bottom-right": "bottom-24 sm:right-7 right-7",
     "mid-right": "bottom-1/3 sm:right-7 right-7",
     "top-right": "top-32 sm:right-7 right-7",
-  };
+  }), []);
 
-  // State for additional tokens and market data
-  const [additionalTokens, setAdditionalTokens] = useState<TokenPrice[]>([
-    // Default meme coins data to ensure they're always displayed
-    { symbol: 'JUP', name: 'Jupiter', price: 2.43, change: 3.2, volume: 189500000, trending: true },
-    { symbol: 'RAY', name: 'Raydium', price: 1.07, change: 1.8, volume: 43200000, trending: false },
-    { symbol: 'BONK', name: 'Bonk', price: 0.000018, change: 5.2, volume: 91200000, trending: true },
-    { symbol: 'WIF', name: 'Dogwifhat', price: 1.35, change: 2.5, volume: 125600000, trending: false }
-  ]);
-  const [marketSentimentData, setMarketSentimentData] =
-    useState<MarketSentiment>({
-      current: "neutral",
-      trend: "stable",
-      strength: 0.5,
-      lastUpdate: Date.now(),
-    });
-  const [marketInsight, setMarketInsight] = useState<string>("");
-  const [volumeMarketData, setVolumeMarketData] = useState<MarketData>({
-    topPlatforms: [],
-    volumeNeeded: "",
-    bestStrategy: "",
-    successRate: "",
-    pricePrediction: "",
-  });
+  const combinedMessages = useMemo(() => [
+    ...messages,
+    ...MARKET_MESSAGES[marketSentiment],
+    ...STRATEGY_MESSAGES,
+  ], [messages, marketSentiment]);
 
-  // Perplexity AI related states
-  const [aiResponse, setAiResponse] = useState<string>("");
-  const [aiResponseLoading, setAiResponseLoading] = useState<boolean>(false);
-  const [aiError, setAiError] = useState<string>("");
-  const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>(
-    perplexityService.getSuggestedQuestions(),
-  );
-
-  // Random movement animation
-  useEffect(() => {
-    const moveInterval = setInterval(() => {
-      if (!isHovered) {
-        controls.start({
-          y: [0, -10, 0, -5, 0],
-          rotate: [0, 2, 0, -2, 0],
-          transition: {
-            duration: 3,
-            ease: "easeInOut",
-          },
-        });
-      }
-    }, 4000);
-
-    return () => clearInterval(moveInterval);
-  }, [controls, isHovered]);
-
-  // Rotating messages - showing with ideal timing for users to read
-  useEffect(() => {
-    const messageInterval = setInterval(() => {
-      if (combinedMessages.length > 1) {
-        setCurrentMessageIndex((prev) => (prev + 1) % combinedMessages.length);
-      }
-    }, 4500); // Changes every 4.5 seconds - enough time to read without waiting too long
-
-    return () => clearInterval(messageInterval);
-  }, [combinedMessages]);
-
-  // Auto-hide after delay if enabled
-  useEffect(() => {
-    if (autoHide) {
-      const hideTimeout = setTimeout(() => {
-        setIsVisible(false);
-      }, autoHideDelay);
-
-      return () => clearTimeout(hideTimeout);
-    }
-  }, [autoHide, autoHideDelay]);
-
-  // Add scroll listener to hide mascot when scrolling down
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          // If we've scrolled down more than 200px, hide the mascot
-          if (window.scrollY > 200 && window.scrollY > lastScrollY) {
-            setIsHidden(true);
-          } else if (window.scrollY < lastScrollY) {
-            // When scrolling back up, show mascot again
-            setIsHidden(false);
-          }
-
-          lastScrollY = window.scrollY;
-          ticking = false;
-        });
-
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  // Handle CTA button click
-  const handleCtaClick = () => {
+  // Memoized handlers
+  const handleCtaClick = useCallback(() => {
     controls.start({
       scale: [1, 1.2, 1],
       transition: { duration: 0.5 },
@@ -299,271 +226,221 @@ export function SimpleSolanaMascot({
 
     if (ctaLink.startsWith("#")) {
       const element = document.querySelector(ctaLink);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+      element?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  };
+  }, [controls, onCtaClick, openRegistrationModal, ctaLink]);
 
-  // Manage mobile/desktop behavior when screen size changes
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  
+  const toggleSpeechBubble = useCallback(() => {
+    setUiState(prev => ({
+      ...prev,
+      isSpeechBubbleVisible: !prev.isSpeechBubbleVisible
+    }));
+  }, []);
+
+  // Effects
+  useEffect(() => {
+    if (!uiState.isHovered) {
+      const moveInterval = setInterval(() => {
+        controls.start({
+          y: [0, -10, 0, -5, 0],
+          rotate: [0, 2, 0, -2, 0],
+          transition: { duration: 3, ease: "easeInOut" },
+        });
+      }, 4000);
+
+      return () => clearInterval(moveInterval);
+    }
+  }, [controls, uiState.isHovered]);
+
+  useEffect(() => {
+    if (combinedMessages.length > 1) {
+      const messageInterval = setInterval(() => {
+        setUiState(prev => ({
+          ...prev,
+          currentMessageIndex: (prev.currentMessageIndex + 1) % combinedMessages.length
+        }));
+      }, 4500);
+
+      return () => clearInterval(messageInterval);
+    }
+  }, [combinedMessages]);
+
+  useEffect(() => {
+    if (autoHide) {
+      const hideTimeout = setTimeout(() => {
+        setUiState(prev => ({ ...prev, isVisible: false }));
+      }, autoHideDelay);
+
+      return () => clearTimeout(hideTimeout);
+    }
+  }, [autoHide, autoHideDelay]);
+
   useEffect(() => {
     const handleResize = () => {
-      // Detect screen size change
       const mobileCheck = window.innerWidth < 640;
-      setIsMobile(mobileCheck);
-      
-      // Automatically close when switching to mobile device
-      if (mobileCheck) {
-        setIsSpeechBubbleVisible(false);
-      }
-      
-      // Force refresh the page so that button position is calculated correctly
-      // Note: Normally this approach is not ideal but in this case it's the most practical solution
-      if (mobileCheck !== isMobile) {
-        setTimeout(() => {
-          // Update button styles without refreshing the page
-          const toggleButton = document.querySelector("[data-solana-toggle]");
-          if (toggleButton) {
-            const btn = toggleButton as HTMLElement;
-            btn.style.left = mobileCheck ? '50%' : 'auto';
-            btn.style.right = !mobileCheck ? '0' : 'auto';
-            btn.style.transform = mobileCheck ? 'translateX(-50%)' : 'none';
-          }
-        }, 10);
-      }
+      setUiState(prev => ({
+        ...prev,
+        isMobile: mobileCheck,
+        isSpeechBubbleVisible: mobileCheck ? false : prev.isSpeechBubbleVisible
+      }));
     };
 
-    // Check during initial loading and on size changes
     window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isMobile]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  // Toggle speech bubble
-  const toggleSpeechBubble = () => {
-    setIsSpeechBubbleVisible((prev) => !prev);
-  };
-  
-  // Handle manual refresh button click (no-op, since WebSocket is removed)
-  const handleRefreshData = () => {
-    // No operation
-  };
+  if (!uiState.isVisible) return null;
 
-  // Handle AI question submission - use Perplexity API
-  const handleQuestionSubmit = async () => {
-    if (!userQuestion.trim()) return;
-
-    setAiResponseLoading(true);
-    setAiError("");
-
-    try {
-      // Add user's question to responses array for display
-      setAiResponses((prev) => [...prev, `You: ${userQuestion}`]);
-
-      // Call Perplexity API
-      const response = await perplexityService.askQuestion(userQuestion);
-
-      if (response.error) {
-        setAiError(response.error);
-      } else if (response.content) {
-        setAiResponse(response.content);
-        setAiResponses((prev) => [...prev, response.content]);
-      }
-    } catch (error) {
-      console.error("Error fetching AI response:", error);
-      setAiError(
-        "Our AI assistant is currently overloaded. Please try again later.",
-      );
-    } finally {
-      setAiResponseLoading(false);
-      setUserQuestion(""); // Clear input after submission
-    }
-  };
-
-  // Handle suggested question click
-  const handleSuggestedQuestionClick = (question: string) => {
-    setUserQuestion(question);
-    // Auto-submit the question
-    setTimeout(() => {
-      handleQuestionSubmit();
-    }, 50);
-  };
-
-  if (!isVisible) return null;
-
-  // Add a button to show the mascot when it's hidden - positioned on the right side to match original mascot position
-  if (isHidden) {
+  // Render hidden state button
+  if (uiState.isHidden) {
     return (
-      <div className="fixed bottom-20 right-7 z-50">
-        <button
-          onClick={() => setIsHidden(false)}
-          className="bg-gradient-to-r from-[#14F195] to-[#9945FF] rounded-full p-3 shadow-lg shadow-[#14F195]/20 hover:shadow-[#14F195]/40 transition-all duration-300"
-          aria-label="Show mascot"
-          title="Show market assistant"
-          data-solana-toggle
-        >
-          <img 
-            src={'/images/coins/SOL.png'} 
-            alt="Solana cryptocurrency logo" 
-            className="h-5 w-5 rounded-full"
-            width="20"
-            height="20"
-            loading="eager" 
-          />
-        </button>
-      </div>
+      <button
+        onClick={() => setUiState(prev => ({ ...prev, isHidden: false }))}
+        className="fixed bottom-20 right-7 z-50 bg-gradient-to-r from-[#14F195] to-[#9945FF] rounded-full p-3 shadow-lg shadow-[#14F195]/20 hover:shadow-[#14F195]/40 transition-all duration-300"
+        aria-label="Show mascot"
+        title="Show market assistant"
+        data-solana-toggle
+      >
+        <img 
+          src="/images/coins/SOL.png"
+          alt="Solana logo"
+          className="h-5 w-5 rounded-full"
+          width="20"
+          height="20"
+          loading="eager"
+        />
+      </button>
     );
   }
 
+  // Main render
   return (
-    <div
-      className={`fixed ${positionClasses[position]} z-50 flex flex-col ${isMobile ? 'items-center' : 'items-end'}`}
-    >
-      {/* Speech bubble with message and CTA - fully stable version */}
-      {isSpeechBubbleVisible && (
+    <div className={`fixed ${positionClasses[position]} z-50 flex flex-col ${uiState.isMobile ? 'items-center' : 'items-end'}`}>
+      {uiState.isSpeechBubbleVisible && (
         <div className="relative bg-black/85 backdrop-blur-sm text-white p-3 rounded-xl mb-2 max-w-[260px] sm:max-w-[280px] border border-[#14F195]/30">
-          {/* Live Market Sentiment indicator - Live data from API */}
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs sm:text-sm text-gray-300 truncate">Live Market Sentiment:</span>
-            <span
-              className={`text-xs sm:text-sm flex items-center font-medium ml-2 ${
-                marketSentimentData.current === "bullish"
-                  ? "text-[#14F195]"
-                  : marketSentimentData.current === "bearish"
-                    ? "text-red-400"
-                    : "text-blue-400"
-              }`}
-            >
-              {marketSentimentData.current === "bullish" && (
-                <>
-                  Bullish <TrendingUp className="ml-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                </>
-              )}
-              {marketSentimentData.current === "bearish" && (
-                <>
-                  Bearish <TrendingDown className="ml-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                </>
-              )}
-              {marketSentimentData.current === "neutral" && (
-                <>
-                  Neutral <span className="ml-1">→</span>
-                </>
-              )}
-            </span>
-          </div>
-
-          {/* Market insight, messages, CTA, etc. - KEEP ALL THIS */}
-          {marketInsight && (
-            <div className="mb-2 text-xs text-[#14F195]/80 bg-[#131720] p-1.5 rounded-md border border-[#14F195]/20">
-              <div className="flex items-start">
-                <TrendingUp className="h-3.5 w-3.5 mr-1 mt-0.5 flex-shrink-0" />
-                <p className="flex-1 break-words">{marketInsight}</p>
-              </div>
-            </div>
-          )}
-
+          <MarketSentimentIndicator sentiment={marketState.sentiment.current} />
+          {marketState.insight && <MarketInsight insight={marketState.insight} />}
+          
           <p className="text-xs sm:text-sm mb-2 break-words">
-            {combinedMessages[currentMessageIndex]}
+            {combinedMessages[uiState.currentMessageIndex]}
           </p>
 
-          {/* View selectors - market data and stats buttons */}
-          <div className="flex flex-wrap gap-2 mb-3">
-            <button
-              onClick={() => setShowMarketData((prev) => !prev)}
-              className={`text-xs sm:text-sm py-2 px-3 sm:px-2 rounded-lg transition-colors flex items-center justify-center ${showMarketData ? "bg-[#14F195]/20 border border-[#14F195]/40" : "bg-[#1A1D2E] border border-[#14F195]/5"}`}
-              title="Statistics"
-            >
-              <TrendingUp className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0" />
-              <span className="hidden sm:inline sm:ml-1.5">Statistics</span>
-            </button>
-            <button
-              onClick={() => setShowStats((prev) => !prev)}
-              className={`text-xs sm:text-sm py-2 px-3 sm:px-2 rounded-lg transition-colors flex items-center justify-center ${showStats ? "bg-[#14F195]/20 border border-[#14F195]/40" : "bg-[#1A1D2E] border border-[#14F195]/5"}`}
-              title="Requirements"
-            >
-              <BarChart3 className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0" />
-              <span className="hidden sm:inline sm:ml-1.5">Requirements</span>
-            </button>
-          </div>
+          <ViewControls 
+            showMarketData={uiState.showMarketData}
+            showStats={uiState.showStats}
+            onToggleMarketData={() => setUiState(prev => ({ ...prev, showMarketData: !prev.showMarketData }))}
+            onToggleStats={() => setUiState(prev => ({ ...prev, showStats: !prev.showStats }))}
+          />
 
-          {/* Market Data Panel */}
-          {showMarketData && (
-            <div className="mb-2 bg-[#131720] rounded-md p-2 text-xs border border-[#14F195]/20">
-              <div className="flex items-center text-[#14F195] mb-1">
-                <TrendingUp className="h-3 w-3 mr-1" />
-                <span className="font-medium">Market Data (Sample)</span>
-              </div>
-              <div className="space-y-1">
-                <div className="flex justify-between">
-                  <span>Top Platforms:</span>
-                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].topPlatforms.join(", ")}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Volume Needed:</span>
-                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].volumeNeeded}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Best Strategy:</span>
-                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].bestStrategy}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Success Rate:</span>
-                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].successRate}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>SOL Prediction:</span>
-                  <span className="text-white">{MARKET_INSIGHTS[marketSentimentData.current].pricePrediction}</span>
-                </div>
-              </div>
-            </div>
-          )}
+          {uiState.showMarketData && <MarketDataPanel data={marketState.data} />}
+          {uiState.showStats && <StatsPanel />}
 
-          {/* Stats Panel */}
-          {showStats && (
-            <div className="mb-2 bg-[#131720] rounded-md p-2 text-xs border border-[#14F195]/20">
-              <div className="flex items-center mb-1 text-[#14F195]">
-                <Target className="h-3 w-3 mr-1" />
-                <span className="font-medium">Trending Requirements</span>
-              </div>
-              <div className="space-y-1">
-                <div className="flex justify-between">
-                  <span>DEXScreener:</span>
-                  <span className="text-white">~$80K vol/24h</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Jupiter:</span>
-                  <span className="text-white">~$120K vol/24h</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Pump.Fun:</span>
-                  <span className="text-white">~6,500 txs/24h</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Birdeye:</span>
-                  <span className="text-white">~$60K vol/24h</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div>
-            <button
-              onClick={handleCtaClick}
-              className="w-full text-[11px] sm:text-sm py-2 sm:py-2.5 px-3 sm:px-4 rounded-full text-black font-semibold bg-gradient-to-r from-[#14F195] to-[#9945FF] hover:opacity-90 transition-all flex items-center justify-center shadow-lg shadow-[#14F195]/20"
-            >
-              {ctaText}
-              <ChevronRight className="ml-1 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-            </button>
-          </div>
-
-          {/* Speech bubble arrow */}
-          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 rotate-45 bg-black/85 border-r border-b border-[#14F195]/30"></div>
+          <CTAButton text={ctaText} onClick={handleCtaClick} />
+          
+          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 rotate-45 bg-black/85 border-r border-b border-[#14F195]/30" />
         </div>
       )}
     </div>
   );
 }
+
+// Extracted components
+const MarketSentimentIndicator = React.memo(({ sentiment }: { sentiment: string }) => (
+  <div className="flex items-center justify-between mb-2">
+    <span className="text-xs sm:text-sm text-gray-300 truncate">Live Market Sentiment:</span>
+    <span className={`text-xs sm:text-sm flex items-center font-medium ml-2 ${
+      sentiment === "bullish" ? "text-[#14F195]" : 
+      sentiment === "bearish" ? "text-red-400" : "text-blue-400"
+    }`}>
+      {sentiment === "bullish" && <>Bullish <TrendingUp className="ml-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" /></>}
+      {sentiment === "bearish" && <>Bearish <TrendingDown className="ml-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" /></>}
+      {sentiment === "neutral" && <>Neutral <span className="ml-1">→</span></>}
+    </span>
+  </div>
+));
+
+const MarketInsight = React.memo(({ insight }: { insight: string }) => (
+  <div className="mb-2 text-xs text-[#14F195]/80 bg-[#131720] p-1.5 rounded-md border border-[#14F195]/20">
+    <div className="flex items-start">
+      <TrendingUp className="h-3.5 w-3.5 mr-1 mt-0.5 flex-shrink-0" />
+      <p className="flex-1 break-words">{insight}</p>
+    </div>
+  </div>
+));
+
+const ViewControls = React.memo(({ showMarketData, showStats, onToggleMarketData, onToggleStats }) => (
+  <div className="flex flex-wrap gap-2 mb-3">
+    <button
+      onClick={onToggleMarketData}
+      className={`text-xs sm:text-sm py-2 px-3 sm:px-2 rounded-lg transition-colors flex items-center justify-center ${
+        showMarketData ? "bg-[#14F195]/20 border border-[#14F195]/40" : "bg-[#1A1D2E] border border-[#14F195]/5"
+      }`}
+    >
+      <TrendingUp className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0" />
+      <span className="hidden sm:inline sm:ml-1.5">Statistics</span>
+    </button>
+    <button
+      onClick={onToggleStats}
+      className={`text-xs sm:text-sm py-2 px-3 sm:px-2 rounded-lg transition-colors flex items-center justify-center ${
+        showStats ? "bg-[#14F195]/20 border border-[#14F195]/40" : "bg-[#1A1D2E] border border-[#14F195]/5"
+      }`}
+    >
+      <BarChart3 className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0" />
+      <span className="hidden sm:inline sm:ml-1.5">Requirements</span>
+    </button>
+  </div>
+));
+
+const MarketDataPanel = React.memo(({ data }) => (
+  <div className="mb-2 bg-[#131720] rounded-md p-2 text-xs border border-[#14F195]/20">
+    <div className="flex items-center text-[#14F195] mb-1">
+      <TrendingUp className="h-3 w-3 mr-1" />
+      <span className="font-medium">Market Data (Sample)</span>
+    </div>
+    <div className="space-y-1">
+      {Object.entries(data).map(([key, value]) => (
+        <div key={key} className="flex justify-between">
+          <span>{key}:</span>
+          <span className="text-white">{Array.isArray(value) ? value.join(", ") : value}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+));
+
+const StatsPanel = React.memo(() => (
+  <div className="mb-2 bg-[#131720] rounded-md p-2 text-xs border border-[#14F195]/20">
+    <div className="flex items-center mb-1 text-[#14F195]">
+      <Target className="h-3 w-3 mr-1" />
+      <span className="font-medium">Trending Requirements</span>
+    </div>
+    <div className="space-y-1">
+      <div className="flex justify-between">
+        <span>DEXScreener:</span>
+        <span className="text-white">~$80K vol/24h</span>
+      </div>
+      <div className="flex justify-between">
+        <span>Jupiter:</span>
+        <span className="text-white">~$120K vol/24h</span>
+      </div>
+      <div className="flex justify-between">
+        <span>Pump.Fun:</span>
+        <span className="text-white">~6,500 txs/24h</span>
+      </div>
+      <div className="flex justify-between">
+        <span>Birdeye:</span>
+        <span className="text-white">~$60K vol/24h</span>
+      </div>
+    </div>
+  </div>
+));
+
+const CTAButton = React.memo(({ text, onClick }) => (
+  <button
+    onClick={onClick}
+    className="w-full text-[11px] sm:text-sm py-2 sm:py-2.5 px-3 sm:px-4 rounded-full text-black font-semibold bg-gradient-to-r from-[#14F195] to-[#9945FF] hover:opacity-90 transition-all flex items-center justify-center shadow-lg shadow-[#14F195]/20"
+  >
+    {text}
+    <ChevronRight className="ml-1 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+  </button>
+));
