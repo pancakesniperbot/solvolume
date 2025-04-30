@@ -1,77 +1,47 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { WorkerMessage, WorkerState, WorkerConfig } from '../types/worker'
+import type { WorkerMessage, WorkerState } from '../types/worker'
+import { subscribeToUpdates } from '../services/cryptoDataService'
 
-const defaultConfig: WorkerConfig = {
-  wsUrl: 'wss://solvolume.workers.dev/ws',
-  reconnectInterval: 5000,
-  maxReconnectAttempts: 5
-}
-
-export function useWorker(config: Partial<WorkerConfig> = {}) {
+export function useWorker() {
   const [state, setState] = useState<WorkerState>({
     isConnected: false,
     isConnecting: false,
     error: null
   })
 
-  const [ws, setWs] = useState<WebSocket | null>(null)
-  const [reconnectAttempts, setReconnectAttempts] = useState(0)
-
-  const connect = useCallback(() => {
-    if (ws?.readyState === WebSocket.OPEN) return
-
-    setState((prev: WorkerState) => ({ ...prev, isConnecting: true, error: null }))
-    const worker = new WebSocket(config.wsUrl || defaultConfig.wsUrl)
-
-    worker.onopen = () => {
-      setState((prev: WorkerState) => ({ ...prev, isConnected: true, isConnecting: false }))
-      setReconnectAttempts(0)
-    }
-
-    worker.onclose = () => {
-      setState((prev: WorkerState) => ({ ...prev, isConnected: false, isConnecting: false }))
-      if (reconnectAttempts < (config.maxReconnectAttempts || defaultConfig.maxReconnectAttempts)) {
-        setTimeout(() => {
-          setReconnectAttempts((prev: number) => prev + 1)
-          connect()
-        }, config.reconnectInterval || defaultConfig.reconnectInterval)
-      }
-    }
-
-    worker.onerror = (error) => {
-      setState((prev: WorkerState) => ({
-        ...prev,
-        isConnected: false,
-        isConnecting: false,
-        error: error.toString()
-      }))
-    }
-
-    setWs(worker)
-  }, [config, reconnectAttempts, ws])
-
-  const disconnect = useCallback(() => {
-    if (ws) {
-      ws.close()
-      setWs(null)
-    }
-  }, [ws])
-
-  const sendMessage = useCallback((message: WorkerMessage) => {
-    if (ws?.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify(message))
-    }
-  }, [ws])
-
+  const [messageListeners, setMessageListeners] = useState<((data: any) => void)[]>([])
+  
   useEffect(() => {
-    connect()
-    return () => disconnect()
-  }, [connect, disconnect])
-
+    setState((prev: WorkerState) => ({ ...prev, isConnecting: true, error: null }))
+    
+    // Use our mock data service instead of WebSockets
+    const unsubscribe = subscribeToUpdates((data) => {
+      messageListeners.forEach(listener => listener(data))
+    })
+    
+    setState((prev: WorkerState) => ({ ...prev, isConnected: true, isConnecting: false }))
+    
+    return () => {
+      unsubscribe()
+      setState((prev: WorkerState) => ({ ...prev, isConnected: false }))
+    }
+  }, [messageListeners])
+  
+  const sendMessage = useCallback((message: WorkerMessage) => {
+    console.log('Sending message to mock service:', message)
+    // This doesn't do anything in our mock implementation
+  }, [])
+  
+  const addMessageListener = useCallback((listener: (data: any) => void) => {
+    setMessageListeners(prev => [...prev, listener])
+    return () => {
+      setMessageListeners(prev => prev.filter(l => l !== listener))
+    }
+  }, [])
+  
   return {
     ...state,
     sendMessage,
-    connect,
-    disconnect
+    addMessageListener
   }
 } 

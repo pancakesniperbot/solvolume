@@ -21,7 +21,7 @@ import { TableOfContents } from "@/components/TableOfContents";
 import { AIAssistant } from "@/components/AIAssistant";
 import AIVolumeAssistantPopup from "@/components/AIVolumeAssistantPopup";
 import { Bot, List, Cpu } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ContactSection } from "@/components/ContactSection";
 import { ToolsSection } from "@/components/ToolsSection";
 import { ApiSection } from "@/components/ApiSection";
@@ -47,6 +47,8 @@ import {
   antiDetectionContent,
   multiWalletContent
 } from "@/lib/featureDetailsContent";
+import { useWorker } from '@/hooks/use-worker'
+import { fetchCryptoData } from '@/services/cryptoDataService'
 
 // Animated features section with 3D cards
 const SolanaFeaturesSection = () => {
@@ -200,6 +202,80 @@ const SolanaFeaturesSection = () => {
 
 
 export default function Home() {
+  const [coinData, setCoinData] = useState([])
+  const [memeCoinsData, setMemeCoinsData] = useState([])
+  const [stats, setStats] = useState({
+    totalVolume: 0,
+    totalMarketCap: 0,
+    totalCoins: 0,
+    avgSentiment: 0
+  })
+  
+  const worker = useWorker()
+  
+  // Initialize with data
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        const data = await fetchCryptoData()
+        setCoinData(data)
+        
+        // Filter for meme coins
+        const memeCoins = data.filter(coin => 
+          ['WIF', 'BONK'].includes(coin.symbol)
+        )
+        setMemeCoinsData(memeCoins)
+        
+        // Calculate stats
+        const totalVolume = data.reduce((sum, coin) => sum + coin.volume_24h, 0)
+        const totalMarketCap = data.reduce((sum, coin) => sum + coin.market_cap, 0)
+        const avgSentiment = data.reduce((sum, coin) => sum + coin.sentiment, 0) / data.length
+        
+        setStats({
+          totalVolume,
+          totalMarketCap,
+          totalCoins: data.length,
+          avgSentiment
+        })
+      } catch (error) {
+        console.error('Error loading initial data:', error)
+      }
+    }
+    
+    loadInitialData()
+  }, [])
+  
+  // Subscribe to updates
+  useEffect(() => {
+    if (!worker.isConnected) return
+    
+    const removeListener = worker.addMessageListener((message) => {
+      if (message.type === 'prices') {
+        setCoinData(message.data)
+        
+        // Filter for meme coins
+        const memeCoins = message.data.filter(coin => 
+          ['WIF', 'BONK'].includes(coin.symbol)
+        )
+        setMemeCoinsData(memeCoins)
+        
+        // Update stats
+        const totalVolume = message.data.reduce((sum, coin) => sum + coin.volume_24h, 0)
+        const totalMarketCap = message.data.reduce((sum, coin) => sum + coin.market_cap, 0)
+        const avgSentiment = message.data.reduce((sum, coin) => sum + coin.sentiment, 0) / message.data.length
+        
+        setStats({
+          totalVolume,
+          totalMarketCap,
+          totalCoins: message.data.length,
+          avgSentiment
+        })
+      }
+    })
+    
+    return () => removeListener()
+  }, [worker])
+  
   // State for legal popups
   const [legalPopup, setLegalPopup] = useState<{
     isOpen: boolean;
@@ -269,7 +345,10 @@ export default function Home() {
 
   return (
     <>
-      <SEOMeta {...defaultSEO} />
+      <SEOMeta 
+        title="Solana Volume - Real-time Trading Data & Analytics"
+        description="Track Solana token volume, price, and sentiment in real-time. Get comprehensive analytics for the Solana ecosystem."
+      />
       <div className="flex flex-col min-h-screen">
         <MainNavigation />
         <main className="flex-1" role="main" aria-label="Solana Volume Bot features and information">
@@ -300,8 +379,6 @@ export default function Home() {
             autoHide={false}
             marketSentiment="bullish"
           />
-          
-          {/* A.I. Assistant - Removed to prevent duplicates and CPU usage issues */}
           
           {/* New 3D-style Hero Section */}
           <div id="hero">

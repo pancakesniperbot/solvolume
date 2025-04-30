@@ -1,0 +1,7 @@
+[build]
+base = ""
+build_command = "cd client && npm install && npm run build"
+publish_directory = "client/dist"
+
+[build.environment]
+NODE_VERSION = "18" 
