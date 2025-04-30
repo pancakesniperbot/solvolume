@@ -1,3 +1,4 @@
+# Cloudflare Pages configuration
 [build]
 command = "cd client && npm run build"
 pages_build_output_dir = "client/dist"
@@ -6,17 +7,16 @@ pages_build_output_dir = "client/dist"
 [build.environment]
 NODE_VERSION = "20"
 
-# Configure output directory for Pages
+# Site configuration
 [site]
 bucket = "client/dist"
-entry-point = "."
 
-# Pages-specific configuration
+# Pages configuration
 [pages]
 compatibility_date = "2023-10-30"
 compatibility_flags = ["nodejs_compat"]
 
-# Route all requests to index.html for SPA routing
+# SPA routing
 [[redirects]]
 from = "/*"
 to = "/index.html"
