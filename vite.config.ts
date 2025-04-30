@@ -10,15 +10,15 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@assets": path.resolve(__dirname, "./src/assets"),
-      "@components": path.resolve(__dirname, "./src/components"),
-      "@services": path.resolve(__dirname, "./src/services"),
+      "@": path.resolve(__dirname, "client/src"),
+      "@assets": path.resolve(__dirname, "client/src/assets"),
+      "@components": path.resolve(__dirname, "client/src/components"),
+      "@services": path.resolve(__dirname, "client/src/services"),
     },
   },
-  root: '.',
+  root: './client',
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
     emptyOutDir: true,
     rollupOptions: {
       input: './index.html',
