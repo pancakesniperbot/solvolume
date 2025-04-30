@@ -1,5 +1,5 @@
 [build]
-command = "npm run build"
+command = "cd client && npm run build"
 pages_build_output_dir = "client/dist"
 
 # Environment variables section
@@ -8,7 +8,7 @@ NODE_VERSION = "20"
 
 # Configure output directory for Pages
 [site]
-bucket = "./client/dist"
+bucket = "client/dist"
 entry-point = "."
 
 # Pages-specific configuration
@@ -35,10 +35,10 @@ zone_id = ""
 ENVIRONMENT = "production"
 
 [env.production.build]
-command = "npm run build"
+command = "cd client && npm run build"
 
 [env.production.build.upload]
 format = "service-worker"
 
 [env.production.site]
-bucket = "./client/dist" 
+bucket = "client/dist" 
