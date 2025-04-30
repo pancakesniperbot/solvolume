@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import webSocketService, { GameMessage } from '../services/WebSocketService';
+import { useWebSocket } from '../services/WebSocketService';
 
 // Meme coin interface - reusing from MemeCoinsIndicator component
 type SentimentStatus = 'bullish' | 'neutral' | 'bearish' | 'extreme-bullish' | 'extreme-bearish';
@@ -75,9 +75,11 @@ const initialState: CryptoState = {
 const CryptoContext = createContext<{
   state: CryptoState;
   dispatch: React.Dispatch<CryptoAction>;
+  reconnectWebSocket: () => void;
 }>({
   state: initialState,
-  dispatch: () => null
+  dispatch: () => null,
+  reconnectWebSocket: () => {}
 });
 
 // Reducer function
@@ -133,106 +135,66 @@ const cryptoReducer = (state: CryptoState, action: CryptoAction): CryptoState =>
 // Create provider component
 export const CryptoProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cryptoReducer, initialState);
+  const webSocketStore = useWebSocket();
 
-  // Set up WebSocket message handling (but don't auto-connect)
+  // Set up WebSocket message handling
   useEffect(() => {
-    // Handle WebSocket connection status changes
-    const handleConnect = () => {
+    // Update state based on WebSocket connection status
+    if (webSocketStore.isConnected && !state.isConnected) {
       dispatch({ type: 'SET_CONNECTED', payload: true });
-      // Show connected state but don't auto-request data
-    };
-
-    const handleDisconnect = () => {
+    } else if (!webSocketStore.isConnected && state.isConnected) {
       dispatch({ type: 'SET_CONNECTED', payload: false });
-      // Don't auto-set loading on disconnect, as this creates pressure to reconnect
-      // Instead, let the user decide when to refresh
-    };
+    }
 
-    // Handle incoming WebSocket messages
-    const handleMessage = (message: GameMessage) => {
-      if (message.type === 'price_update' && message.data) {
+    // Process messages when lastMessage changes
+    if (webSocketStore.lastMessage) {
+      const message = webSocketStore.lastMessage;
+      
+      if (message.type === 'prices' && message.data) {
         // Convert prices to MemeCoin format
-        const prices = message.data.prices.map((price: any) => ({
-          id: price.symbol,
+        const prices = message.data.map((price: any) => ({
+          id: price.id,
           name: price.name,
           symbol: price.symbol,
           price: price.price,
-          change24h: price.change,
-          sentiment: 50 + (price.change * 5), // Derive sentiment from price change
-          volume24h: price.volume,
-          color: getSentimentColorFromChange(price.change),
-          trending: price.trending
+          change24h: price.price_change_24h,
+          sentiment: price.sentiment || 50,
+          volume24h: price.volume_24h,
+          icon: price.image,
+          color: getSentimentColorFromChange(price.price_change_24h),
+          trending: price.price_change_24h > 5
         }));
 
-        // Update all related state in one dispatch
-        if (message.data.marketSentiment && message.data.marketInsight && message.data.marketData) {
-          dispatch({
-            type: 'UPDATE_ALL',
-            payload: {
-              prices,
-              marketSentiment: message.data.marketSentiment,
-              marketInsight: message.data.marketInsight,
-              marketData: message.data.marketData
-            }
-          });
-        } else {
-          // Fallback for partial updates
-          dispatch({ type: 'SET_PRICES', payload: prices });
-          
-          if (message.data.marketSentiment) {
-            dispatch({ type: 'SET_MARKET_SENTIMENT', payload: message.data.marketSentiment });
-          }
-          
-          if (message.data.marketInsight) {
-            dispatch({ type: 'SET_MARKET_INSIGHT', payload: message.data.marketInsight });
-          }
-          
-          if (message.data.marketData) {
-            dispatch({ type: 'SET_MARKET_DATA', payload: message.data.marketData });
-          }
-        }
+        dispatch({ type: 'SET_PRICES', payload: prices });
       }
-    };
-
-    // Register event listeners
-    webSocketService.addConnectListener(handleConnect);
-    webSocketService.addDisconnectListener(handleDisconnect);
-    webSocketService.addMessageListener(handleMessage);
-
-    // Set initial connection state and auto-connect to fetch initial data
-    dispatch({ type: 'SET_CONNECTED', payload: webSocketService.isConnected() });
-    
-    // Auto-connect to WebSocket and request initial data 
-    if (!webSocketService.isConnected()) {
-      // Connect to WebSocket
-      webSocketService.connect();
-      
-      // Request data after a short delay to ensure connection is established
-      const initialDataTimer = setTimeout(() => {
-        if (webSocketService.isConnected()) {
-          webSocketService.sendMessage({
-            type: 'refresh_request',
-            data: {
-              timestamp: Date.now()
-            }
-          });
-        }
-      }, 500);
-      
-      // Cleanup function
-      return () => clearTimeout(initialDataTimer);
     }
 
-    // Cleanup function
-    return () => {
-      webSocketService.removeConnectListener(handleConnect);
-      webSocketService.removeDisconnectListener(handleDisconnect);
-      webSocketService.removeMessageListener(handleMessage);
-    };
-  }, []);
+    // Connect to WebSocket automatically if not connected
+    if (!webSocketStore.isConnected && !state.isConnected) {
+      webSocketStore.connect();
+    }
+  }, [webSocketStore.isConnected, webSocketStore.lastMessage]);
+
+  // Request refresh when connected
+  useEffect(() => {
+    if (webSocketStore.isConnected) {
+      // Short delay to ensure the connection is fully established
+      const refreshTimer = setTimeout(() => {
+        webSocketStore.sendMessage({ type: 'refresh' });
+      }, 500);
+      
+      return () => clearTimeout(refreshTimer);
+    }
+  }, [webSocketStore.isConnected]);
+
+  // Expose manual reconnect function
+  const reconnectWebSocket = () => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+    webSocketStore.manualReconnect();
+  };
 
   return (
-    <CryptoContext.Provider value={{ state, dispatch }}>
+    <CryptoContext.Provider value={{ state, dispatch, reconnectWebSocket }}>
       {children}
     </CryptoContext.Provider>
   );
