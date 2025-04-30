@@ -45,8 +45,5 @@ export default defineConfig(({ mode }) => {
         'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https: wss: ws:;"
       }
     },
-    define: {
-      'import.meta.env.VITE_WEBSOCKET_HOST': JSON.stringify(env.VITE_WEBSOCKET_HOST)
-    }
   };
 }); 

@@ -7,7 +7,6 @@ import {
   LineChart, BarChart, BarChart3, Zap, ArrowRight, 
   Search, Sparkles, RefreshCw, Loader2, Clock
 } from "lucide-react";
-import webSocketService from "../services/WebSocketService";
 import { FullSentimentAnalysis } from "./FullSentimentAnalysis";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -414,16 +413,16 @@ export function MemeCoinsIndicator() {
     // Only do the initial fetch if we don't have data already
     if (!isConnected && (!contextCoins || contextCoins.length === 0)) {
       // Connect to WebSocket and request data on first load
-      webSocketService.connect();
+      // webSocketService.connect();
       
       // Request fresh data after a short delay to ensure connection is established
       const initialDataTimer = setTimeout(() => {
-        webSocketService.sendMessage({
-          type: 'refresh_request',
-          data: {
-            timestamp: Date.now()
-          }
-        });
+        // webSocketService.sendMessage({
+        //   type: 'refresh_request',
+        //   data: {
+        //     timestamp: Date.now()
+        //   }
+        // });
       }, 500);
       
       return () => clearTimeout(initialDataTimer);
@@ -435,17 +434,17 @@ export function MemeCoinsIndicator() {
     setLoading(true);
     
     // Connect to WebSocket if not already connected
-    if (!isConnected) {
-      webSocketService.connect();
-    }
+    // if (!isConnected) {
+    //   webSocketService.connect();
+    // }
     
     // Request fresh data
-    webSocketService.sendMessage({
-      type: 'refresh_request',
-      data: {
-        timestamp: Date.now()
-      }
-    });
+    // webSocketService.sendMessage({
+    //   type: 'refresh_request',
+    //   data: {
+    //     timestamp: Date.now()
+    //   }
+    // });
     
     // Set loading state to false after a short delay to prevent long spinner
     setTimeout(() => {
