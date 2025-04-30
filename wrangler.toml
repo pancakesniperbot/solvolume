@@ -1,7 +1,7 @@
 # Cloudflare Pages configuration
 [build]
 command = "cd client && npm run build"
-pages_build_output_dir = "client/dist"
+pages_build_output_dir = "dist"
 
 # Environment variables section
 [build.environment]
@@ -9,7 +9,7 @@ NODE_VERSION = "20"
 
 # Site configuration
 [site]
-bucket = "client/dist"
+bucket = "dist"
 
 # Pages configuration
 [pages]
@@ -41,4 +41,4 @@ command = "cd client && npm run build"
 format = "service-worker"
 
 [env.production.site]
-bucket = "client/dist" 
+bucket = "dist" 
