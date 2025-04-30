@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run optimize-images && vite build",
     "postbuild": "node scripts/update-image-references.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -13,7 +13,8 @@
     "extract-critical": "node scripts/extract-critical-css.js",
     "update-refs": "node scripts/update-image-references.js",
     "analyze": "vite build --mode analyze",
-    "prebuild": "npm run optimize-images"
+    "prebuild": "npm run optimize-images",
+    "postinstall": "npm run optimize-images"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -94,5 +95,8 @@
     "terser": "^5.29.2",
     "typescript": "^5.2.2",
     "vite": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   }
 }
