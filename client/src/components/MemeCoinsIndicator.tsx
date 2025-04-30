@@ -123,10 +123,8 @@ const MemeCoinCard = ({
                 alt={`${coin.name} cryptocurrency logo`} 
                 className="w-8 h-8 rounded-full" 
                 onError={(e) => {
-                  console.warn(`Failed to load image for ${coin.symbol} from ${logoUrl}`);
-                  // On error, fallback to a colored circle with the first letter
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  e.currentTarget.onerror = null; // Prevent infinite loop
+                  e.currentTarget.src = '/images/coins/placeholder-coin.svg';
                 }}
                 loading="lazy"
                 width="32"
@@ -700,7 +698,7 @@ export function MemeCoinsIndicator() {
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full overflow-hidden w-8 h-8 flex-shrink-0">
-                    <img src="/images/coins/BONK.svg" alt="Bonk cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" />
+                    <img src="/images/coins/BONK.svg" alt="Bonk cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/coins/placeholder-coin.svg'; }} />
                   </div>
                   <span className="text-xl font-bold text-white">Bonk</span>
                 </div>
@@ -742,7 +740,7 @@ export function MemeCoinsIndicator() {
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full overflow-hidden w-8 h-8 flex-shrink-0">
-                    <img src="/images/coins/WIF.svg" alt="Dogwifhat cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" />
+                    <img src="/images/coins/WIF.svg" alt="Dogwifhat cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/coins/placeholder-coin.svg'; }} />
                   </div>
                   <span className="text-xl font-bold text-white">Dogwifhat</span>
                 </div>
@@ -871,7 +869,7 @@ export function MemeCoinsIndicator() {
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full overflow-hidden w-8 h-8 flex-shrink-0">
-                    <img src="/images/coins/SOL.png" alt="Solana cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" />
+                    <img src="/images/coins/SOL.png" alt="Solana cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/coins/placeholder-coin.svg'; }} />
                   </div>
                   <span className="text-xl font-bold text-white">Solana</span>
                 </div>
@@ -913,7 +911,7 @@ export function MemeCoinsIndicator() {
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full overflow-hidden w-8 h-8 flex-shrink-0">
-                    <img src="/images/coins/MSOL.png" alt="Marinade Staked SOL cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" />
+                    <img src="/images/coins/MSOL.png" alt="Marinade Staked SOL cryptocurrency logo" className="w-full h-full object-cover" width="32" height="32" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/coins/placeholder-coin.svg'; }} />
                   </div>
                   <span className="text-xl font-bold text-white">Marinade Staked SOL</span>
                 </div>
