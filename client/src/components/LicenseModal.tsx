@@ -179,7 +179,7 @@ export function LicenseModal({ isOpen, onClose, licenseData }: LicenseModalProps
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="sm:max-w-lg md:max-w-xl bg-[#02010a] border border-[#14235A] rounded-xl overflow-hidden p-0 shadow-[0_0_25px_rgba(20,89,226,0.3)]">
+      <DialogContent className="sm:max-w-lg md:max-w-xl bg-[#02010a]/95 backdrop-blur-md border border-[#14235A] rounded-xl overflow-hidden p-0 shadow-[0_0_25px_rgba(20,89,226,0.3)]">
         {/* Close button in top-right corner */}
         <button 
           onClick={handleClose}
@@ -203,7 +203,7 @@ export function LicenseModal({ isOpen, onClose, licenseData }: LicenseModalProps
           </p>
         </div>
         
-        <div className="p-6 space-y-6">
+        <div className="p-6 bg-[#0C1127]/50 space-y-6">
           {/* License Key Section */}
           <div className="bg-gradient-to-r from-[#131E4A]/80 to-[#1C294F]/80 rounded-lg border border-[#263678] p-4">
             <div className="flex justify-between items-center mb-2">
@@ -326,24 +326,26 @@ export function LicenseModal({ isOpen, onClose, licenseData }: LicenseModalProps
           </div>
         </div>
         
-        <DialogFooter className="flex justify-between p-4 border-t border-[#263678] bg-[#0C1127]/50">
-          <Button
-            variant="outline"
-            onClick={handleSupportClick}
-            className="border-[#263678] hover:bg-[#1E2C4A]/70 bg-[#131E4A] text-white"
-          >
-            <SendIcon className="mr-2 h-4 w-4 text-[#14F195]" />
-            Telegram Support
-          </Button>
-          
-          <Button
-            variant="outline"
-            onClick={handleClose}
-            className="border-[#263678] hover:bg-[#1E2C4A]/70 bg-[#131E4A] text-white"
-          >
-            Close Window
-          </Button>
-        </DialogFooter>
+        <div className="p-6 bg-[#0C1127]/50 border-t border-[#263678]">
+          <DialogFooter className="flex justify-between p-4 border-t border-[#263678] bg-[#0C1127]/50">
+            <Button
+              variant="outline"
+              onClick={handleSupportClick}
+              className="border-[#263678] hover:bg-[#1E2C4A]/70 bg-[#131E4A] text-white"
+            >
+              <SendIcon className="mr-2 h-4 w-4 text-[#14F195]" />
+              Telegram Support
+            </Button>
+            
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              className="border-[#263678] hover:bg-[#1E2C4A]/70 bg-[#131E4A] text-white"
+            >
+              Close Window
+            </Button>
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
