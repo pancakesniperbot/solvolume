@@ -1,6 +1,6 @@
 [build]
-command = "npm install && npm run build"
-publish_directory = "client/dist"
+command = "npm install && npm run build && cp -r client/dist dist"
+publish_directory = "dist"
 
 [build.environment]
 NODE_VERSION = "20"
@@ -8,4 +8,4 @@ NODE_VERSION = "20"
 [[redirects]]
 from = "/*"
 to = "/index.html"
-status = 200 
+status = 200

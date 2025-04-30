@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": "client/dist",
+  "buildCommand": "npm install && npm run build && cp -r client/dist dist",
+  "outputDirectory": "dist",
   "nodeVersion": "20",
   "routes": [
     { "handle": "filesystem" },

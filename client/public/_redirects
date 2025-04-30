@@ -1,0 +1,6 @@
+# Redirect all requests to index.html for SPA routing
+/* /index.html 200
+
+# But exclude API and worker paths
+/api/* /worker.js 200
+/ws/* /worker.js 200 
