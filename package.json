@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "cd client && npm install --no-fund --legacy-peer-deps && npm run build && cd ..",
+    "build": "cd client && npm install --no-fund --legacy-peer-deps && npm run build && cd .. && mv client/dist dist",
     "check": "tsc"
   },
   "dependencies": {
