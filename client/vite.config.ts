@@ -116,6 +116,7 @@ export default defineConfig({
           limit: 0,
           include: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.gif', '**/*.webp'],
           fileName: '[name][extname]',
+          publicPath: '/assets/',
         }),
         virtual({
           'virtual:config': `export default ${JSON.stringify({
