@@ -1,32 +1,58 @@
 # Cloudflare Pages configuration
 [build]
-command = "cd client && npm run build"
-pages_build_output_dir = "dist"
+command = "cd client && npm install && npm run build"
+output_dir = "client/dist"
 
 # Environment variables section
 [build.environment]
-NODE_VERSION = "20"
+NODE_VERSION = "18"
 
 # Site configuration
 [site]
-bucket = "dist"
+bucket = "./client/dist"
 
-# Pages configuration
-[pages]
-compatibility_date = "2023-10-30"
-compatibility_flags = ["nodejs_compat"]
+# Pages Assets
+[assets]
+source = "client/dist"
+destination = "/"
 
 # Headers configuration
 [[headers]]
 for = "/*"
 [headers.values]
 X-Robots-Tag = "index, follow"
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "no-referrer"
+X-XSS-Protection = "1; mode=block"
+Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' *.cloudflareinsights.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss:;"
 
 # SPA routing
 [[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
+
+# Cache configuration
+[[headers]]
+for = "/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/images/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.css"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
 
 [build.upload]
 format = "service-worker"
