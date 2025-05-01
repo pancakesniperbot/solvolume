@@ -162,8 +162,8 @@ export function RegistrationModal({
           </DialogDescription>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5 p-6">
+          <div className="space-y-4 p-6 bg-[#0C1127]/50">
             <div>
               <Label htmlFor="email" className="text-sm font-medium text-gray-200 flex items-center mb-2">
                 Email Address
@@ -191,7 +191,7 @@ export function RegistrationModal({
               )}
             </div>
             
-            <div>
+            <div className="rounded-lg p-4 bg-gradient-to-r from-[#131E4A]/50 to-[#1C294F]/50 border border-[#263678]">
               <h4 className="font-semibold text-[#14F195] mb-3 flex items-center">
                 <Zap className="h-4 w-4 mr-2" /> What you'll get:
               </h4>

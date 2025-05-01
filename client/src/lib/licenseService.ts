@@ -29,23 +29,16 @@ export async function generateLicense(email: string): Promise<LicenseResponse> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
       },
       body: JSON.stringify({ email }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.error || `Failed to generate license: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to generate license: ${errorText}`);
     }
 
     const data = await response.json();
-    
-    // Validate the response data
-    if (!data.license || !data.email || !data.primaryUrl || !data.backupUrl || !data.updatedDate) {
-      throw new Error('Invalid license data received from server');
-    }
-
     return data;
   } catch (error) {
     console.error('License generation error:', error);
@@ -101,7 +94,6 @@ export async function verifyLicense(licenseKey: string): Promise<boolean> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
       },
       body: JSON.stringify({ licenseKey }),
     });

@@ -1,7 +1,7 @@
 # Cloudflare Pages configuration
 [build]
-command = "cd client && npm install --legacy-peer-deps && npm run build"
-cwd = "."
+command = "cd client && npm run build"
+pages_build_output_dir = "dist"
 
 # Environment variables section
 [build.environment]
@@ -9,11 +9,11 @@ NODE_VERSION = "20"
 
 # Site configuration
 [site]
-bucket = "client/dist"
+bucket = "dist"
 
 # Pages configuration
 [pages]
-compatibility_date = "2024-01-01"
+compatibility_date = "2023-10-30"
 compatibility_flags = ["nodejs_compat"]
 
 # Headers configuration
@@ -28,14 +28,23 @@ from = "/*"
 to = "/index.html"
 status = 200
 
+[build.upload]
+format = "service-worker"
+
 [env.production]
 name = "solvolume"
-workers_dev = false
-route = "solanavolumebot.io/*"
-zone_id = "your-zone-id"
+workers_dev = true
+route = ""
+zone_id = ""
 
 [env.production.vars]
 ENVIRONMENT = "production"
 
+[env.production.build]
+command = "cd client && npm run build"
+
+[env.production.build.upload]
+format = "service-worker"
+
 [env.production.site]
-bucket = "client/dist" 
+bucket = "dist" 
