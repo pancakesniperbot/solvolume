@@ -43,7 +43,39 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
         globDirectory: 'dist',
         cleanupOutdatedCaches: true,
-        sourcemap: true
+        sourcemap: true,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/solanavolumebot\.io\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 24 * 60 * 60 // 24 hours
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+              networkTimeoutSeconds: 30
+            }
+          },
+          {
+            urlPattern: /^https:\/\/solanavolumebot\.io\/data\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'data-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 // 1 hour
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+              networkTimeoutSeconds: 30
+            }
+          }
+        ]
       },
       devOptions: {
         enabled: true
@@ -209,7 +241,9 @@ export default defineConfig({
       'Permissions-Policy': 'interest-cohort=()',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Range'
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Range',
+      'Keep-Alive': 'timeout=60, max=1000',
+      'Connection': 'keep-alive'
     }
   },
   server: {
@@ -225,7 +259,9 @@ export default defineConfig({
       'Permissions-Policy': 'interest-cohort=()',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Range'
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Range',
+      'Keep-Alive': 'timeout=60, max=1000',
+      'Connection': 'keep-alive'
     }
   },
   optimizeDeps: {
