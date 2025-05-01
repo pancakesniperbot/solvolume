@@ -20,7 +20,7 @@ export default defineConfig({
     tsconfigPaths(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'data/*.json', 'sitemap.xml'],
       manifest: {
         name: 'SolVolume',
         short_name: 'SolVolume',
@@ -172,6 +172,9 @@ export default defineConfig({
           if (/\.css$/.test(assetInfo.name)) {
             return 'assets/css/[name]-[hash][extname]';
           }
+          if (/\.json$/.test(assetInfo.name)) {
+            return 'data/[name][extname]';
+          }
           return `assets/[name]-[hash][extname]`;
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -200,32 +203,29 @@ export default defineConfig({
     headers: {
       'Cache-Control': 'public, max-age=31536000, immutable',
       'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
+      'X-Frame-Options': 'SAMEORIGIN',
       'X-XSS-Protection': '1; mode=block',
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Resource-Policy': 'same-origin',
-      'Permissions-Policy': 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
-      'X-Robots-Tag': 'index, follow'
-    },
+      'X-Robots-Tag': 'index, follow, archive, snippet, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      'Permissions-Policy': 'interest-cohort=()',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Range'
+    }
   },
   server: {
-    fs: {
-      strict: true,
-      allow: ['..'],
-    },
-    headers: {
-      'Cache-Control': 'public, max-age=31536000, immutable',
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'X-Robots-Tag': 'index, follow'
-    },
     port: 3000,
     host: true,
     strictPort: true,
-    watch: {
-      usePolling: true
+    headers: {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'SAMEORIGIN',
+      'X-XSS-Protection': '1; mode=block',
+      'X-Robots-Tag': 'index, follow, archive, snippet, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      'Permissions-Policy': 'interest-cohort=()',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Range'
     }
   },
   optimizeDeps: {

@@ -1,26 +1,45 @@
-# Robots.txt file for Solana Volume Bot
-# Website: https://solanavolumebot.io
-# Last updated: April 21, 2025
+# Welcome to SolVolume!
+# This file is designed to help search engines understand and index our site better.
 
 User-agent: *
 Allow: /
+Allow: /data/
+Allow: /assets/
+Allow: /images/
+Allow: /avatars/
 
-# Sitemaps
-Sitemap: https://solanavolumebot.io/sitemap.xml
+# Sitemap location
+Sitemap: https://solvolume-94b.pages.dev/sitemap.xml
 
-# Crawl delay for all bots
-Crawl-delay: 10
+# Crawl-delay for all bots
+Crawl-delay: 1
 
-# Disallow specific paths
-Disallow: /private/
-Disallow: /admin/
-Disallow: /api/
-Disallow: /temp/
-Disallow: /unfinished/
-Disallow: /dev/
-Disallow: /beta/
-Disallow: /*.json$
+# Additional information for specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
 
-# Allow specific files
-Allow: /manifest.json
-Allow: /browserconfig.xml
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
+# Allow all other bots
+User-agent: *
+Allow: /
+Crawl-delay: 1
