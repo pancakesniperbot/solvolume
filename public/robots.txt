@@ -1,0 +1,63 @@
+# Welcome to SolVolume!
+# This file is designed to help search engines understand and index our site better.
+
+# Default rules for all bots
+User-agent: *
+Allow: /
+Allow: /data/
+Allow: /assets/
+Allow: /images/
+Allow: /avatars/
+Crawl-delay: 1
+
+# Google-specific rules
+User-agent: Googlebot
+Allow: /
+Allow: /data/
+Allow: /assets/
+Allow: /images/
+Allow: /avatars/
+Crawl-delay: 1
+Request-rate: 1/1s
+
+# Googlebot-Image specific rules
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /assets/images/
+Allow: /avatars/
+Crawl-delay: 1
+Request-rate: 1/1s
+
+# Googlebot-Mobile specific rules
+User-agent: Googlebot-Mobile
+Allow: /
+Allow: /data/
+Allow: /assets/
+Allow: /images/
+Allow: /avatars/
+Crawl-delay: 1
+Request-rate: 1/1s
+
+# Other major search engines
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://solanavolumebot.io/sitemap.xml
