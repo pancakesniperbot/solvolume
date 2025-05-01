@@ -8,11 +8,17 @@
 /images/coins/placeholder-coin.svg
   Cache-Control: public, max-age=31536000, immutable
   Content-Type: image/svg+xml
+  Accept-Ranges: bytes
+  Vary: Accept-Encoding
 
 /images/coins/*.svg
   Cache-Control: public, max-age=31536000, immutable
   Content-Type: image/svg+xml
+  Accept-Ranges: bytes
+  Vary: Accept-Encoding
 
 /images/coins/*.png
   Cache-Control: public, max-age=31536000, immutable
-  Content-Type: image/png 
+  Content-Type: image/png
+  Accept-Ranges: bytes
+  Vary: Accept-Encoding 
