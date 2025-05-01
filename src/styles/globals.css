@@ -81,7 +81,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-gray-300 {
-  color: rgb(209, 213, 219);
+  color: rgb(229, 231, 235);
+}
+
+.text-gray-500 {
+  color: rgb(156, 163, 175);
+}
+
+.text-purple {
+  color: rgb(var(--purple));
+  font-weight: 500;
 }
 
 /* Layout utilities */

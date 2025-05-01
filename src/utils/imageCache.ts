@@ -9,10 +9,26 @@ export async function preloadPlaceholderSvg(): Promise<void> {
   if (placeholderSvgCache) return;
   
   try {
-    const response = await fetch(PLACEHOLDER_SVG);
-    if (!response.ok) throw new Error('Failed to load placeholder SVG');
-    placeholderSvgCache = await response.text();
-    imageCache.set(PLACEHOLDER_SVG, placeholderSvgCache);
+    const response = await fetch(PLACEHOLDER_SVG, {
+      cache: 'force-cache',
+      headers: {
+        'Accept': 'image/svg+xml'
+      }
+    });
+    
+    if (!response.ok) {
+      console.error('Failed to load placeholder SVG:', response.statusText);
+      return;
+    }
+    
+    const svgText = await response.text();
+    if (!svgText.includes('<svg')) {
+      console.error('Invalid SVG content received');
+      return;
+    }
+    
+    placeholderSvgCache = svgText;
+    imageCache.set(PLACEHOLDER_SVG, svgText);
   } catch (error) {
     console.error('Error preloading placeholder SVG:', error);
   }
@@ -27,7 +43,12 @@ export function setCachedImage(url: string, data: string): void {
 }
 
 export function getPlaceholderSvg(): string {
-  return placeholderSvgCache || PLACEHOLDER_SVG;
+  if (!placeholderSvgCache) {
+    // If not cached yet, trigger preload and return the path
+    preloadPlaceholderSvg();
+    return PLACEHOLDER_SVG;
+  }
+  return placeholderSvgCache;
 }
 
 // Preload the placeholder SVG when the module is imported
