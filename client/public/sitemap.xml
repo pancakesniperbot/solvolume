@@ -20,6 +20,49 @@
     <priority>1.0</priority>
   </url>
 
+  <!-- Legal Pages -->
+  <url>
+    <loc>https://solvolume-94b.pages.dev/privacy-policy</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://solvolume-94b.pages.dev/terms-of-service</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://solvolume-94b.pages.dev/terms-of-use</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://solvolume-94b.pages.dev/legal</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://solvolume-94b.pages.dev/disclaimer</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://solvolume-94b.pages.dev/cookie-policy</loc>
+    <lastmod>2024-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Data Pages -->
   <url>
     <loc>https://solvolume-94b.pages.dev/data/</loc>
