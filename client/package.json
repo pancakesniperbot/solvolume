@@ -10,7 +10,6 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "optimize-images": "node scripts/optimize-images.js",
-    "extract-critical": "node scripts/extract-critical-css.js",
     "update-refs": "node scripts/update-image-references.js"
   },
   "engines": {
@@ -116,7 +115,6 @@
     "vite-imagetools": "^6.0.0",
     "vite-plugin-cdn-import": "^0.3.5",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-critical": "^1.0.1",
     "vite-plugin-pwa": "1.0.0",
     "vite-tsconfig-paths": "5.1.4",
     "web-vitals": "^3.5.2"
