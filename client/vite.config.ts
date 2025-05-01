@@ -22,6 +22,12 @@ export default defineConfig({
       algorithm: 'gzip',
       ext: '.gz',
     }),
+    compression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 10240,
+      deleteOriginFile: false,
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
@@ -43,10 +49,6 @@ export default defineConfig({
           },
         ],
       },
-    }),
-    compression({
-      algorithm: 'brotliCompress',
-      ext: '.br'
     }),
     visualizer({
       filename: 'stats.html',
