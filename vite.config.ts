@@ -18,13 +18,17 @@ export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
+    compression({
+      algorithm: 'gzip',
+      ext: '.gz',
+    }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'data/*.json', 'sitemap.xml'],
+      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'SolVolume',
         short_name: 'SolVolume',
-        description: 'Solana Volume Bot',
+        description: 'Solana Volume Tracking Application',
         theme_color: '#ffffff',
         icons: [
           {
@@ -38,52 +42,7 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
-        globDirectory: 'dist',
-        cleanupOutdatedCaches: true,
-        sourcemap: true,
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/solanavolumebot\.io\/.*/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'pages-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 24 * 60 * 60 // 24 hours
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              },
-              networkTimeoutSeconds: 30
-            }
-          },
-          {
-            urlPattern: /^https:\/\/solanavolumebot\.io\/data\/.*/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'data-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 // 1 hour
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              },
-              networkTimeoutSeconds: 30
-            }
-          }
-        ]
-      },
-      devOptions: {
-        enabled: true
       }
-    }),
-    compression({
-      algorithm: 'gzip',
-      ext: '.gz'
     }),
     compression({
       algorithm: 'brotliCompress',
@@ -159,38 +118,9 @@ export default defineConfig({
       ],
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-aspect-ratio',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-collapsible',
-            '@radix-ui/react-context-menu',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-hover-card',
-            '@radix-ui/react-label',
-            '@radix-ui/react-menubar',
-            '@radix-ui/react-navigation-menu',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-progress',
-            '@radix-ui/react-radio-group',
-            '@radix-ui/react-scroll-area',
-            '@radix-ui/react-select',
-            '@radix-ui/react-separator',
-            '@radix-ui/react-slider',
-            '@radix-ui/react-slot',
-            '@radix-ui/react-switch',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-toast',
-            '@radix-ui/react-toggle',
-            '@radix-ui/react-toggle-group',
-            '@radix-ui/react-tooltip'
-          ],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei', 'three-mesh-bvh'],
-          'utils-vendor': ['axios', 'zod', 'clsx', 'tailwind-merge', 'class-variance-authority']
+          'react-vendor': ['react', 'react-dom'],
+          'ui-vendor': ['@radix-ui/react-*'],
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei']
         },
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
@@ -268,38 +198,10 @@ export default defineConfig({
     include: [
       'react',
       'react-dom',
-      'react-router-dom',
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-alert-dialog',
-      '@radix-ui/react-aspect-ratio',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-checkbox',
-      '@radix-ui/react-collapsible',
-      '@radix-ui/react-context-menu',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-hover-card',
-      '@radix-ui/react-label',
-      '@radix-ui/react-menubar',
-      '@radix-ui/react-navigation-menu',
-      '@radix-ui/react-popover',
-      '@radix-ui/react-progress',
-      '@radix-ui/react-radio-group',
-      '@radix-ui/react-scroll-area',
-      '@radix-ui/react-select',
-      '@radix-ui/react-separator',
-      '@radix-ui/react-slider',
-      '@radix-ui/react-slot',
-      '@radix-ui/react-switch',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-toast',
-      '@radix-ui/react-toggle',
-      '@radix-ui/react-toggle-group',
-      '@radix-ui/react-tooltip',
+      '@radix-ui/react-*',
       'three',
       '@react-three/fiber',
       '@react-three/drei',
-      'three-mesh-bvh',
       'axios',
       'zod',
       'clsx',
