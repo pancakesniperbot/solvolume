@@ -1,69 +1,32 @@
 # Cloudflare Pages configuration
 [build]
-command = "npm run build"
-output_dir = "client/dist"
+command = "cd client && npm run build"
+pages_build_output_dir = "dist"
 
 # Environment variables section
 [build.environment]
-NODE_VERSION = "18"
-NPM_VERSION = "9"
+NODE_VERSION = "20"
 
 # Site configuration
 [site]
-bucket = "./client/dist"
+bucket = "dist"
 
-# Pages Assets
-[assets]
-source = "client/dist"
-destination = "/"
+# Pages configuration
+[pages]
+compatibility_date = "2023-10-30"
+compatibility_flags = ["nodejs_compat"]
 
 # Headers configuration
 [[headers]]
 for = "/*"
 [headers.values]
 X-Robots-Tag = "index, follow"
-X-Frame-Options = "DENY"
-X-Content-Type-Options = "nosniff"
-Referrer-Policy = "no-referrer"
-X-XSS-Protection = "1; mode=block"
-Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' *.cloudflareinsights.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss:;"
-Accept-Encoding = "br, gzip"
 
 # SPA routing
 [[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
-
-# Cache configuration
-[[headers]]
-for = "/assets/*"
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Accept-Encoding = "br, gzip"
-
-[[headers]]
-for = "/images/*"
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Accept-Encoding = "br, gzip"
-
-[[headers]]
-for = "/*.js"
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Accept-Encoding = "br, gzip"
-
-[[headers]]
-for = "/*.css"
-[headers.values]
-Cache-Control = "public, max-age=31536000, immutable"
-Accept-Encoding = "br, gzip"
-
-# Pages specific configuration
-[pages]
-pages_build_output_dir = "client/dist"
-build_output_dir = "client/dist"
 
 [build.upload]
 format = "service-worker"

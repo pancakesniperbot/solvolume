@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import { getPlaceholderSvg } from '@/utils/imageCache';
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -18,27 +17,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   height,
   className,
   priority = false,
-  onError,
   ...props
 }) => {
-  const [imgSrc, setImgSrc] = useState(src);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    setImgSrc(src);
-    setIsLoading(true);
-    setHasError(false);
-  }, [src]);
-
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (!hasError) {
-      setHasError(true);
-      setImgSrc(getPlaceholderSvg());
-      onError?.(e);
-    }
-  };
-
   // Generate WebP and AVIF sources
   const webpSrc = src.replace(/\.(jpg|jpeg|png)$/, '.webp');
   const avifSrc = src.replace(/\.(jpg|jpeg|png)$/, '.avif');
@@ -59,19 +39,13 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       />
       {/* Fallback to original format */}
       <img
-        src={imgSrc}
+        src={src}
         alt={alt}
         width={width}
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
-        className={cn(
-          'object-cover',
-          isLoading && 'animate-pulse bg-muted',
-          className
-        )}
-        onError={handleError}
-        onLoad={() => setIsLoading(false)}
+        className={cn('object-cover', className)}
         {...props}
       />
     </picture>
