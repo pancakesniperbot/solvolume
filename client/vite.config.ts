@@ -12,12 +12,21 @@ import compression from 'vite-plugin-compression';
 import { VitePWA } from 'vite-plugin-pwa';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { resolve } from 'path';
+import { splitVendorChunkPlugin } from 'vite';
+import { Plugin as importToCDN } from 'vite-plugin-cdn-import';
+import legacy from '@vitejs/plugin-legacy';
+import { imagetools } from 'vite-imagetools';
+import { Plugin as critical } from 'vite-plugin-critical';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
+    legacy({
+      targets: ['defaults', 'not IE 11'],
+      modernPolyfills: true,
+    }),
     compression({
       algorithm: 'gzip',
       ext: '.gz',
@@ -28,6 +37,48 @@ export default defineConfig({
       threshold: 10240,
       deleteOriginFile: false,
     }),
+    critical({
+      critical: {
+        inline: true,
+        dimensions: [
+          {
+            width: 375,
+            height: 667,
+          },
+          {
+            width: 1920,
+            height: 1080,
+          },
+        ],
+      },
+    }),
+    imagetools({
+      defaultDirectives: new URLSearchParams([
+        ['format', 'webp'],
+        ['quality', '80'],
+      ]),
+    }),
+    importToCDN({
+      modules: [
+        {
+          name: 'react',
+          var: 'React',
+          path: 'https://unpkg.com/react@18/umd/react.production.min.js',
+        },
+        {
+          name: 'react-dom',
+          var: 'ReactDOM',
+          path: 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
+        },
+      ],
+    }),
+    visualizer({
+      filename: 'stats.html',
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+    }),
+    splitVendorChunkPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
@@ -49,12 +100,25 @@ export default defineConfig({
           },
         ],
       },
-    }),
-    visualizer({
-      filename: 'stats.html',
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/unpkg\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'unpkg-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
     }),
   ],
   resolve: {
@@ -123,6 +187,7 @@ export default defineConfig({
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': ['@radix-ui/react-*'],
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+          'utils-vendor': ['axios', 'zod', 'clsx', 'tailwind-merge'],
         },
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) return 'assets/[name]-[hash][extname]';

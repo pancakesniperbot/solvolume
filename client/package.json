@@ -89,6 +89,7 @@
     "@types/three": "^0.162.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-legacy": "^5.3.1",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.17",
     "critical": "^5.1.1",
@@ -108,7 +109,10 @@
     "terser": "^5.29.2",
     "typescript": "^5.2.2",
     "vite": "^5.4.19",
+    "vite-imagetools": "^6.0.0",
+    "vite-plugin-cdn-import": "^0.3.5",
     "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-critical": "^1.0.1",
     "vite-plugin-pwa": "1.0.0",
     "vite-tsconfig-paths": "5.1.4",
     "web-vitals": "^3.5.2"
