@@ -63,6 +63,7 @@ Accept-Encoding = "br, gzip"
 # Pages specific configuration
 [pages]
 pages_build_output_dir = "client/dist"
+build_output_dir = "client/dist"
 
 [build.upload]
 format = "service-worker"
