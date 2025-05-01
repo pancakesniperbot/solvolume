@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "optimize-images": "node scripts/optimize-images.js",
     "extract-critical": "node scripts/extract-critical-css.js",
-    "update-refs": "node scripts/update-image-references.js"
+    "update-refs": "node scripts/update-image-references.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
